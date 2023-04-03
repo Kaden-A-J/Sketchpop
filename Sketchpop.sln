@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sketchpop", "Sketchpop.csproj", "{C5B8028F-64E2-4088-B726-CB4921398B9F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sketchpop", "Sketchpop\Sketchpop.csproj", "{8C188CA0-1147-41C4-9BF8-7980572E41C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C5B8028F-64E2-4088-B726-CB4921398B9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5B8028F-64E2-4088-B726-CB4921398B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5B8028F-64E2-4088-B726-CB4921398B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5B8028F-64E2-4088-B726-CB4921398B9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C188CA0-1147-41C4-9BF8-7980572E41C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C188CA0-1147-41C4-9BF8-7980572E41C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C188CA0-1147-41C4-9BF8-7980572E41C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C188CA0-1147-41C4-9BF8-7980572E41C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
