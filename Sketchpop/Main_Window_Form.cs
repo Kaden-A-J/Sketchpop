@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkiaSharp;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -48,6 +49,12 @@ namespace Sketchpop
         private const int
             _grip_size = 5, // window resize click border
             _caption_size = 20; // window drag click border
+
+        private void canvas_frame_Click(object sender, EventArgs e)
+        {
+            var click_pos = canvas_frame.PointToClient(MousePosition);
+            canvas_frame.Image = Program.DrawSquare(click_pos, (Bitmap) canvas_frame.Image);
+        }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
         private Rectangle left { get { return new Rectangle(0, 0, _grip_size, this.ClientSize.Height); } }

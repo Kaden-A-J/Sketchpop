@@ -157,6 +157,7 @@ namespace Sketchpop
             this.canvas_frame.Size = new System.Drawing.Size(906, 625);
             this.canvas_frame.TabIndex = 0;
             this.canvas_frame.TabStop = false;
+            this.canvas_frame.Click += new System.EventHandler(this.canvas_frame_Click);
             // 
             // main_window
             // 
