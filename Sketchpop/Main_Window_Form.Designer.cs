@@ -185,6 +185,9 @@ namespace Sketchpop
             this.canvas_frame.TabIndex = 0;
             this.canvas_frame.TabStop = false;
             this.canvas_frame.Click += new System.EventHandler(this.canvas_frame_Click);
+            this.canvas_frame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
+            this.canvas_frame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseMove);
+            this.canvas_frame.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
             // 
             // right_settings_panel
             // 

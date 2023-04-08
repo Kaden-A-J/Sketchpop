@@ -53,7 +53,7 @@ namespace Sketchpop
         private void canvas_frame_Click(object sender, EventArgs e)
         {
             var click_pos = canvas_frame.PointToClient(MousePosition);
-            canvas_frame.Image = Program.DrawSquare(click_pos, (Bitmap) canvas_frame.Image);
+            //canvas_frame.Image = Program.DrawSquare(click_pos, (Bitmap) canvas_frame.Image);
         }
 
         private void get_ref_button_Click(object sender, EventArgs e)
@@ -68,6 +68,24 @@ namespace Sketchpop
             Database_Manager dbm = new Database_Manager();
 
             dbm.ExecuteImageUploadQuery("", "");
+        }
+
+        private void canvas_frame_MouseDown(object sender, MouseEventArgs e)
+        {
+            var click_pos = canvas_frame.PointToClient(MousePosition);
+            Program.Begin_Draw_Path(click_pos);
+        }
+
+        private void canvas_frame_MouseUp(object sender, MouseEventArgs e)
+        {
+            Program.End_Draw_Path();
+        }
+
+        private void canvas_frame_MouseMove(object sender, MouseEventArgs e)
+        {
+            var click_pos = canvas_frame.PointToClient(MousePosition);
+            canvas_frame.Image = Program.Continue_Draw_Path(click_pos, (Bitmap) canvas_frame.Image);
+            canvas_frame.Refresh();
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
