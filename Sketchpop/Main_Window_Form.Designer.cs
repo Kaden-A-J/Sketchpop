@@ -121,6 +121,9 @@ namespace Sketchpop
             // 
             // left_settings_panel
             // 
+            this.left_settings_panel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.left_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
             this.left_settings_panel.Enabled = false;
             this.left_settings_panel.Location = new System.Drawing.Point(30, 26);
@@ -130,6 +133,9 @@ namespace Sketchpop
             // 
             // quick_launch_bar
             // 
+            this.quick_launch_bar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.quick_launch_bar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
             this.quick_launch_bar.Location = new System.Drawing.Point(210, 26);
             this.quick_launch_bar.Name = "quick_launch_bar";
@@ -138,10 +144,10 @@ namespace Sketchpop
             // 
             // canvas_panel
             // 
+            this.canvas_panel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
-            this.canvas_panel.Controls.Add(this.reference_img);
-            this.canvas_panel.Controls.Add(this.put_ref_button);
-            this.canvas_panel.Controls.Add(this.get_ref_button);
             this.canvas_panel.Controls.Add(this.canvas_frame);
             this.canvas_panel.Location = new System.Drawing.Point(210, 63);
             this.canvas_panel.Name = "canvas_panel";
@@ -150,15 +156,21 @@ namespace Sketchpop
             // 
             // reference_img
             // 
-            this.reference_img.Location = new System.Drawing.Point(566, 176);
+            this.reference_img.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.reference_img.Location = new System.Drawing.Point(33, 32);
             this.reference_img.Name = "reference_img";
-            this.reference_img.Size = new System.Drawing.Size(321, 300);
+            this.reference_img.Size = new System.Drawing.Size(166, 121);
             this.reference_img.TabIndex = 3;
             this.reference_img.TabStop = false;
             // 
             // put_ref_button
             // 
-            this.put_ref_button.Location = new System.Drawing.Point(736, 147);
+            this.put_ref_button.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.put_ref_button.Location = new System.Drawing.Point(33, 159);
             this.put_ref_button.Name = "put_ref_button";
             this.put_ref_button.Size = new System.Drawing.Size(75, 23);
             this.put_ref_button.TabIndex = 2;
@@ -168,7 +180,10 @@ namespace Sketchpop
             // 
             // get_ref_button
             // 
-            this.get_ref_button.Location = new System.Drawing.Point(812, 147);
+            this.get_ref_button.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.get_ref_button.Location = new System.Drawing.Point(124, 159);
             this.get_ref_button.Name = "get_ref_button";
             this.get_ref_button.Size = new System.Drawing.Size(75, 23);
             this.get_ref_button.TabIndex = 1;
@@ -178,6 +193,9 @@ namespace Sketchpop
             // 
             // canvas_frame
             // 
+            this.canvas_frame.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas_frame.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(167)))), ((int)(((byte)(167)))));
             this.canvas_frame.Location = new System.Drawing.Point(0, 28);
             this.canvas_frame.Name = "canvas_frame";
@@ -191,6 +209,9 @@ namespace Sketchpop
             // 
             // right_settings_panel
             // 
+            this.right_settings_panel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.right_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
             this.right_settings_panel.Location = new System.Drawing.Point(1123, 26);
             this.right_settings_panel.Name = "right_settings_panel";
@@ -202,6 +223,9 @@ namespace Sketchpop
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.ClientSize = new System.Drawing.Size(1280, 720);
+            this.Controls.Add(this.reference_img);
+            this.Controls.Add(this.get_ref_button);
+            this.Controls.Add(this.put_ref_button);
             this.Controls.Add(this.right_settings_panel);
             this.Controls.Add(this.canvas_panel);
             this.Controls.Add(this.quick_launch_bar);

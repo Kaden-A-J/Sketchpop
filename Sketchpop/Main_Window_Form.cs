@@ -34,7 +34,6 @@ namespace Sketchpop
             this.WindowState = FormWindowState.Minimized;
         }
 
-        // From https://stackoverflow.com/q/2575216
         private const int
             HTCAPTION = 2,
             HTLEFT = 10,
@@ -73,18 +72,18 @@ namespace Sketchpop
         private void canvas_frame_MouseDown(object sender, MouseEventArgs e)
         {
             var click_pos = canvas_frame.PointToClient(MousePosition);
-            Program.Begin_Draw_Path(click_pos);
+            Program.canvas_manager.Begin_Draw_Path(click_pos);
         }
 
         private void canvas_frame_MouseUp(object sender, MouseEventArgs e)
         {
-            Program.End_Draw_Path();
+            Program.canvas_manager.End_Draw_Path();
         }
 
         private void canvas_frame_MouseMove(object sender, MouseEventArgs e)
         {
             var click_pos = canvas_frame.PointToClient(MousePosition);
-            canvas_frame.Image = Program.Continue_Draw_Path(click_pos, (Bitmap) canvas_frame.Image);
+            canvas_frame.Image = Program.canvas_manager.Continue_Draw_Path(click_pos, (Bitmap) canvas_frame.Image);
             canvas_frame.Refresh();
         }
 
@@ -98,6 +97,7 @@ namespace Sketchpop
         private Rectangle bottom_left { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }
         private Rectangle bottom_right { get { return new Rectangle(this.ClientSize.Width - _grip_size, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }
 
+        // From https://stackoverflow.com/q/2575216
         // To allow dragging and resizing the window without the default Window's form border
         protected override void WndProc(ref Message message)
         {
