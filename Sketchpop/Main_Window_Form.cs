@@ -14,9 +14,25 @@ namespace Sketchpop
 {
     public partial class main_window : Form
     {
+        public System.Windows.Forms.Timer draw_timer = new System.Windows.Forms.Timer();
+        private Point mouse_pos = new Point(0, 0);
+        bool mouse_down = false;
+
+
+        public void draw_timer_method(Object my_object, EventArgs my_event_args)
+        {
+            canvas_frame.Image = Program.canvas_manager.Continue_Draw_Path(mouse_pos, (Bitmap) canvas_frame.Image);
+            canvas_frame.Refresh();
+            Console.WriteLine(mouse_pos);
+        }
+
         public main_window()
         {
             InitializeComponent();
+
+            draw_timer.Tick += new EventHandler(draw_timer_method);
+            draw_timer.Interval = 1;
+            draw_timer.Start();
         }
 
         private void exit_button_Click(object sender, EventArgs e)
@@ -51,7 +67,7 @@ namespace Sketchpop
 
         private void canvas_frame_Click(object sender, EventArgs e)
         {
-            var click_pos = canvas_frame.PointToClient(MousePosition);
+            //var click_pos = canvas_frame.PointToClient(MousePosition);
             //canvas_frame.Image = Program.DrawSquare(click_pos, (Bitmap) canvas_frame.Image);
         }
 
@@ -71,20 +87,23 @@ namespace Sketchpop
 
         private void canvas_frame_MouseDown(object sender, MouseEventArgs e)
         {
+            mouse_down = true;
             var click_pos = canvas_frame.PointToClient(MousePosition);
             Program.canvas_manager.Begin_Draw_Path(click_pos);
         }
 
         private void canvas_frame_MouseUp(object sender, MouseEventArgs e)
         {
+            mouse_down = false;
             Program.canvas_manager.End_Draw_Path();
         }
 
         private void canvas_frame_MouseMove(object sender, MouseEventArgs e)
         {
-            var click_pos = canvas_frame.PointToClient(MousePosition);
-            canvas_frame.Image = Program.canvas_manager.Continue_Draw_Path(click_pos, (Bitmap) canvas_frame.Image);
-            canvas_frame.Refresh();
+            mouse_pos = canvas_frame.PointToClient(MousePosition);
+            //canvas_frame.Image = Program.canvas_manager.Continue_Draw_Path(click_pos, (Bitmap) canvas_frame.Image);
+            //canvas_frame.Refresh();
+            //Console.WriteLine(click_pos);
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }

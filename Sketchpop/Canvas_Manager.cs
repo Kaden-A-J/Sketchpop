@@ -48,7 +48,7 @@ namespace Sketchpop
                         Color = SKColors.Red,
                         StrokeCap = SKStrokeCap.Round,
                         Style = SKPaintStyle.Stroke,
-                        StrokeWidth = 5
+                        StrokeWidth = 1
                     };
 
                     current_path.LineTo(click_position.X, click_position.Y);
