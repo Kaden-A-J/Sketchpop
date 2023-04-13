@@ -37,14 +37,16 @@ namespace Sketchpop
             this.fullscreen_button = new System.Windows.Forms.Button();
             this.tool_bar = new System.Windows.Forms.Panel();
             this.left_settings_panel = new System.Windows.Forms.Panel();
+            this.search_button = new System.Windows.Forms.Button();
+            this.ref_img_search_query = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.quick_launch_bar = new System.Windows.Forms.Panel();
             this.canvas_panel = new System.Windows.Forms.Panel();
             this.canvas_frame = new System.Windows.Forms.PictureBox();
             this.reference_img = new System.Windows.Forms.PictureBox();
             this.right_settings_panel = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.ref_img_search_query = new System.Windows.Forms.TextBox();
-            this.search_button = new System.Windows.Forms.Button();
+            this.next_img_button = new System.Windows.Forms.Button();
+            this.prev_img_button = new System.Windows.Forms.Button();
             this.title_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
             this.canvas_panel.SuspendLayout();
@@ -127,14 +129,41 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.left_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
+            this.left_settings_panel.Controls.Add(this.prev_img_button);
+            this.left_settings_panel.Controls.Add(this.next_img_button);
             this.left_settings_panel.Controls.Add(this.search_button);
             this.left_settings_panel.Controls.Add(this.ref_img_search_query);
             this.left_settings_panel.Controls.Add(this.label1);
-            this.left_settings_panel.Enabled = false;
             this.left_settings_panel.Location = new System.Drawing.Point(30, 26);
             this.left_settings_panel.Name = "left_settings_panel";
             this.left_settings_panel.Size = new System.Drawing.Size(172, 694);
             this.left_settings_panel.TabIndex = 4;
+            // 
+            // search_button
+            // 
+            this.search_button.Location = new System.Drawing.Point(112, 143);
+            this.search_button.Name = "search_button";
+            this.search_button.Size = new System.Drawing.Size(55, 23);
+            this.search_button.TabIndex = 2;
+            this.search_button.Text = "search";
+            this.search_button.UseVisualStyleBackColor = true;
+            this.search_button.Click += new System.EventHandler(this.search_button_Click);
+            // 
+            // ref_img_search_query
+            // 
+            this.ref_img_search_query.Location = new System.Drawing.Point(6, 146);
+            this.ref_img_search_query.Name = "ref_img_search_query";
+            this.ref_img_search_query.Size = new System.Drawing.Size(100, 20);
+            this.ref_img_search_query.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 130);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(91, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Search for Image:";
             // 
             // quick_launch_bar
             // 
@@ -197,31 +226,25 @@ namespace Sketchpop
             this.right_settings_panel.Size = new System.Drawing.Size(154, 694);
             this.right_settings_panel.TabIndex = 7;
             // 
-            // label1
+            // next_img_button
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 134);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Search for Image:";
+            this.next_img_button.Location = new System.Drawing.Point(92, 172);
+            this.next_img_button.Name = "next_img_button";
+            this.next_img_button.Size = new System.Drawing.Size(75, 23);
+            this.next_img_button.TabIndex = 3;
+            this.next_img_button.Text = "Next";
+            this.next_img_button.UseVisualStyleBackColor = true;
+            this.next_img_button.Visible = false;
             // 
-            // ref_img_search_query
+            // prev_img_button
             // 
-            this.ref_img_search_query.Location = new System.Drawing.Point(7, 151);
-            this.ref_img_search_query.Name = "ref_img_search_query";
-            this.ref_img_search_query.Size = new System.Drawing.Size(100, 20);
-            this.ref_img_search_query.TabIndex = 1;
-            // 
-            // search_button
-            // 
-            this.search_button.Location = new System.Drawing.Point(113, 148);
-            this.search_button.Name = "search_button";
-            this.search_button.Size = new System.Drawing.Size(55, 23);
-            this.search_button.TabIndex = 2;
-            this.search_button.Text = "search";
-            this.search_button.UseVisualStyleBackColor = true;
-            this.search_button.Click += new System.EventHandler(this.search_button_Click);
+            this.prev_img_button.Location = new System.Drawing.Point(6, 172);
+            this.prev_img_button.Name = "prev_img_button";
+            this.prev_img_button.Size = new System.Drawing.Size(75, 23);
+            this.prev_img_button.TabIndex = 4;
+            this.prev_img_button.Text = "Prev";
+            this.prev_img_button.UseVisualStyleBackColor = true;
+            this.prev_img_button.Visible = false;
             // 
             // main_window
             // 
@@ -271,6 +294,8 @@ namespace Sketchpop
         private System.Windows.Forms.Button search_button;
         private System.Windows.Forms.TextBox ref_img_search_query;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button next_img_button;
+        private System.Windows.Forms.Button prev_img_button;
     }
 }
 

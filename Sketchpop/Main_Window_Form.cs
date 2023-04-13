@@ -18,6 +18,8 @@ namespace Sketchpop
         private Point mouse_pos = new Point(0, 0);
         bool mouse_down = false;
 
+        private Database_Manager dbm = new Database_Manager();
+
 
         public void draw_timer_method(Object my_object, EventArgs my_event_args)
         {
@@ -73,15 +75,11 @@ namespace Sketchpop
 
         private void get_ref_button_Click(object sender, EventArgs e)
         {
-            Database_Manager dbm = new Database_Manager();
-
             dbm.ExecuteImageRequestQuery("", reference_img);
         }
 
         private void put_ref_button_Click(object sender, EventArgs e)
-        {
-            Database_Manager dbm = new Database_Manager();
-
+        {            
             dbm.ExecuteImageUploadQuery("", "");
         }
 
@@ -109,8 +107,12 @@ namespace Sketchpop
         private void search_button_Click(object sender, EventArgs e)
         {
             string query = ref_img_search_query.Text;
+            List<Image> ret_images = dbm.ExecuteImageRequestQuery(query,reference_img);
 
-
+            if (ret_images)
+            {
+                prev_img_button.Visible = true;
+            }
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
