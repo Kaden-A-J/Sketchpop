@@ -106,6 +106,13 @@ namespace Sketchpop
             //Console.WriteLine(click_pos);
         }
 
+        private void search_button_Click(object sender, EventArgs e)
+        {
+            string query = ref_img_search_query.Text;
+
+
+        }
+
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
         private Rectangle left { get { return new Rectangle(0, 0, _grip_size, this.ClientSize.Height); } }
         private Rectangle bottom { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, this.ClientSize.Width, _grip_size); } }
