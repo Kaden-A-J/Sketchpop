@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing;
@@ -14,34 +15,60 @@ namespace Sketchpop
 {
     public class Database_Manager
     {
-        private string _connection_string = "server=localhost;database=test;uid=root;pwd=\"\";";
+        private string _connection_string = "server=store-for-images.ce93uhqibbvf.us-east-2.rds.amazonaws.com;database=images;uid=admin;pwd=SketchPop;";
+        private Unsplash_Manager _um = new Unsplash_Manager();
 
-        public void ExecuteImageRequestQuery(string query, PictureBox pb)
+        public List<UnsplashImage> ExecuteImageRequestQuery(string query)
         {
-            // For testing purposes, use this string query:
-            query = "SELECT image FROM images WHERE name = 'cat.jpg'";
+            // first check to see if db contains images of query
+            var db_images = GetDbImages(query);
+            if (db_images.Count > 0)
+            {
+                return db_images;
+            }
+            else // otherwise, make an API call to get images
+            {
+                // get images from the Unsplash Manager
+                List<UnsplashImage> ret_images = _um.Get_Images(query);
 
+                // insert the images into the database for the next time
+                InsertNewImages(ret_images);
+
+                return ret_images;
+            }
+        }
+
+        public void InsertNewImages(List<UnsplashImage> images)
+        {
+
+        }
+
+        public List<UnsplashImage> GetDbImages(string query)
+        {
+            var db_images = new List<UnsplashImage>();
             try
             {
+                string sql_query = $"SELECT * FROM images WHERE name LIKE '%{query}%'";
                 using (MySqlConnection conn = new MySqlConnection(_connection_string))
                 {
                     conn.Open();
 
                     // create an sql command to be executed
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
+                    MySqlCommand cmd = new MySqlCommand(sql_query, conn);
 
                     // create a reader to read the image data
                     MySqlDataReader rdr = cmd.ExecuteReader();
-                    if (rdr.Read())
+                    while (rdr.Read())
                     {
-                        byte[] img_data = (byte[])rdr["image"]; // data from the query
+                        string image_id = rdr["image_id"].ToString();
+                        string image_description = rdr["image_description"].ToString();
+                        string image_author = rdr["image_author"].ToString();
+                        string image_author_profile = rdr["image_author_profile"].ToString();
+                        string image_url = rdr["image_url"].ToString();
+                        string url = rdr["url"].ToString();
 
-                        // convert the bytes data into an image
-                        ImageConverter ic = new ImageConverter();
-                        Image req_img = (Image)ic.ConvertFrom(img_data);
-
-                        // show requested image on canvas here (assuming there is a element named pictureBox1 in the form code)
-                        pb.Image = req_img;
+                        UnsplashImage image = new UnsplashImage(image_id, image_description, image_author, image_author_profile, image_url, url);
+                        db_images.Add(image);
                     }
                 }
             }
@@ -49,6 +76,7 @@ namespace Sketchpop
             {
                 MessageBox.Show("Error:\n\n" + ex.Message);
             }
+            return db_images;
         }
 
         public void ExecuteImageUploadQuery(string query, string name)
