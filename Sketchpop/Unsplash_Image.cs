@@ -9,28 +9,28 @@ namespace Sketchpop
     public class UnsplashImage
     {
         // data from the Unsplash API call
-        private string id;
-        private string description;
-        private string author;
-        private string author_profile_link;
-        private string image_url; // image url from unsplash
-        private string unsplash_url;
+        private string _id;
+        private string _description;
+        private string _author;
+        private string _author_profile_link;
+        private string _image_url; // image url from unsplash
+        private string _unsplash_url;
 
         public UnsplashImage(string id, string description, string author, string author_profile_link, string image_url, string unsplash_url)
         {
-            this.id = id;
-            this.description = description;
-            this.author = author;
-            this.author_profile_link = author_profile_link;
-            this.image_url = image_url;
-            this.unsplash_url = unsplash_url;
+            _id = id;
+            _description = description;
+            _author = author;
+            _author_profile_link = author_profile_link;
+            _image_url = image_url;
+            _unsplash_url = unsplash_url;
         }
 
-        public string Get_ID() { return id; }
-        public string Get_Description() { return description; }
-        public string Get_Author() { return author; }
-        public string Get_Author_Profile() { return author_profile_link; }
-        public string Get_Image_URL() { return image_url; }
-        public string Get_Unsplash_URL() { return unsplash_url; }
+        public string Get_ID() { return _id; }
+        public string Get_Description() { return _description; }
+        public string Get_Author() { return _author; }
+        public string Get_Author_Profile() { return _author_profile_link; }
+        public string Get_Image_URL() { return _image_url; }
+        public string Get_Unsplash_URL() { return _unsplash_url; }
     }
 }
