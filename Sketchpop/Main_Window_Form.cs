@@ -15,15 +15,16 @@ namespace Sketchpop
     public partial class main_window : Form
     {
         public System.Windows.Forms.Timer draw_timer = new System.Windows.Forms.Timer();
-        private Point mouse_pos = new Point(0, 0);
         bool mouse_down = false;
-
 
         public void draw_timer_method(Object my_object, EventArgs my_event_args)
         {
-            canvas_frame.Image = Program.canvas_manager.Continue_Draw_Path(mouse_pos, (Bitmap) canvas_frame.Image);
+            if (mouse_down)
+            {
+                var click_pos = canvas_frame.PointToClient(MousePosition);
+                Program.canvas_manager.AddPointToDraw(click_pos);
+            }
             canvas_frame.Refresh();
-            Console.WriteLine(mouse_pos);
         }
 
         public main_window()
@@ -31,7 +32,7 @@ namespace Sketchpop
             InitializeComponent();
 
             draw_timer.Tick += new EventHandler(draw_timer_method);
-            draw_timer.Interval = 1;
+            draw_timer.Interval = 8; // 11.111... ms is 90 fps
             draw_timer.Start();
         }
 
@@ -65,12 +66,6 @@ namespace Sketchpop
             _grip_size = 5, // window resize click border
             _caption_size = 20; // window drag click border
 
-        private void canvas_frame_Click(object sender, EventArgs e)
-        {
-            //var click_pos = canvas_frame.PointToClient(MousePosition);
-            //canvas_frame.Image = Program.DrawSquare(click_pos, (Bitmap) canvas_frame.Image);
-        }
-
         private void get_ref_button_Click(object sender, EventArgs e)
         {
             Database_Manager dbm = new Database_Manager();
@@ -89,7 +84,7 @@ namespace Sketchpop
         {
             mouse_down = true;
             var click_pos = canvas_frame.PointToClient(MousePosition);
-            Program.canvas_manager.Begin_Draw_Path(click_pos);
+            Program.canvas_manager.Begin_Draw_Path(click_pos, ref canvas_frame);
         }
 
         private void canvas_frame_MouseUp(object sender, MouseEventArgs e)
@@ -100,10 +95,12 @@ namespace Sketchpop
 
         private void canvas_frame_MouseMove(object sender, MouseEventArgs e)
         {
-            mouse_pos = canvas_frame.PointToClient(MousePosition);
-            //canvas_frame.Image = Program.canvas_manager.Continue_Draw_Path(click_pos, (Bitmap) canvas_frame.Image);
-            //canvas_frame.Refresh();
-            //Console.WriteLine(click_pos);
+            // slower than timer
+            //if (mouse_down)
+            //{
+            //    var click_pos = canvas_frame.PointToClient(MousePosition);
+            //    Program.canvas_manager.AddPointToDraw(click_pos);
+            //}
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
