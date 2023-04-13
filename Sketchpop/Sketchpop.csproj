@@ -141,6 +141,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unsplash_Manager.cs" />
     <EmbeddedResource Include="Main_Window_Form.resx">
       <DependentUpon>Main_Window_Form.cs</DependentUpon>
     </EmbeddedResource>
