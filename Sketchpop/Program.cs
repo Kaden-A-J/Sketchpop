@@ -10,7 +10,7 @@ namespace Sketchpop
     internal static class Program
     {
         
-        public static Canvas_Manager canvas_manager = new Canvas_Manager();
+        public static Canvas_Manager canvas_manager = null;
         
         /// <summary>
         /// The main entry point for the application.

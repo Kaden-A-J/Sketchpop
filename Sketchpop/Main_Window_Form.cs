@@ -29,12 +29,15 @@ namespace Sketchpop
                 var click_pos = canvas_frame.PointToClient(MousePosition);
                 Program.canvas_manager.AddPointToDraw(click_pos);
             }
-            canvas_frame.Refresh();
+
+            Program.canvas_manager.Draw_Path_Points(new object());
+            Program.canvas_manager.Draw_Bitmap(new object());
         }
 
         public main_window()
         {
             InitializeComponent();
+            Program.canvas_manager = new Canvas_Manager(ref canvas_frame);
 
             draw_timer.Tick += new EventHandler(draw_timer_method);
             draw_timer.Interval = 8; // 11.111... ms is 90 fps
@@ -83,19 +86,32 @@ namespace Sketchpop
 
         private void canvas_frame_MouseDown(object sender, MouseEventArgs e)
         {
-            mouse_down = true;
-            var click_pos = canvas_frame.PointToClient(MousePosition);
-            Program.canvas_manager.Begin_Draw_Path(click_pos, ref canvas_frame);
+            if (e.Button == MouseButtons.Left)
+            {
+                if (!mouse_down)
+                {
+                    mouse_down = true;
+                    var click_pos = canvas_frame.PointToClient(MousePosition);
+                    Program.canvas_manager.Begin_Draw_Path(click_pos);
+                }
+            }
         }
 
         private void canvas_frame_MouseUp(object sender, MouseEventArgs e)
         {
-            mouse_down = false;
-            Program.canvas_manager.End_Draw_Path();
+            if (e.Button == MouseButtons.Left)
+            {
+                mouse_down = false;
+                Program.canvas_manager.End_Draw_Path();
+            }
+
+            
         }
 
         private void canvas_frame_MouseMove(object sender, MouseEventArgs e)
         {
+            //Program.canvas_manager.Draw_Path_Points(new object());
+            //Program.canvas_manager.Draw_Bitmap(new object());
             // slower than timer
             //if (mouse_down)
             //{
