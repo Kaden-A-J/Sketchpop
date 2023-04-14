@@ -85,7 +85,7 @@ namespace Sketchpop
             this.title_label.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
             this.title_label.Location = new System.Drawing.Point(610, 4);
             this.title_label.Name = "title_label";
-            this.title_label.Size = new System.Drawing.Size(59, 13);
+            this.title_label.Size = new System.Drawing.Size(86, 20);
             this.title_label.TabIndex = 4;
             this.title_label.Text = "Sketchpop";
             // 
@@ -170,15 +170,16 @@ namespace Sketchpop
             // 
             this.ref_img_search_query.Location = new System.Drawing.Point(36, 172);
             this.ref_img_search_query.Name = "ref_img_search_query";
-            this.ref_img_search_query.Size = new System.Drawing.Size(100, 20);
+            this.ref_img_search_query.Size = new System.Drawing.Size(100, 26);
             this.ref_img_search_query.TabIndex = 1;
+            this.ref_img_search_query.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ref_img_search_query_KeyDown);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(33, 156);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(91, 13);
+            this.label1.Size = new System.Drawing.Size(136, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "Search for Image:";
             // 

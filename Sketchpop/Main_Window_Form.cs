@@ -122,19 +122,25 @@ namespace Sketchpop
 
         private async void search_button_Click(object sender, EventArgs e)
         {
-            _index = 0;
-
-            string query = ref_img_search_query.Text;
-            _current_images = dbm.ExecuteImageRequestQuery(query);
-
-            if (_current_images.Count > 0)
+            if (ref_img_search_query.Text != "")
             {
-                prev_img_button.Visible = true;
-                prev_img_button.Enabled = false;
-                next_img_button.Visible = true;
-                reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());
+                _index = 0;
+
+                string query = ref_img_search_query.Text;
+                _current_images = dbm.ExecuteImageRequestQuery(query);
+
+                if (_current_images.Count > 0)
+                {
+                    prev_img_button.Visible = true;
+                    prev_img_button.Enabled = false;
+                    next_img_button.Visible = true;
+                    reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());
+                }
+
+                ref_img_search_query.Text = "";
             }
         }
+
         private async void prev_img_button_Click(object sender, EventArgs e)
         {
             if(_index > 0)
@@ -183,7 +189,16 @@ namespace Sketchpop
                     return image;
                 }
             }
-        } 
+        }
+
+        private void ref_img_search_query_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                search_button_Click(sender, e);
+            }
+        }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
         private Rectangle left { get { return new Rectangle(0, 0, _grip_size, this.ClientSize.Height); } }
