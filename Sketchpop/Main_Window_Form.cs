@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,7 +20,8 @@ namespace Sketchpop
         bool mouse_down = false;
 
         private Database_Manager dbm = new Database_Manager();
-
+        private List<UnsplashImage> _current_images = new List<UnsplashImage>();
+        private int _index = 0;
 
         public void draw_timer_method(Object my_object, EventArgs my_event_args)
         {
@@ -75,7 +77,7 @@ namespace Sketchpop
 
         private void get_ref_button_Click(object sender, EventArgs e)
         {
-            dbm.ExecuteImageRequestQuery("", reference_img);
+            dbm.ExecuteImageRequestQuery("");
         }
 
         private void put_ref_button_Click(object sender, EventArgs e)
@@ -104,16 +106,68 @@ namespace Sketchpop
             //Console.WriteLine(click_pos);
         }
 
-        private void search_button_Click(object sender, EventArgs e)
+        private async void search_button_Click(object sender, EventArgs e)
         {
             string query = ref_img_search_query.Text;
-            List<Image> ret_images = dbm.ExecuteImageRequestQuery(query,reference_img);
+            _current_images = dbm.ExecuteImageRequestQuery(query);
 
-            if (ret_images)
+            if (_current_images.Count > 0)
             {
                 prev_img_button.Visible = true;
+                prev_img_button.Enabled = false;
+                next_img_button.Visible = true;
+                reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());
             }
         }
+        private async void prev_img_button_Click(object sender, EventArgs e)
+        {
+            if(_index > 0)
+            {
+                _index--;
+                reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());
+                
+                if (_index == 0)
+                {
+                    prev_img_button.Enabled = false;
+                }
+                if (next_img_button.Enabled == false)
+                {
+                    next_img_button.Enabled = true;
+                }
+            }                  
+        }
+
+        private async void next_img_button_Click(object sender, EventArgs e)
+        {
+            if (_index < _current_images.Count-1)
+            {
+                _index++;
+                reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());         
+                
+                if (_index == _current_images.Count-1)
+                {
+                    next_img_button.Enabled = false;
+                }
+                if(prev_img_button.Enabled == false) 
+                {
+                    prev_img_button.Enabled = true; 
+                }
+            }
+        }
+
+        private async Task<Image> convert_to_imageAsync(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(url);
+                using (var stream = await response.Content.ReadAsStreamAsync())
+                {
+                    var image = Image.FromStream(stream);
+                    // Do something with the image object
+                    return image;
+                }
+            }
+        } 
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
         private Rectangle left { get { return new Rectangle(0, 0, _grip_size, this.ClientSize.Height); } }

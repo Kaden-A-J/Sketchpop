@@ -214,6 +214,7 @@ namespace Sketchpop
             this.reference_img.Size = new System.Drawing.Size(166, 121);
             this.reference_img.TabIndex = 3;
             this.reference_img.TabStop = false;
+            this.reference_img.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             // 
             // right_settings_panel
             // 
@@ -235,6 +236,7 @@ namespace Sketchpop
             this.next_img_button.Text = "Next";
             this.next_img_button.UseVisualStyleBackColor = true;
             this.next_img_button.Visible = false;
+            this.next_img_button.Click += new System.EventHandler(this.next_img_button_Click);
             // 
             // prev_img_button
             // 
@@ -245,6 +247,7 @@ namespace Sketchpop
             this.prev_img_button.Text = "Prev";
             this.prev_img_button.UseVisualStyleBackColor = true;
             this.prev_img_button.Visible = false;
+            this.prev_img_button.Click += new System.EventHandler(this.prev_img_button_Click);
             // 
             // main_window
             // 

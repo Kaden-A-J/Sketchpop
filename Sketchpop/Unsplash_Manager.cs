@@ -22,11 +22,6 @@ namespace Sketchpop
         public Unsplash_Manager() { 
         }
 
-        public void ChangeQuery(string new_query)
-        {
-            _user_query = new_query;
-        }
-
         public List<UnsplashImage> Get_Images(string query)
         {
             // Generate the HTTP request to Unsplash 
@@ -35,7 +30,7 @@ namespace Sketchpop
 
             List<UnsplashImage> images = new List<UnsplashImage>();
             for (int p = 1; p <= _max_page_count; p++) {
-                string url = $"https://api.unsplash.com/search/photos?query={_user_query}&per_page={_per_page}&page={p}";
+                string url = $"https://api.unsplash.com/search/photos?query={query}&per_page={_per_page}&page={p}";
 
                 try { 
                     // Send request/get the repsonse 
@@ -47,7 +42,7 @@ namespace Sketchpop
                     JArray json_images = (JArray)jo["results"];
 
                     foreach (JObject result in json_images) { 
-                        string id = result["id"].ToString();
+                        string id = query + "-" + result["id"].ToString();
 
                         if (!_unique_ids.Contains(id)) {
                             string description = result["description"].ToString();

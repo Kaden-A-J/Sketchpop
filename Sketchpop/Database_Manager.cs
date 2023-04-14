@@ -15,7 +15,7 @@ namespace Sketchpop
 {
     public class Database_Manager
     {
-        private string _connection_string = "server=store-for-images.ce93uhqibbvf.us-east-2.rds.amazonaws.com;database=images;uid=admin;pwd=SketchPop;";
+        private string _connection_string = "server=store-for-images.ce93uhqibbvf.us-east-2.rds.amazonaws.com;database=Sketchpop;uid=admin;pwd=SketchPop;";
         private Unsplash_Manager _um = new Unsplash_Manager();
 
         public List<UnsplashImage> ExecuteImageRequestQuery(string query)
@@ -40,7 +40,27 @@ namespace Sketchpop
 
         public void InsertNewImages(List<UnsplashImage> images)
         {
+            string sql_query = "INSERT INTO images (image_id, image_description, image_author, image_author_profile, image_url,url) " +
+                                          "VALUES (@image_id, @image_description, @image_author, @image_author_profile, @image_url, @url)";
 
+            using (MySqlConnection conn = new MySqlConnection(_connection_string))
+            {
+                conn.Open();
+
+                foreach (UnsplashImage image in images)
+                {
+                    MySqlCommand cmd = new MySqlCommand(sql_query, conn);
+
+                    cmd.Parameters.AddWithValue("@image_id", image.Get_ID());
+                    cmd.Parameters.AddWithValue("@image_description", image.Get_Description());
+                    cmd.Parameters.AddWithValue("@image_author", image.Get_Author());
+                    cmd.Parameters.AddWithValue("@image_author_profile", image.Get_Author_Profile());
+                    cmd.Parameters.AddWithValue("@image_url", image.Get_Image_URL());
+                    cmd.Parameters.AddWithValue("@url", image.Get_Unsplash_URL());
+
+                    cmd.ExecuteNonQuery();
+                }
+            }        
         }
 
         public List<UnsplashImage> GetDbImages(string query)
@@ -48,7 +68,7 @@ namespace Sketchpop
             var db_images = new List<UnsplashImage>();
             try
             {
-                string sql_query = $"SELECT * FROM images WHERE name LIKE '%{query}%'";
+                string sql_query = $"SELECT * FROM images WHERE image_id LIKE '%{query}%'";
                 using (MySqlConnection conn = new MySqlConnection(_connection_string))
                 {
                     conn.Open();
