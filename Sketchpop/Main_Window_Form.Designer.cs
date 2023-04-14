@@ -290,7 +290,6 @@ namespace Sketchpop
         private System.Windows.Forms.Panel quick_launch_bar;
         private System.Windows.Forms.Panel canvas_panel;
         private System.Windows.Forms.Panel right_settings_panel;
-        private System.Windows.Forms.PictureBox canvas_frame;
 
         // Database additions
         private System.Windows.Forms.PictureBox reference_img;
