@@ -108,6 +108,8 @@ namespace Sketchpop
 
         private async void search_button_Click(object sender, EventArgs e)
         {
+            _index = 0;
+
             string query = ref_img_search_query.Text;
             _current_images = dbm.ExecuteImageRequestQuery(query);
 
