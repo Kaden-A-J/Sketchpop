@@ -199,7 +199,7 @@ namespace Sketchpop
             this.canvas_frame.Size = new System.Drawing.Size(906, 625);
             this.canvas_frame.TabIndex = 0;
             this.canvas_frame.TabStop = false;
-            this.canvas_frame.Click += new System.EventHandler(this.canvas_frame_Click);
+            //this.canvas_frame.Click += new System.EventHandler(this.canvas_frame_Click);
             this.canvas_frame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
             this.canvas_frame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseMove);
             this.canvas_frame.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
@@ -280,6 +280,7 @@ namespace Sketchpop
         }
 
         #endregion
+        private System.Windows.Forms.PictureBox canvas_frame;
         private System.Windows.Forms.Button exit_button;
         private System.Windows.Forms.Panel title_bar;
         private System.Windows.Forms.Button fullscreen_button;
