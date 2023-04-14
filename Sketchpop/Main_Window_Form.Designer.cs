@@ -37,14 +37,18 @@ namespace Sketchpop
             this.fullscreen_button = new System.Windows.Forms.Button();
             this.tool_bar = new System.Windows.Forms.Panel();
             this.left_settings_panel = new System.Windows.Forms.Panel();
+            this.search_button = new System.Windows.Forms.Button();
+            this.ref_img_search_query = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.quick_launch_bar = new System.Windows.Forms.Panel();
             this.canvas_panel = new System.Windows.Forms.Panel();
             this.canvas_frame = new System.Windows.Forms.PictureBox();
             this.reference_img = new System.Windows.Forms.PictureBox();
-            this.put_ref_button = new System.Windows.Forms.Button();
-            this.get_ref_button = new System.Windows.Forms.Button();
             this.right_settings_panel = new System.Windows.Forms.Panel();
+            this.next_img_button = new System.Windows.Forms.Button();
+            this.prev_img_button = new System.Windows.Forms.Button();
             this.title_bar.SuspendLayout();
+            this.left_settings_panel.SuspendLayout();
             this.canvas_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reference_img)).BeginInit();
@@ -125,11 +129,41 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.left_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
-            this.left_settings_panel.Enabled = false;
+            this.left_settings_panel.Controls.Add(this.prev_img_button);
+            this.left_settings_panel.Controls.Add(this.next_img_button);
+            this.left_settings_panel.Controls.Add(this.search_button);
+            this.left_settings_panel.Controls.Add(this.ref_img_search_query);
+            this.left_settings_panel.Controls.Add(this.label1);
             this.left_settings_panel.Location = new System.Drawing.Point(30, 26);
             this.left_settings_panel.Name = "left_settings_panel";
             this.left_settings_panel.Size = new System.Drawing.Size(172, 694);
             this.left_settings_panel.TabIndex = 4;
+            // 
+            // search_button
+            // 
+            this.search_button.Location = new System.Drawing.Point(112, 143);
+            this.search_button.Name = "search_button";
+            this.search_button.Size = new System.Drawing.Size(55, 23);
+            this.search_button.TabIndex = 2;
+            this.search_button.Text = "search";
+            this.search_button.UseVisualStyleBackColor = true;
+            this.search_button.Click += new System.EventHandler(this.search_button_Click);
+            // 
+            // ref_img_search_query
+            // 
+            this.ref_img_search_query.Location = new System.Drawing.Point(6, 146);
+            this.ref_img_search_query.Name = "ref_img_search_query";
+            this.ref_img_search_query.Size = new System.Drawing.Size(100, 20);
+            this.ref_img_search_query.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 130);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(91, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Search for Image:";
             // 
             // quick_launch_bar
             // 
@@ -165,6 +199,7 @@ namespace Sketchpop
             this.canvas_frame.Size = new System.Drawing.Size(906, 625);
             this.canvas_frame.TabIndex = 0;
             this.canvas_frame.TabStop = false;
+            this.canvas_frame.Click += new System.EventHandler(this.canvas_frame_Click);
             this.canvas_frame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
             this.canvas_frame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseMove);
             this.canvas_frame.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
@@ -179,32 +214,7 @@ namespace Sketchpop
             this.reference_img.Size = new System.Drawing.Size(166, 121);
             this.reference_img.TabIndex = 3;
             this.reference_img.TabStop = false;
-            // 
-            // put_ref_button
-            // 
-            this.put_ref_button.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.put_ref_button.Location = new System.Drawing.Point(33, 159);
-            this.put_ref_button.Name = "put_ref_button";
-            this.put_ref_button.Size = new System.Drawing.Size(75, 23);
-            this.put_ref_button.TabIndex = 2;
-            this.put_ref_button.Text = "add ref img";
-            this.put_ref_button.UseVisualStyleBackColor = true;
-            this.put_ref_button.Click += new System.EventHandler(this.put_ref_button_Click);
-            // 
-            // get_ref_button
-            // 
-            this.get_ref_button.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.get_ref_button.Location = new System.Drawing.Point(124, 159);
-            this.get_ref_button.Name = "get_ref_button";
-            this.get_ref_button.Size = new System.Drawing.Size(75, 23);
-            this.get_ref_button.TabIndex = 1;
-            this.get_ref_button.Text = "get ref img";
-            this.get_ref_button.UseVisualStyleBackColor = true;
-            this.get_ref_button.Click += new System.EventHandler(this.get_ref_button_Click);
+            this.reference_img.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             // 
             // right_settings_panel
             // 
@@ -217,14 +227,34 @@ namespace Sketchpop
             this.right_settings_panel.Size = new System.Drawing.Size(154, 694);
             this.right_settings_panel.TabIndex = 7;
             // 
+            // next_img_button
+            // 
+            this.next_img_button.Location = new System.Drawing.Point(92, 172);
+            this.next_img_button.Name = "next_img_button";
+            this.next_img_button.Size = new System.Drawing.Size(75, 23);
+            this.next_img_button.TabIndex = 3;
+            this.next_img_button.Text = "Next";
+            this.next_img_button.UseVisualStyleBackColor = true;
+            this.next_img_button.Visible = false;
+            this.next_img_button.Click += new System.EventHandler(this.next_img_button_Click);
+            // 
+            // prev_img_button
+            // 
+            this.prev_img_button.Location = new System.Drawing.Point(6, 172);
+            this.prev_img_button.Name = "prev_img_button";
+            this.prev_img_button.Size = new System.Drawing.Size(75, 23);
+            this.prev_img_button.TabIndex = 4;
+            this.prev_img_button.Text = "Prev";
+            this.prev_img_button.UseVisualStyleBackColor = true;
+            this.prev_img_button.Visible = false;
+            this.prev_img_button.Click += new System.EventHandler(this.prev_img_button_Click);
+            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.ClientSize = new System.Drawing.Size(1280, 720);
             this.Controls.Add(this.reference_img);
-            this.Controls.Add(this.get_ref_button);
-            this.Controls.Add(this.put_ref_button);
             this.Controls.Add(this.right_settings_panel);
             this.Controls.Add(this.canvas_panel);
             this.Controls.Add(this.quick_launch_bar);
@@ -240,6 +270,8 @@ namespace Sketchpop
             this.Text = "Sketchpop";
             this.title_bar.ResumeLayout(false);
             this.title_bar.PerformLayout();
+            this.left_settings_panel.ResumeLayout(false);
+            this.left_settings_panel.PerformLayout();
             this.canvas_panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reference_img)).EndInit();
@@ -261,9 +293,11 @@ namespace Sketchpop
 
         // Database additions
         private System.Windows.Forms.PictureBox reference_img;
-        private System.Windows.Forms.Button put_ref_button;
-        private System.Windows.Forms.Button get_ref_button;
-        public System.Windows.Forms.PictureBox canvas_frame;
+        private System.Windows.Forms.Button search_button;
+        private System.Windows.Forms.TextBox ref_img_search_query;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button next_img_button;
+        private System.Windows.Forms.Button prev_img_button;
     }
 }
 
