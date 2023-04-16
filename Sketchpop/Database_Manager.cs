@@ -99,6 +99,35 @@ namespace Sketchpop
             return db_images;
         }
 
+        public void ExecuteLocalPictureUploadQuery(string _picture_name, string _picture_path)
+        {
+            // Read image file
+            Image image = Image.FromFile(_picture_path);
+
+            // Convert image to byte array
+            MemoryStream stream = new MemoryStream();
+            image.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+            byte[] imageBytes = stream.ToArray();
+
+            // Insert image into database
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(_connection_string)) {
+                    conn.Open();
+
+                    string query = "INSERT INTO local_pictures (Name, ImageData) VALUES (@Name, @ImageData)";
+                    MySqlCommand comm = new MySqlCommand(query, conn);
+                    comm.Parameters.AddWithValue("@Name", _picture_name);
+                    comm.Parameters.AddWithValue("@ImageData", imageBytes);
+                    comm.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error:\n" + ex);
+            }
+        }
+
         public void ExecuteImageUploadQuery(string query, string name)
         {
             // for testing purposes, the query to insert the butterfly image is:
