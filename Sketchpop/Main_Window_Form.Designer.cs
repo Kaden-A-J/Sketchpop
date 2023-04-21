@@ -298,6 +298,7 @@ namespace Sketchpop
             this.canvas_frame.TabStop = false;
             this.canvas_frame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
             this.canvas_frame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseMove);
+            this.canvas_frame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseMove);
             this.canvas_frame.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
             // 
             // reference_img
