@@ -134,6 +134,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Brush_Manager.cs" />
     <Compile Include="Canvas_Manager.cs" />
     <Compile Include="Database_Manager.cs" />
     <Compile Include="Main_Window_Form.cs">
