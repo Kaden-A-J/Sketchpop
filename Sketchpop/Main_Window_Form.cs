@@ -80,7 +80,7 @@ namespace Sketchpop
         }
 
         private void put_ref_button_Click(object sender, EventArgs e)
-        {            
+        {
             dbm.ExecuteImageUploadQuery("", "");
         }
 
@@ -105,7 +105,7 @@ namespace Sketchpop
                 Program.canvas_manager.End_Draw_Path();
             }
 
-            
+
         }
 
         private void canvas_frame_MouseMove(object sender, MouseEventArgs e)
@@ -143,11 +143,11 @@ namespace Sketchpop
 
         private async void prev_img_button_Click(object sender, EventArgs e)
         {
-            if(_index > 0)
+            if (_index > 0)
             {
                 _index--;
                 reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());
-                
+
                 if (_index == 0)
                 {
                     prev_img_button.Enabled = false;
@@ -156,23 +156,23 @@ namespace Sketchpop
                 {
                     next_img_button.Enabled = true;
                 }
-            }                  
+            }
         }
 
         private async void next_img_button_Click(object sender, EventArgs e)
         {
-            if (_index < _current_images.Count-1)
+            if (_index < _current_images.Count - 1)
             {
                 _index++;
-                reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());         
-                
-                if (_index == _current_images.Count-1)
+                reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());
+
+                if (_index == _current_images.Count - 1)
                 {
                     next_img_button.Enabled = false;
                 }
-                if(prev_img_button.Enabled == false) 
+                if (prev_img_button.Enabled == false)
                 {
-                    prev_img_button.Enabled = true; 
+                    prev_img_button.Enabled = true;
                 }
             }
         }
@@ -226,6 +226,16 @@ namespace Sketchpop
         private void clear_canvas_button_Click(object sender, EventArgs e)
         {
             Program.canvas_manager.Reset_Canvas_State();
+        }
+
+        private void eraser_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Change_Brush("eraser", stroke_size_input_box);
+        }
+
+        private void pen_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Change_Brush("basic", stroke_size_input_box);
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
