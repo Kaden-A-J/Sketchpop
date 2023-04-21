@@ -146,9 +146,12 @@ namespace Sketchpop
             };
         }
 
-        public void Change_Brush(string brush_name)
+        public void Change_Brush(string brush_name, NumericUpDown stroke_input_box)
         {
             brush_manager.Set_Brush(brush_name);
+
+            // update the UI 
+            stroke_input_box.Value = brush_manager.Get_Current_Brush().Stroke();
         }
     }
 }

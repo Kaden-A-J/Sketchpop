@@ -230,12 +230,12 @@ namespace Sketchpop
 
         private void eraser_button_Click(object sender, EventArgs e)
         {
-            Program.canvas_manager.Change_Brush("eraser");
+            Program.canvas_manager.Change_Brush("eraser", stroke_size_input_box);
         }
 
         private void pen_button_Click(object sender, EventArgs e)
         {
-            Program.canvas_manager.Change_Brush("basic");
+            Program.canvas_manager.Change_Brush("basic", stroke_size_input_box);
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
