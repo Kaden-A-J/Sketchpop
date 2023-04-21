@@ -38,7 +38,7 @@ namespace Sketchpop
         public void Set_Stroke(int stroke)
         {
             _stroke = stroke;
-            _paint.StrokeWidth = _stroke;
+            _paint.StrokeWidth = _stroke; 
         }
 
         // Getters 
@@ -55,6 +55,11 @@ namespace Sketchpop
         public string Name()
         {
             return _name;
+        }
+
+        public int Stroke()
+        {
+            return _stroke;
         }
     }
 }
