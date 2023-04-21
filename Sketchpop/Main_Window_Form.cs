@@ -228,6 +228,16 @@ namespace Sketchpop
             Program.canvas_manager.Reset_Canvas_State();
         }
 
+        private void eraser_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Change_Brush("eraser");
+        }
+
+        private void pen_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Change_Brush("basic");
+        }
+
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
         private Rectangle left { get { return new Rectangle(0, 0, _grip_size, this.ClientSize.Height); } }
         private Rectangle bottom { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, this.ClientSize.Width, _grip_size); } }
