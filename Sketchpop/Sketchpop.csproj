@@ -136,6 +136,7 @@
   <ItemGroup>
     <Compile Include="Brush_Manager.cs" />
     <Compile Include="Canvas_Manager.cs" />
+    <Compile Include="Brush.cs" />
     <Compile Include="Database_Manager.cs" />
     <Compile Include="Main_Window_Form.cs">
       <SubType>Form</SubType>
@@ -159,6 +160,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />

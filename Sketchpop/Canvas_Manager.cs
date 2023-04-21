@@ -27,13 +27,19 @@ namespace Sketchpop
         private int current_stroke_width;
         private SKImageInfo canvas_info;
 
-        
+        private Brush_Manager brush_manager;
+        private Brush brush;
         public Canvas_Manager(ref PictureBox canvas_frame) {
 
-            current_color = new SKColor(0, 0, 0, 255);
-            current_stroke_width = 2;
+            //current_color = new SKColor(0, 0, 0, 255);
+            //current_stroke_width = 2;
 
-            Update_Current_Paint();
+            // Set Brushes
+            brush_manager = new Brush_Manager();
+            //brush = brush_manager.Get_Current_Brush();
+
+
+            //Update_Current_Paint();
 
             picture_box = canvas_frame;
 
@@ -43,6 +49,11 @@ namespace Sketchpop
             canvas_info = new SKImageInfo(906, 625);
             Reset_Canvas_State();
 
+            // Set Brushes
+            //brush_manager = new Brush_Manager();
+
+            //// add basic brush to brushes
+            //brush_manager.Add_Brush(new Brush("basic", 2, Color.Black));
     }
 
 
@@ -70,14 +81,15 @@ namespace Sketchpop
 
         public void Update_Color(byte red, byte green, byte blue, byte alpha)
         {
-            current_color = new SKColor(red, green, blue, alpha);
-            Update_Current_Paint();
+            brush_manager.Get_Current_Brush().Set_Color(new SKColor(red, green, blue, alpha));
+            //Update_Current_Paint();
         }
 
         public void Update_Stroke_Size(int size)
         {
-            current_stroke_width = size;
-            Update_Current_Paint();
+            brush_manager.Get_Current_Brush().Set_Stroke(size);
+            //current_stroke_width = size;
+            //Update_Current_Paint();
         }
 
         /// <summary>
@@ -101,12 +113,12 @@ namespace Sketchpop
                         if (po.operationType == Point_Operation.OperationType.line_to)
                         {
                             current_path.LineTo(po.point.X, po.point.Y);
-                            surface.Canvas.DrawPath(current_path, current_paint);
+                            surface.Canvas.DrawPath(current_path, brush_manager.Get_Current_Brush().Paint());
                         }
                         else if (po.operationType == Point_Operation.OperationType.jump)
                         {
                             current_path.MoveTo(po.point.X, po.point.Y);
-                            surface.Canvas.DrawPath(current_path, current_paint);
+                            surface.Canvas.DrawPath(current_path, brush_manager.Get_Current_Brush().Paint());
                         }
                     }
                 }
@@ -132,6 +144,11 @@ namespace Sketchpop
                 Style = SKPaintStyle.Stroke,
                 StrokeWidth = current_stroke_width
             };
+        }
+
+        public void Change_Brush(string brush_name)
+        {
+            brush_manager.Set_Brush(brush_name);
         }
     }
 }
