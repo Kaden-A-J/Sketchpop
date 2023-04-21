@@ -200,6 +200,34 @@ namespace Sketchpop
             }
         }
 
+        private void red_input_box_ValueChanged(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Update_Color((byte)red_input_box.Value, (byte)green_input_box.Value, (byte)blue_input_box.Value, (byte)255);
+            color_display_box.BackColor = Color.FromArgb(255, (int)red_input_box.Value, (int)green_input_box.Value, (int)blue_input_box.Value);
+        }
+
+        private void green_input_box_ValueChanged(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Update_Color((byte)red_input_box.Value, (byte)green_input_box.Value, (byte)blue_input_box.Value, (byte)255);
+            color_display_box.BackColor = Color.FromArgb(255, (int)red_input_box.Value, (int)green_input_box.Value, (int)blue_input_box.Value);
+        }
+
+        private void blue_input_box_ValueChanged(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Update_Color((byte)red_input_box.Value, (byte)green_input_box.Value, (byte)blue_input_box.Value, (byte)255);
+            color_display_box.BackColor = Color.FromArgb(255, (int)red_input_box.Value, (int)green_input_box.Value, (int)blue_input_box.Value);
+        }
+
+        private void stroke_size_input_box_ValueChanged(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Update_Stroke_Size((int)stroke_size_input_box.Value);
+        }
+
+        private void clear_canvas_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Reset_Canvas_State();
+        }
+
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
         private Rectangle left { get { return new Rectangle(0, 0, _grip_size, this.ClientSize.Height); } }
         private Rectangle bottom { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, this.ClientSize.Width, _grip_size); } }

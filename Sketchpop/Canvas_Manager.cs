@@ -23,27 +23,25 @@ namespace Sketchpop
         private SKPaint current_paint;
         private PictureBox picture_box;
         private SKImage previous_frame;
+        private SKColor current_color;
+        private int current_stroke_width;
+        private SKImageInfo canvas_info;
+
         
         public Canvas_Manager(ref PictureBox canvas_frame) {
+
+            current_color = new SKColor(0, 0, 0, 255);
+            current_stroke_width = 2;
+
+            Update_Current_Paint();
 
             picture_box = canvas_frame;
 
             // set up drawing tools
-            current_paint = new SKPaint
-            {
-                IsAntialias = true,
-                Color = SKColors.Red,
-                StrokeCap = SKStrokeCap.Round,
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = 1
-            };
 
-            SKImageInfo info = new SKImageInfo(906, 625);
-            using (SKSurface surface = SKSurface.Create(info))
-            {
-                surface.Canvas.Clear();
-                previous_frame = SKImage.FromPixelCopy(surface.PeekPixels());
-            }
+
+            canvas_info = new SKImageInfo(906, 625);
+            Reset_Canvas_State();
 
     }
 
@@ -63,6 +61,23 @@ namespace Sketchpop
         public void End_Draw_Path()
         {
             
+        }
+
+        public SKColor Get_Current_Color()
+        {
+            return current_color;
+        }
+
+        public void Update_Color(byte red, byte green, byte blue, byte alpha)
+        {
+            current_color = new SKColor(red, green, blue, alpha);
+            Update_Current_Paint();
+        }
+
+        public void Update_Stroke_Size(int size)
+        {
+            current_stroke_width = size;
+            Update_Current_Paint();
         }
 
         /// <summary>
@@ -96,6 +111,27 @@ namespace Sketchpop
                     }
                 }
             }
+        }
+
+        public void Reset_Canvas_State()
+        {
+            using (SKSurface surface = SKSurface.Create(canvas_info))
+            {
+                surface.Canvas.Clear();
+                previous_frame = SKImage.FromPixelCopy(surface.PeekPixels());
+            }
+        }
+
+        private void Update_Current_Paint()
+        {
+            current_paint = new SKPaint
+            {
+                IsAntialias = false,
+                Color = current_color,
+                StrokeCap = SKStrokeCap.Round,
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = current_stroke_width
+            };
         }
     }
 }

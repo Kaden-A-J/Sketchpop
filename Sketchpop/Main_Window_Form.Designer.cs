@@ -47,10 +47,26 @@ namespace Sketchpop
             this.canvas_frame = new System.Windows.Forms.PictureBox();
             this.reference_img = new System.Windows.Forms.PictureBox();
             this.right_settings_panel = new System.Windows.Forms.Panel();
+            this.color_label = new System.Windows.Forms.Label();
+            this.red_label = new System.Windows.Forms.Label();
+            this.green_label = new System.Windows.Forms.Label();
+            this.blue_label = new System.Windows.Forms.Label();
+            this.red_input_box = new System.Windows.Forms.NumericUpDown();
+            this.green_input_box = new System.Windows.Forms.NumericUpDown();
+            this.blue_input_box = new System.Windows.Forms.NumericUpDown();
+            this.stroke_label = new System.Windows.Forms.Label();
+            this.stroke_size_input_box = new System.Windows.Forms.NumericUpDown();
+            this.color_display_box = new System.Windows.Forms.Panel();
+            this.clear_canvas_button = new System.Windows.Forms.Button();
             this.title_bar.SuspendLayout();
+            this.left_settings_panel.SuspendLayout();
             this.canvas_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reference_img)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.red_input_box)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blue_input_box)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stroke_size_input_box)).BeginInit();
             this.SuspendLayout();
             // 
             // exit_button
@@ -85,7 +101,7 @@ namespace Sketchpop
             this.title_label.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
             this.title_label.Location = new System.Drawing.Point(610, 4);
             this.title_label.Name = "title_label";
-            this.title_label.Size = new System.Drawing.Size(86, 20);
+            this.title_label.Size = new System.Drawing.Size(59, 13);
             this.title_label.TabIndex = 4;
             this.title_label.Text = "Sketchpop";
             // 
@@ -128,6 +144,12 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.left_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
+            this.left_settings_panel.Controls.Add(this.color_display_box);
+            this.left_settings_panel.Controls.Add(this.blue_label);
+            this.left_settings_panel.Controls.Add(this.green_label);
+            this.left_settings_panel.Controls.Add(this.red_label);
+            this.left_settings_panel.Controls.Add(this.stroke_label);
+            this.left_settings_panel.Controls.Add(this.color_label);
             this.left_settings_panel.Enabled = false;
             this.left_settings_panel.Location = new System.Drawing.Point(30, 26);
             this.left_settings_panel.Name = "left_settings_panel";
@@ -170,7 +192,7 @@ namespace Sketchpop
             // 
             this.ref_img_search_query.Location = new System.Drawing.Point(36, 172);
             this.ref_img_search_query.Name = "ref_img_search_query";
-            this.ref_img_search_query.Size = new System.Drawing.Size(100, 26);
+            this.ref_img_search_query.Size = new System.Drawing.Size(100, 20);
             this.ref_img_search_query.TabIndex = 1;
             this.ref_img_search_query.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ref_img_search_query_KeyDown);
             // 
@@ -179,7 +201,7 @@ namespace Sketchpop
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(33, 156);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(136, 20);
+            this.label1.Size = new System.Drawing.Size(91, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Search for Image:";
             // 
@@ -244,11 +266,131 @@ namespace Sketchpop
             this.right_settings_panel.Size = new System.Drawing.Size(154, 694);
             this.right_settings_panel.TabIndex = 7;
             // 
+            // color_label
+            // 
+            this.color_label.AutoSize = true;
+            this.color_label.Location = new System.Drawing.Point(3, 234);
+            this.color_label.Name = "color_label";
+            this.color_label.Size = new System.Drawing.Size(34, 13);
+            this.color_label.TabIndex = 0;
+            this.color_label.Text = "Color:";
+            // 
+            // red_label
+            // 
+            this.red_label.AutoSize = true;
+            this.red_label.Location = new System.Drawing.Point(6, 247);
+            this.red_label.Name = "red_label";
+            this.red_label.Size = new System.Drawing.Size(22, 13);
+            this.red_label.TabIndex = 0;
+            this.red_label.Text = "red";
+            // 
+            // green_label
+            // 
+            this.green_label.AutoSize = true;
+            this.green_label.Location = new System.Drawing.Point(54, 247);
+            this.green_label.Name = "green_label";
+            this.green_label.Size = new System.Drawing.Size(34, 13);
+            this.green_label.TabIndex = 0;
+            this.green_label.Text = "green";
+            // 
+            // blue_label
+            // 
+            this.blue_label.AutoSize = true;
+            this.blue_label.Location = new System.Drawing.Point(109, 247);
+            this.blue_label.Name = "blue_label";
+            this.blue_label.Size = new System.Drawing.Size(27, 13);
+            this.blue_label.TabIndex = 0;
+            this.blue_label.Text = "blue";
+            // 
+            // red_input_box
+            // 
+            this.red_input_box.Location = new System.Drawing.Point(36, 289);
+            this.red_input_box.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.red_input_box.Name = "red_input_box";
+            this.red_input_box.Size = new System.Drawing.Size(45, 20);
+            this.red_input_box.TabIndex = 8;
+            this.red_input_box.ValueChanged += new System.EventHandler(this.red_input_box_ValueChanged);
+            // 
+            // green_input_box
+            // 
+            this.green_input_box.Location = new System.Drawing.Point(87, 289);
+            this.green_input_box.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.green_input_box.Name = "green_input_box";
+            this.green_input_box.Size = new System.Drawing.Size(45, 20);
+            this.green_input_box.TabIndex = 8;
+            this.green_input_box.ValueChanged += new System.EventHandler(this.green_input_box_ValueChanged);
+            // 
+            // blue_input_box
+            // 
+            this.blue_input_box.Location = new System.Drawing.Point(142, 289);
+            this.blue_input_box.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.blue_input_box.Name = "blue_input_box";
+            this.blue_input_box.Size = new System.Drawing.Size(45, 20);
+            this.blue_input_box.TabIndex = 8;
+            this.blue_input_box.ValueChanged += new System.EventHandler(this.blue_input_box_ValueChanged);
+            // 
+            // stroke_label
+            // 
+            this.stroke_label.AutoSize = true;
+            this.stroke_label.Location = new System.Drawing.Point(3, 306);
+            this.stroke_label.Name = "stroke_label";
+            this.stroke_label.Size = new System.Drawing.Size(64, 13);
+            this.stroke_label.TabIndex = 0;
+            this.stroke_label.Text = "Stroke Size:";
+            // 
+            // stroke_size_input_box
+            // 
+            this.stroke_size_input_box.Location = new System.Drawing.Point(36, 348);
+            this.stroke_size_input_box.Name = "stroke_size_input_box";
+            this.stroke_size_input_box.Size = new System.Drawing.Size(45, 20);
+            this.stroke_size_input_box.TabIndex = 9;
+            this.stroke_size_input_box.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.stroke_size_input_box.ValueChanged += new System.EventHandler(this.stroke_size_input_box_ValueChanged);
+            // 
+            // color_display_box
+            // 
+            this.color_display_box.BackColor = System.Drawing.Color.Black;
+            this.color_display_box.Location = new System.Drawing.Point(131, 289);
+            this.color_display_box.Name = "color_display_box";
+            this.color_display_box.Size = new System.Drawing.Size(31, 19);
+            this.color_display_box.TabIndex = 1;
+            // 
+            // clear_canvas_button
+            // 
+            this.clear_canvas_button.Location = new System.Drawing.Point(1038, 66);
+            this.clear_canvas_button.Name = "clear_canvas_button";
+            this.clear_canvas_button.Size = new System.Drawing.Size(75, 23);
+            this.clear_canvas_button.TabIndex = 10;
+            this.clear_canvas_button.Text = "clear";
+            this.clear_canvas_button.UseVisualStyleBackColor = true;
+            this.clear_canvas_button.Click += new System.EventHandler(this.clear_canvas_button_Click);
+            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.ClientSize = new System.Drawing.Size(1280, 720);
+            this.Controls.Add(this.clear_canvas_button);
+            this.Controls.Add(this.stroke_size_input_box);
+            this.Controls.Add(this.blue_input_box);
+            this.Controls.Add(this.green_input_box);
+            this.Controls.Add(this.red_input_box);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.search_button);
             this.Controls.Add(this.ref_img_search_query);
@@ -270,9 +412,15 @@ namespace Sketchpop
             this.Text = "Sketchpop";
             this.title_bar.ResumeLayout(false);
             this.title_bar.PerformLayout();
+            this.left_settings_panel.ResumeLayout(false);
+            this.left_settings_panel.PerformLayout();
             this.canvas_panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reference_img)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.red_input_box)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.blue_input_box)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stroke_size_input_box)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -298,6 +446,17 @@ namespace Sketchpop
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button next_img_button;
         private System.Windows.Forms.Button prev_img_button;
+        private System.Windows.Forms.Label blue_label;
+        private System.Windows.Forms.Label green_label;
+        private System.Windows.Forms.Label red_label;
+        private System.Windows.Forms.Label color_label;
+        private System.Windows.Forms.NumericUpDown red_input_box;
+        private System.Windows.Forms.NumericUpDown green_input_box;
+        private System.Windows.Forms.NumericUpDown blue_input_box;
+        private System.Windows.Forms.Label stroke_label;
+        private System.Windows.Forms.NumericUpDown stroke_size_input_box;
+        private System.Windows.Forms.Panel color_display_box;
+        private System.Windows.Forms.Button clear_canvas_button;
     }
 }
 
