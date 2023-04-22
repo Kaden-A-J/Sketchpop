@@ -30,6 +30,7 @@ namespace Sketchpop
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.exit_button = new System.Windows.Forms.Button();
             this.title_bar = new System.Windows.Forms.Panel();
             this.title_label = new System.Windows.Forms.Label();
@@ -50,6 +51,8 @@ namespace Sketchpop
             this.label1 = new System.Windows.Forms.Label();
             this.quick_launch_bar = new System.Windows.Forms.Panel();
             this.canvas_panel = new System.Windows.Forms.Panel();
+            this.pen_button = new System.Windows.Forms.Button();
+            this.eraser_button = new System.Windows.Forms.Button();
             this.canvas_frame = new System.Windows.Forms.PictureBox();
             this.reference_img = new System.Windows.Forms.PictureBox();
             this.right_settings_panel = new System.Windows.Forms.Panel();
@@ -58,10 +61,14 @@ namespace Sketchpop
             this.blue_input_box = new System.Windows.Forms.NumericUpDown();
             this.stroke_size_input_box = new System.Windows.Forms.NumericUpDown();
             this.clear_canvas_button = new System.Windows.Forms.Button();
-            this.eraser_button = new System.Windows.Forms.Button();
-            this.pen_button = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.exercisesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.muscleMemoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.repeatedCirclesPracticeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.title_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
+            this.quick_launch_bar.SuspendLayout();
             this.canvas_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reference_img)).BeginInit();
@@ -69,6 +76,7 @@ namespace Sketchpop
             ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blue_input_box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stroke_size_input_box)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // exit_button
@@ -266,6 +274,7 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.quick_launch_bar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
+            this.quick_launch_bar.Controls.Add(this.menuStrip1);
             this.quick_launch_bar.Location = new System.Drawing.Point(210, 26);
             this.quick_launch_bar.Name = "quick_launch_bar";
             this.quick_launch_bar.Size = new System.Drawing.Size(906, 36);
@@ -285,6 +294,26 @@ namespace Sketchpop
             this.canvas_panel.Size = new System.Drawing.Size(906, 653);
             this.canvas_panel.TabIndex = 6;
             // 
+            // pen_button
+            // 
+            this.pen_button.Location = new System.Drawing.Point(665, 3);
+            this.pen_button.Name = "pen_button";
+            this.pen_button.Size = new System.Drawing.Size(75, 23);
+            this.pen_button.TabIndex = 2;
+            this.pen_button.Text = "Pen";
+            this.pen_button.UseVisualStyleBackColor = true;
+            this.pen_button.Click += new System.EventHandler(this.pen_button_Click);
+            // 
+            // eraser_button
+            // 
+            this.eraser_button.Location = new System.Drawing.Point(747, 3);
+            this.eraser_button.Name = "eraser_button";
+            this.eraser_button.Size = new System.Drawing.Size(75, 23);
+            this.eraser_button.TabIndex = 1;
+            this.eraser_button.Text = "Eraser";
+            this.eraser_button.UseVisualStyleBackColor = true;
+            this.eraser_button.Click += new System.EventHandler(this.eraser_button_Click);
+            // 
             // canvas_frame
             // 
             this.canvas_frame.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -297,7 +326,6 @@ namespace Sketchpop
             this.canvas_frame.TabIndex = 0;
             this.canvas_frame.TabStop = false;
             this.canvas_frame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
-            this.canvas_frame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseMove);
             this.canvas_frame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseMove);
             this.canvas_frame.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
             // 
@@ -386,25 +414,43 @@ namespace Sketchpop
             this.clear_canvas_button.UseVisualStyleBackColor = true;
             this.clear_canvas_button.Click += new System.EventHandler(this.clear_canvas_button_Click);
             // 
-            // eraser_button
+            // contextMenuStrip1
             // 
-            this.eraser_button.Location = new System.Drawing.Point(747, 3);
-            this.eraser_button.Name = "eraser_button";
-            this.eraser_button.Size = new System.Drawing.Size(75, 23);
-            this.eraser_button.TabIndex = 1;
-            this.eraser_button.Text = "Eraser";
-            this.eraser_button.UseVisualStyleBackColor = true;
-            this.eraser_button.Click += new System.EventHandler(this.eraser_button_Click);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // pen_button
+            // menuStrip1
             // 
-            this.pen_button.Location = new System.Drawing.Point(665, 3);
-            this.pen_button.Name = "pen_button";
-            this.pen_button.Size = new System.Drawing.Size(75, 23);
-            this.pen_button.TabIndex = 2;
-            this.pen_button.Text = "Pen";
-            this.pen_button.UseVisualStyleBackColor = true;
-            this.pen_button.Click += new System.EventHandler(this.pen_button_Click);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exercisesToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(906, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // exercisesToolStripMenuItem
+            // 
+            this.exercisesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.muscleMemoryToolStripMenuItem});
+            this.exercisesToolStripMenuItem.Name = "exercisesToolStripMenuItem";
+            this.exercisesToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
+            this.exercisesToolStripMenuItem.Text = "Exercises";
+            // 
+            // muscleMemoryToolStripMenuItem
+            // 
+            this.muscleMemoryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.repeatedCirclesPracticeToolStripMenuItem});
+            this.muscleMemoryToolStripMenuItem.Name = "muscleMemoryToolStripMenuItem";
+            this.muscleMemoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.muscleMemoryToolStripMenuItem.Text = "Muscle Memory";
+            // 
+            // repeatedCirclesPracticeToolStripMenuItem
+            // 
+            this.repeatedCirclesPracticeToolStripMenuItem.Name = "repeatedCirclesPracticeToolStripMenuItem";
+            this.repeatedCirclesPracticeToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.repeatedCirclesPracticeToolStripMenuItem.Text = "Repeated Circles Practice";
+            this.repeatedCirclesPracticeToolStripMenuItem.Click += new System.EventHandler(this.repeatedCirclesPracticeToolStripMenuItem_Click);
             // 
             // main_window
             // 
@@ -432,6 +478,7 @@ namespace Sketchpop
             this.Controls.Add(this.minimize_button);
             this.Controls.Add(this.title_bar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(128, 128);
             this.Name = "main_window";
             this.Text = "Sketchpop";
@@ -439,6 +486,8 @@ namespace Sketchpop
             this.title_bar.PerformLayout();
             this.left_settings_panel.ResumeLayout(false);
             this.left_settings_panel.PerformLayout();
+            this.quick_launch_bar.ResumeLayout(false);
+            this.quick_launch_bar.PerformLayout();
             this.canvas_panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reference_img)).EndInit();
@@ -446,6 +495,8 @@ namespace Sketchpop
             ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.blue_input_box)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stroke_size_input_box)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -484,6 +535,11 @@ namespace Sketchpop
         private System.Windows.Forms.Button clear_canvas_button;
         private System.Windows.Forms.Button eraser_button;
         private System.Windows.Forms.Button pen_button;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem exercisesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem muscleMemoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem repeatedCirclesPracticeToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
     }
 }
 
