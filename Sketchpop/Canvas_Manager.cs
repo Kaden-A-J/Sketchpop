@@ -31,30 +31,10 @@ namespace Sketchpop
         private Brush_Manager brush_manager;
         private Brush brush;
         public Canvas_Manager(ref PictureBox canvas_frame) {
-
-            //current_color = new SKColor(0, 0, 0, 255);
-            //current_stroke_width = 2;
-
-            // Set Brushes
             brush_manager = new Brush_Manager();
-            //brush = brush_manager.Get_Current_Brush();
-
-
-            //Update_Current_Paint();
-
             picture_box = canvas_frame;
-
-            // set up drawing tools
-
-
             canvas_info = new SKImageInfo(906, 625);
             Reset_Canvas_State();
-
-            // Set Brushes
-            //brush_manager = new Brush_Manager();
-
-            //// add basic brush to brushes
-            //brush_manager.Add_Brush(new Brush("basic", 2, Color.Black));
     }
 
 
@@ -83,14 +63,11 @@ namespace Sketchpop
         public void Update_Color(byte red, byte green, byte blue, byte alpha)
         {
             brush_manager.Get_Current_Brush().Set_Color(new SKColor(red, green, blue, alpha));
-            //Update_Current_Paint();
         }
 
         public void Update_Stroke_Size(int size)
         {
             brush_manager.Get_Current_Brush().Set_Stroke(size);
-            //current_stroke_width = size;
-            //Update_Current_Paint();
         }
 
         /// <summary>
@@ -135,17 +112,17 @@ namespace Sketchpop
             }
         }
 
-        private void Update_Current_Paint()
-        {
-            current_paint = new SKPaint
-            {
-                IsAntialias = false,
-                Color = current_color,
-                StrokeCap = SKStrokeCap.Round,
-                Style = SKPaintStyle.Stroke,
-                StrokeWidth = current_stroke_width
-            };
-        }
+        //private void Update_Current_Paint()
+        //{
+        //    current_paint = new SKPaint
+        //    {
+        //        IsAntialias = false,
+        //        Color = current_color,
+        //        StrokeCap = SKStrokeCap.Round,
+        //        Style = SKPaintStyle.Stroke,
+        //        StrokeWidth = current_stroke_width
+        //    };
+        //}
 
         public void Change_Brush(string brush_name, NumericUpDown stroke_input_box)
         {
