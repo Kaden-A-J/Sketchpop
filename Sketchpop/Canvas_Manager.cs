@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using Timer = System.Threading.Timer;
 using SkiaSharp.Views.Desktop;
 using Mysqlx.Crud;
+using System.Windows.Forms.VisualStyles;
 
 namespace Sketchpop
 {
@@ -152,6 +153,56 @@ namespace Sketchpop
 
             // update the UI 
             stroke_input_box.Value = brush_manager.Get_Current_Brush().Stroke();
+        }
+
+        public void Repeated_Circles_Exercise(int spacing, int angle)
+        {
+            Reset_Canvas_State();
+            SKPaint exercise_paint = new SKPaint
+            {
+                IsAntialias = true,
+                Color = SKColors.RoyalBlue,
+                StrokeCap = SKStrokeCap.Round,
+                Style = SKPaintStyle.Stroke,
+                StrokeWidth = 5
+            };
+
+            int length = (previous_frame.PeekPixels().Width + previous_frame.PeekPixels().Height) * 10;
+            double angle_radians = -angle * (Math.PI / 180); 
+            double orth_angle_radians = angle_radians + (Math.PI / 2); // used to create parallel lines
+            SKPoint vector = new SKPoint((float)(length * Math.Cos(angle_radians)), (float)(length * Math.Sin(angle_radians))); // direction and magnitude of all lines
+
+            // We draw two lines at a time to make it easier to keep lines on the screen with any angle input
+            // You can think of line one as the line below our previous line, and line two as the line above our previous line.
+            // (this comes in handy if the angle is high enough, it makes it so we don't have to adjust our starting position or any angles or anything)
+            SKPoint line_one_middle = new SKPoint(-previous_frame.PeekPixels().Width, 3);
+            SKPoint line_two_middle = new SKPoint(-previous_frame.PeekPixels().Width, 3);
+
+            // don't worry this doesn't really affect performance from my testing on my wimpy laptop at all
+            for (int i = 0; i < 100; i++)
+            {
+                SKPath path = new SKPath();
+
+                path.MoveTo(line_one_middle);
+                using (SKSurface surface = SKSurface.Create(previous_frame.PeekPixels()))
+                {
+                    // draw line one
+                    path.MoveTo(-vector.X + line_one_middle.X, -vector.Y + line_one_middle.Y);
+                    path.LineTo(vector.X + line_one_middle.X, vector.Y + line_one_middle.Y);
+
+                    // draw line two
+                    path.MoveTo(-vector.X + line_two_middle.X, -vector.Y + line_two_middle.Y);
+                    path.LineTo(vector.X + line_two_middle.X, vector.Y + line_two_middle.Y);
+
+                    surface.Canvas.DrawPath(path, exercise_paint);
+                }
+
+                line_one_middle.X += (float)(spacing * Math.Cos(orth_angle_radians));
+                line_one_middle.Y += (float)(spacing * Math.Sin(orth_angle_radians));
+
+                line_two_middle.X -= (float)(spacing * Math.Cos(orth_angle_radians));
+                line_two_middle.Y -= (float)(spacing * Math.Sin(orth_angle_radians));
+            }
         }
     }
 }

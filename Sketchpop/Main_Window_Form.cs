@@ -238,6 +238,12 @@ namespace Sketchpop
             Program.canvas_manager.Change_Brush("basic", stroke_size_input_box);
         }
 
+        private void repeatedCirclesPracticeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var options_form = new Repeated_Circles_Options_Form();
+            options_form.ShowDialog();
+        }
+
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
         private Rectangle left { get { return new Rectangle(0, 0, _grip_size, this.ClientSize.Height); } }
         private Rectangle bottom { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, this.ClientSize.Width, _grip_size); } }
