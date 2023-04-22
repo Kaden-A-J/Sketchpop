@@ -240,7 +240,8 @@ namespace Sketchpop
 
         private void repeatedCirclesPracticeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Program.canvas_manager.Repeated_Circles_Exercise(20, 225);
+            var options_form = new Repeated_Circles_Options_Form();
+            options_form.ShowDialog();
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
