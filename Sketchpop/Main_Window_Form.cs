@@ -129,29 +129,36 @@ namespace Sketchpop
 
         private async void search_button_Click(object sender, EventArgs e)
         {
+            // display to the user that a search is being done
             db_status_label.Visible = true;
             db_status_label.Text = "Gathering Images...";
 
-            string query = ref_img_search_query.Text;
+            string query = ref_img_search_query.Text; // get the user's query
 
+            // if the user searches the same string, don't query the database
             if (query.Equals(last_searched_query) && _current_images.Count > 0)
             {
+                // display the pre-queued selection view to the user
                 back_panel.Visible = true;
                 ref_img_thumbnails.Visible = true;
-                last_searched_query = query;
+                last_searched_query = query; // save the last searched query
             }
             else
             {
-                ref_img_thumbnails.Controls.Clear();
+                ref_img_thumbnails.Controls.Clear(); // clear the selection view so that only the searched query shows 
+
                 _current_images = dbm.ExecuteImageRequestQuery(query);
 
+                // get images from database -- empty string searches all entries of the database, if no entries exist in db, count will be 0
                 if (_current_images.Count > 0)
                 {
                     if (!select_button.Enabled)
                         select_button.Enabled = true;
 
+                    // loop through all returned images and display them in the selection view
                     foreach (UnsplashImage image in _current_images)
                     {
+                        // create pictureboxes for each image
                         PictureBox pictureBox = new PictureBox();
                         pictureBox.Image = await convert_to_imageAsync(image.Get_Image_URL());
                         pictureBox.Width = 100;
@@ -159,8 +166,10 @@ namespace Sketchpop
                         pictureBox.Margin = new Padding(5);
                         pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
 
+                        // each picturebox gets an event to detect user selection
                         pictureBox.Click += (s, args) =>
                         {
+                            // logic for displaying the selected image to the user
                             if (selected_picturebox == null)
                             {
                                 selected_picturebox = pictureBox;
@@ -185,14 +194,14 @@ namespace Sketchpop
                             }
                         };
 
-                        ref_img_thumbnails.Controls.Add(pictureBox);
+                        ref_img_thumbnails.Controls.Add(pictureBox); // add images to the panel
                     }
 
-
+                    // show the panel to the user
                     ref_img_thumbnails.Visible = true;
                     back_panel.Visible = true;
                     db_status_label.Visible = false;
-                    last_searched_query = ref_img_search_query.Text;                        
+                    last_searched_query = ref_img_search_query.Text; // save the search query in case the user uses the same search again
                 }
                 else
                 {
