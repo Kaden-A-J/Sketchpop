@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using Image = System.Drawing.Image;
 
 namespace Sketchpop
 {
@@ -21,6 +24,9 @@ namespace Sketchpop
         private Database_Manager dbm = new Database_Manager();
         private List<UnsplashImage> _current_images = new List<UnsplashImage>();
         private int _index = 0;
+        private Image selected_image;
+        private PictureBox selected_picturebox;
+        private PictureBox prev_selected_picturebox;
 
         public void draw_timer_method(Object my_object, EventArgs my_event_args)
         {
@@ -131,10 +137,47 @@ namespace Sketchpop
 
                 if (_current_images.Count > 0)
                 {
-                    prev_img_button.Visible = true;
-                    prev_img_button.Enabled = false;
-                    next_img_button.Visible = true;
-                    reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());
+                    foreach (UnsplashImage image in _current_images)
+                    {
+                        PictureBox pictureBox = new PictureBox();
+                        pictureBox.Image = await convert_to_imageAsync(image.Get_Image_URL());
+                        pictureBox.Width = 100;
+                        pictureBox.Height = 100;
+                        pictureBox.Margin = new Padding(5);
+                        pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+
+                        pictureBox.Click += (s, args) =>
+                        {
+                            if (selected_picturebox == null)
+                            {
+                                selected_picturebox = pictureBox;
+                                prev_selected_picturebox = pictureBox;
+
+                                pictureBox.BorderStyle = BorderStyle.FixedSingle;
+                                pictureBox.BackColor = Color.Transparent;
+                            }
+                            else
+                            {
+                                if (prev_selected_picturebox != pictureBox)
+                                {
+                                    prev_selected_picturebox.BorderStyle = BorderStyle.None;
+                                    prev_selected_picturebox.BackColor = Color.Transparent;
+
+                                    selected_picturebox = pictureBox;
+                                    prev_selected_picturebox = pictureBox;
+
+                                    selected_picturebox.BorderStyle = BorderStyle.FixedSingle;
+                                    selected_picturebox.BackColor = Color.Transparent;
+                                }
+                            }
+                        };
+
+                        ref_img_thumbnails.Controls.Add(pictureBox);
+                    }
+
+
+                    ref_img_thumbnails.Visible = true;
+                    back_panel.Visible = true;
                 }
 
                 ref_img_search_query.Text = "";
@@ -185,9 +228,44 @@ namespace Sketchpop
                 using (var stream = await response.Content.ReadAsStreamAsync())
                 {
                     var image = Image.FromStream(stream);
+
                     // Do something with the image object
                     return image;
                 }
+            }
+        }
+        public Image SetImageOpacity(Image image, float opacity)
+        {
+            try
+            {
+                //create a Bitmap the size of the image provided  
+                Bitmap bmp = new Bitmap(image.Width, image.Height);
+
+                //create a graphics object from the image  
+                using (Graphics gfx = Graphics.FromImage(bmp))
+                {
+
+                    //create a color matrix object  
+                    ColorMatrix matrix = new ColorMatrix();
+
+                    //set the opacity  
+                    matrix.Matrix33 = opacity;
+
+                    //create image attributes  
+                    ImageAttributes attributes = new ImageAttributes();
+
+                    //set the color(opacity) of the image  
+                    attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+
+                    //now draw the image  
+                    gfx.DrawImage(image, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
+                }
+                return bmp;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
             }
         }
 
@@ -255,7 +333,18 @@ namespace Sketchpop
                 string filePath = openFileDialog.FileName; // Gets the full file path
                 dbm.ExecuteLocalPictureUploadQuery(fileName, filePath);
             }
-            
+        }
+
+        private void select_button_Click(object sender, EventArgs e)
+        {
+            reference_img.Image = selected_picturebox.Image;
+        }
+
+        private void cancel_button_Click(object sender, EventArgs e)
+        {
+            back_panel.Visible = false;
+            ref_img_thumbnails.Visible = false;
+            _current_images = null;
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
