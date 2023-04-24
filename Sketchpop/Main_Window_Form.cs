@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
@@ -23,10 +24,10 @@ namespace Sketchpop
 
         private Database_Manager dbm = new Database_Manager();
         private List<UnsplashImage> _current_images = new List<UnsplashImage>();
-        private int _index = 0;
-        private Image selected_image;
+
         private PictureBox selected_picturebox;
         private PictureBox prev_selected_picturebox;
+        private string last_searched_query;
 
         public void draw_timer_method(Object my_object, EventArgs my_event_args)
         {
@@ -128,15 +129,27 @@ namespace Sketchpop
 
         private async void search_button_Click(object sender, EventArgs e)
         {
-            if (ref_img_search_query.Text != "")
-            {
-                _index = 0;
+            db_status_label.Visible = true;
+            db_status_label.Text = "Gathering Images...";
 
-                string query = ref_img_search_query.Text;
+            string query = ref_img_search_query.Text;
+
+            if (query.Equals(last_searched_query) && _current_images.Count > 0)
+            {
+                back_panel.Visible = true;
+                ref_img_thumbnails.Visible = true;
+                last_searched_query = query;
+            }
+            else
+            {
+                ref_img_thumbnails.Controls.Clear();
                 _current_images = dbm.ExecuteImageRequestQuery(query);
 
                 if (_current_images.Count > 0)
                 {
+                    if (!select_button.Enabled)
+                        select_button.Enabled = true;
+
                     foreach (UnsplashImage image in _current_images)
                     {
                         PictureBox pictureBox = new PictureBox();
@@ -178,47 +191,16 @@ namespace Sketchpop
 
                     ref_img_thumbnails.Visible = true;
                     back_panel.Visible = true;
+                    db_status_label.Visible = false;
+                    last_searched_query = ref_img_search_query.Text;                        
                 }
-
-                ref_img_search_query.Text = "";
-            }
-        }
-
-        private async void prev_img_button_Click(object sender, EventArgs e)
-        {
-            if (_index > 0)
-            {
-                _index--;
-                reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());
-
-                if (_index == 0)
+                else
                 {
-                    prev_img_button.Enabled = false;
-                }
-                if (next_img_button.Enabled == false)
-                {
-                    next_img_button.Enabled = true;
+                    db_status_label.Text = "No Entries in the Database.";
                 }
             }
         }
 
-        private async void next_img_button_Click(object sender, EventArgs e)
-        {
-            if (_index < _current_images.Count - 1)
-            {
-                _index++;
-                reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());
-
-                if (_index == _current_images.Count - 1)
-                {
-                    next_img_button.Enabled = false;
-                }
-                if (prev_img_button.Enabled == false)
-                {
-                    prev_img_button.Enabled = true;
-                }
-            }
-        }
 
         private async Task<Image> convert_to_imageAsync(string url)
         {
@@ -337,14 +319,34 @@ namespace Sketchpop
 
         private void select_button_Click(object sender, EventArgs e)
         {
-            reference_img.Image = selected_picturebox.Image;
+            try
+            {
+                reference_img.Image = selected_picturebox.Image;
+            }
+            catch (Exception ex)
+            {
+                db_status_label.Visible = true;
+            }
         }
 
         private void cancel_button_Click(object sender, EventArgs e)
         {
             back_panel.Visible = false;
             ref_img_thumbnails.Visible = false;
-            _current_images = null;
+            db_status_label.Visible = false;
+        }
+
+        private void clear_database_button_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to clear the database? This will permanently delete all existing images in the database.", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                dbm.ExecuteDeleteDatabase();
+                ref_img_thumbnails.Controls.Clear();
+                select_button.Enabled = false;
+                _current_images.Clear();
+            }
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }

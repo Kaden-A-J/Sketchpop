@@ -67,5 +67,10 @@ namespace Sketchpop
             }
             return images; 
         }
+
+        public void ClearIDs()
+        {
+            _unique_ids.Clear();
+        }
     }
 }
