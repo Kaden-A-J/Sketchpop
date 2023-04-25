@@ -16,6 +16,7 @@ namespace Sketchpop
         private string _image_url; // image url from unsplash
         private string _unsplash_url;
 
+        public bool isSelected = false;
         public UnsplashImage(string id, string description, string author, string author_profile_link, string image_url, string unsplash_url)
         {
             _id = id;

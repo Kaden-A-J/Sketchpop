@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using Image = System.Drawing.Image;
 
 namespace Sketchpop
 {
@@ -20,7 +24,10 @@ namespace Sketchpop
 
         private Database_Manager dbm = new Database_Manager();
         private List<UnsplashImage> _current_images = new List<UnsplashImage>();
-        private int _index = 0;
+
+        private PictureBox selected_picturebox;
+        private PictureBox prev_selected_picturebox;
+        private string last_searched_query;
 
         public void draw_timer_method(Object my_object, EventArgs my_event_args)
         {
@@ -122,60 +129,87 @@ namespace Sketchpop
 
         private async void search_button_Click(object sender, EventArgs e)
         {
-            if (ref_img_search_query.Text != "")
-            {
-                _index = 0;
+            // display to the user that a search is being done
+            db_status_label.Visible = true;
+            db_status_label.Text = "Gathering Images...";
 
-                string query = ref_img_search_query.Text;
+            string query = ref_img_search_query.Text; // get the user's query
+
+            // if the user searches the same string, don't query the database
+            if (query.Equals(last_searched_query) && _current_images.Count > 0)
+            {
+                // display the pre-queued selection view to the user
+                back_panel.Visible = true;
+                ref_img_thumbnails.Visible = true;
+                last_searched_query = query; // save the last searched query
+            }
+            else
+            {
+                ref_img_thumbnails.Controls.Clear(); // clear the selection view so that only the searched query shows 
+
                 _current_images = dbm.ExecuteImageRequestQuery(query);
 
+                // get images from database -- empty string searches all entries of the database, if no entries exist in db, count will be 0
                 if (_current_images.Count > 0)
                 {
-                    prev_img_button.Visible = true;
-                    prev_img_button.Enabled = false;
-                    next_img_button.Visible = true;
-                    reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());
-                }
+                    if (!select_button.Enabled)
+                        select_button.Enabled = true;
 
-                ref_img_search_query.Text = "";
+                    // loop through all returned images and display them in the selection view
+                    foreach (UnsplashImage image in _current_images)
+                    {
+                        // create pictureboxes for each image
+                        PictureBox pictureBox = new PictureBox();
+                        pictureBox.Image = await convert_to_imageAsync(image.Get_Image_URL());
+                        pictureBox.Width = 100;
+                        pictureBox.Height = 100;
+                        pictureBox.Margin = new Padding(5);
+                        pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+
+                        // each picturebox gets an event to detect user selection
+                        pictureBox.Click += (s, args) =>
+                        {
+                            // logic for displaying the selected image to the user
+                            if (selected_picturebox == null)
+                            {
+                                selected_picturebox = pictureBox;
+                                prev_selected_picturebox = pictureBox;
+
+                                pictureBox.BorderStyle = BorderStyle.FixedSingle;
+                                pictureBox.BackColor = Color.Transparent;
+                            }
+                            else
+                            {
+                                if (prev_selected_picturebox != pictureBox)
+                                {
+                                    prev_selected_picturebox.BorderStyle = BorderStyle.None;
+                                    prev_selected_picturebox.BackColor = Color.Transparent;
+
+                                    selected_picturebox = pictureBox;
+                                    prev_selected_picturebox = pictureBox;
+
+                                    selected_picturebox.BorderStyle = BorderStyle.FixedSingle;
+                                    selected_picturebox.BackColor = Color.Transparent;
+                                }
+                            }
+                        };
+
+                        ref_img_thumbnails.Controls.Add(pictureBox); // add images to the panel
+                    }
+
+                    // show the panel to the user
+                    ref_img_thumbnails.Visible = true;
+                    back_panel.Visible = true;
+                    db_status_label.Visible = false;
+                    last_searched_query = ref_img_search_query.Text; // save the search query in case the user uses the same search again
+                }
+                else
+                {
+                    db_status_label.Text = "No Entries in the Database.";
+                }
             }
         }
 
-        private async void prev_img_button_Click(object sender, EventArgs e)
-        {
-            if (_index > 0)
-            {
-                _index--;
-                reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());
-
-                if (_index == 0)
-                {
-                    prev_img_button.Enabled = false;
-                }
-                if (next_img_button.Enabled == false)
-                {
-                    next_img_button.Enabled = true;
-                }
-            }
-        }
-
-        private async void next_img_button_Click(object sender, EventArgs e)
-        {
-            if (_index < _current_images.Count - 1)
-            {
-                _index++;
-                reference_img.Image = await convert_to_imageAsync(_current_images[_index].Get_Image_URL());
-
-                if (_index == _current_images.Count - 1)
-                {
-                    next_img_button.Enabled = false;
-                }
-                if (prev_img_button.Enabled == false)
-                {
-                    prev_img_button.Enabled = true;
-                }
-            }
-        }
 
         private async Task<Image> convert_to_imageAsync(string url)
         {
@@ -185,9 +219,44 @@ namespace Sketchpop
                 using (var stream = await response.Content.ReadAsStreamAsync())
                 {
                     var image = Image.FromStream(stream);
+
                     // Do something with the image object
                     return image;
                 }
+            }
+        }
+        public Image SetImageOpacity(Image image, float opacity)
+        {
+            try
+            {
+                //create a Bitmap the size of the image provided  
+                Bitmap bmp = new Bitmap(image.Width, image.Height);
+
+                //create a graphics object from the image  
+                using (Graphics gfx = Graphics.FromImage(bmp))
+                {
+
+                    //create a color matrix object  
+                    ColorMatrix matrix = new ColorMatrix();
+
+                    //set the opacity  
+                    matrix.Matrix33 = opacity;
+
+                    //create image attributes  
+                    ImageAttributes attributes = new ImageAttributes();
+
+                    //set the color(opacity) of the image  
+                    attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+
+                    //now draw the image  
+                    gfx.DrawImage(image, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
+                }
+                return bmp;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
             }
         }
 
@@ -255,7 +324,38 @@ namespace Sketchpop
                 string filePath = openFileDialog.FileName; // Gets the full file path
                 dbm.ExecuteLocalPictureUploadQuery(fileName, filePath);
             }
-            
+        }
+
+        private void select_button_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                reference_img.Image = selected_picturebox.Image;
+            }
+            catch (Exception ex)
+            {
+                db_status_label.Visible = true;
+            }
+        }
+
+        private void cancel_button_Click(object sender, EventArgs e)
+        {
+            back_panel.Visible = false;
+            ref_img_thumbnails.Visible = false;
+            db_status_label.Visible = false;
+        }
+
+        private void clear_database_button_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to clear the database? This will permanently delete all existing images in the database.", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                dbm.ExecuteDeleteDatabase();
+                ref_img_thumbnails.Controls.Clear();
+                select_button.Enabled = false;
+                _current_images.Clear();
+            }
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }

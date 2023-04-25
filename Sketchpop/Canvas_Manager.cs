@@ -181,5 +181,10 @@ namespace Sketchpop
                 line_two_middle.Y -= (float)(spacing * Math.Sin(orth_angle_radians));
             }
         }
+
+        public void AddImage(Image img)
+        {
+            picture_box.Image = img;
+        }
     }
 }
