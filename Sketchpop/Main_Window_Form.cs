@@ -133,6 +133,11 @@ namespace Sketchpop
             db_status_label.Visible = true;
             db_status_label.Text = "Gathering Images...";
 
+            // show the panel to the user
+            ref_img_thumbnails.Visible = true;
+            back_panel.Visible = true;
+            db_status_label.Visible = false;
+
             string query = ref_img_search_query.Text; // get the user's query
 
             // if the user searches the same string, don't query the database
@@ -196,11 +201,6 @@ namespace Sketchpop
 
                         ref_img_thumbnails.Controls.Add(pictureBox); // add images to the panel
                     }
-
-                    // show the panel to the user
-                    ref_img_thumbnails.Visible = true;
-                    back_panel.Visible = true;
-                    db_status_label.Visible = false;
                     last_searched_query = ref_img_search_query.Text; // save the search query in case the user uses the same search again
                 }
                 else
@@ -388,6 +388,8 @@ namespace Sketchpop
 
                 // Resizing the window
                 var cursor = this.PointToClient(Cursor.Position);
+
+                Console.WriteLine(cursor);
 
                 if (top_left.Contains(cursor)) message.Result = (IntPtr)HTTOPLEFT;
                 else if (top_right.Contains(cursor)) message.Result = (IntPtr)HTTOPRIGHT;
