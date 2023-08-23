@@ -560,7 +560,6 @@ namespace Sketchpop
             this.Name = "main_window";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sketchpop";
-            this.UseWaitCursor = true;
             this.title_bar.ResumeLayout(false);
             this.title_bar.PerformLayout();
             this.left_settings_panel.ResumeLayout(false);
