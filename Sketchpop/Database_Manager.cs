@@ -18,10 +18,10 @@ namespace Sketchpop
         private string _connection_string = "server=store-for-images.ce93uhqibbvf.us-east-2.rds.amazonaws.com;database=Sketchpop;uid=admin;pwd=SketchPop;";
         private Unsplash_Manager _um = new Unsplash_Manager();
 
-        public List<UnsplashImage> ExecuteImageRequestQuery(string query)
+        public List<UnsplashImage> Execute_Image_Request_Query(string query)
         {
             // first check to see if db contains images of query
-            var db_images = GetDbImages(query);
+            var db_images = Get_Db_Images(query);
             if (db_images.Count > 0)
             {
                 return db_images;
@@ -32,13 +32,13 @@ namespace Sketchpop
                 List<UnsplashImage> ret_images = _um.Get_Images(query);
 
                 // insert the images into the database for the next time
-                InsertNewImages(ret_images);
+                Insert_New_Images(ret_images);
 
                 return ret_images;
             }
         }
 
-        public void InsertNewImages(List<UnsplashImage> images)
+        public void Insert_New_Images(List<UnsplashImage> images)
         {
             string sql_query = "INSERT INTO images (image_id, image_description, image_author, image_author_profile, image_url,url) " +
                                           "VALUES (@image_id, @image_description, @image_author, @image_author_profile, @image_url, @url)";
@@ -63,7 +63,7 @@ namespace Sketchpop
             }        
         }
 
-        public List<UnsplashImage> GetDbImages(string query)
+        public List<UnsplashImage> Get_Db_Images(string query)
         {
             var db_images = new List<UnsplashImage>();
             if (!query.Equals(""))
@@ -135,7 +135,7 @@ namespace Sketchpop
             return db_images;
         }
 
-        public void ExecuteLocalPictureUploadQuery(string _picture_name, string _picture_path)
+        public void Execute_Local_Picture_Upload_Query(string _picture_name, string _picture_path)
         {
             // Read image file
             Image image = Image.FromFile(_picture_path);
@@ -164,7 +164,7 @@ namespace Sketchpop
             }
         }
 
-        public void ExecuteImageUploadQuery(string query, string name)
+        public void Execute_Image_Upload_Query(string query, string name)
         {
             // for testing purposes, the query to insert the butterfly image is:
             query = "INSERT INTO images (name, image) VALUES (@name, @image)";
@@ -193,7 +193,7 @@ namespace Sketchpop
             }
         }
 
-        public void ExecuteDeleteDatabase()
+        public void Execute_Delete_Database()
         {
             try
             {
@@ -209,7 +209,7 @@ namespace Sketchpop
                         Console.WriteLine(rowsAffected + " rows cleared.");
                     }
                 }
-                _um.ClearIDs();
+                _um.Clear_IDs();
             }
             catch(Exception ex)
             {

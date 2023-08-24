@@ -81,16 +81,6 @@ namespace Sketchpop
             _grip_size = 5, // window resize click border
             _caption_size = 20; // window drag click border
 
-        private void get_ref_button_Click(object sender, EventArgs e)
-        {
-            dbm.ExecuteImageRequestQuery("");
-        }
-
-        private void put_ref_button_Click(object sender, EventArgs e)
-        {
-            dbm.ExecuteImageUploadQuery("", "");
-        }
-
         private void canvas_frame_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -125,6 +115,99 @@ namespace Sketchpop
             //    var click_pos = canvas_frame.PointToClient(MousePosition);
             //    Program.canvas_manager.AddPointToDraw(click_pos);
             //}
+        }        
+
+        private void red_input_box_ValueChanged(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Update_Color((byte)red_input_box.Value, (byte)green_input_box.Value, (byte)blue_input_box.Value, (byte)255);
+            color_display_box.BackColor = Color.FromArgb(255, (int)red_input_box.Value, (int)green_input_box.Value, (int)blue_input_box.Value);
+        }
+
+        private void green_input_box_ValueChanged(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Update_Color((byte)red_input_box.Value, (byte)green_input_box.Value, (byte)blue_input_box.Value, (byte)255);
+            color_display_box.BackColor = Color.FromArgb(255, (int)red_input_box.Value, (int)green_input_box.Value, (int)blue_input_box.Value);
+        }
+
+        private void blue_input_box_ValueChanged(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Update_Color((byte)red_input_box.Value, (byte)green_input_box.Value, (byte)blue_input_box.Value, (byte)255);
+            color_display_box.BackColor = Color.FromArgb(255, (int)red_input_box.Value, (int)green_input_box.Value, (int)blue_input_box.Value);
+        }
+
+        private void stroke_size_input_box_ValueChanged(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Update_Stroke_Size((int)stroke_size_input_box.Value);
+        }
+
+        private void clear_canvas_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Reset_Canvas_State();
+        }
+
+        private void eraser_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Change_Brush("eraser", stroke_size_input_box);
+        }
+
+        private void pen_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Change_Brush("basic", stroke_size_input_box);
+        }
+
+        private void repeatedCirclesPracticeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var options_form = new Repeated_Circles_Options_Form();
+            options_form.ShowDialog();
+        }
+
+
+        /*
+         *  Start of -- Image Selection and Database Related Code
+         */
+
+        public Image set_image_opacity(Image image, float opacity)
+        {
+            try
+            {
+                //create a Bitmap the size of the image provided  
+                Bitmap bmp = new Bitmap(image.Width, image.Height);
+
+                //create a graphics object from the image  
+                using (Graphics gfx = Graphics.FromImage(bmp))
+                {
+
+                    //create a color matrix object  
+                    ColorMatrix matrix = new ColorMatrix();
+
+                    //set the opacity  
+                    matrix.Matrix33 = opacity;
+
+                    //create image attributes  
+                    ImageAttributes attributes = new ImageAttributes();
+
+                    //set the color(opacity) of the image  
+                    attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
+
+                    //draw the image  
+                    gfx.DrawImage(image, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
+                }
+                return bmp;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return null;
+            }
+        }
+
+        private void image_search_text_entry_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                search_button_Click(sender, e); // user presses the search button
+            }
         }
 
         private async void search_button_Click(object sender, EventArgs e)
@@ -138,7 +221,7 @@ namespace Sketchpop
             back_panel.Visible = true;
             db_status_label.Visible = false;
 
-            string query = ref_img_search_query.Text; // get the user's query
+            string query = image_search_text_entry.Text; // get the user's query
 
             // if the user searches the same string, don't query the database
             if (query.Equals(last_searched_query) && _current_images.Count > 0)
@@ -152,7 +235,7 @@ namespace Sketchpop
             {
                 ref_img_thumbnails.Controls.Clear(); // clear the selection view so that only the searched query shows 
 
-                _current_images = dbm.ExecuteImageRequestQuery(query);
+                _current_images = dbm.Execute_Image_Request_Query(query);
 
                 // get images from database -- empty string searches all entries of the database, if no entries exist in db, count will be 0
                 if (_current_images.Count > 0)
@@ -201,7 +284,7 @@ namespace Sketchpop
 
                         ref_img_thumbnails.Controls.Add(pictureBox); // add images to the panel
                     }
-                    last_searched_query = ref_img_search_query.Text; // save the search query in case the user uses the same search again
+                    last_searched_query = image_search_text_entry.Text; // save the search query in case the user uses the same search again
                 }
                 else
                 {
@@ -209,7 +292,6 @@ namespace Sketchpop
                 }
             }
         }
-
 
         private async Task<Image> convert_to_imageAsync(string url)
         {
@@ -225,93 +307,6 @@ namespace Sketchpop
                 }
             }
         }
-        public Image SetImageOpacity(Image image, float opacity)
-        {
-            try
-            {
-                //create a Bitmap the size of the image provided  
-                Bitmap bmp = new Bitmap(image.Width, image.Height);
-
-                //create a graphics object from the image  
-                using (Graphics gfx = Graphics.FromImage(bmp))
-                {
-
-                    //create a color matrix object  
-                    ColorMatrix matrix = new ColorMatrix();
-
-                    //set the opacity  
-                    matrix.Matrix33 = opacity;
-
-                    //create image attributes  
-                    ImageAttributes attributes = new ImageAttributes();
-
-                    //set the color(opacity) of the image  
-                    attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-
-                    //now draw the image  
-                    gfx.DrawImage(image, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
-                }
-                return bmp;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return null;
-            }
-        }
-
-        private void ref_img_search_query_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.SuppressKeyPress = true;
-                search_button_Click(sender, e);
-            }
-        }
-
-        private void red_input_box_ValueChanged(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Update_Color((byte)red_input_box.Value, (byte)green_input_box.Value, (byte)blue_input_box.Value, (byte)255);
-            color_display_box.BackColor = Color.FromArgb(255, (int)red_input_box.Value, (int)green_input_box.Value, (int)blue_input_box.Value);
-        }
-
-        private void green_input_box_ValueChanged(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Update_Color((byte)red_input_box.Value, (byte)green_input_box.Value, (byte)blue_input_box.Value, (byte)255);
-            color_display_box.BackColor = Color.FromArgb(255, (int)red_input_box.Value, (int)green_input_box.Value, (int)blue_input_box.Value);
-        }
-
-        private void blue_input_box_ValueChanged(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Update_Color((byte)red_input_box.Value, (byte)green_input_box.Value, (byte)blue_input_box.Value, (byte)255);
-            color_display_box.BackColor = Color.FromArgb(255, (int)red_input_box.Value, (int)green_input_box.Value, (int)blue_input_box.Value);
-        }
-
-        private void stroke_size_input_box_ValueChanged(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Update_Stroke_Size((int)stroke_size_input_box.Value);
-        }
-
-        private void clear_canvas_button_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Reset_Canvas_State();
-        }
-
-        private void eraser_button_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Change_Brush("eraser", stroke_size_input_box);
-        }
-
-        private void pen_button_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Change_Brush("basic", stroke_size_input_box);
-        }
-
-        private void repeatedCirclesPracticeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var options_form = new Repeated_Circles_Options_Form();
-            options_form.ShowDialog();
-        }
 
         private void upload_button_Click(object sender, EventArgs e)
         {
@@ -322,7 +317,7 @@ namespace Sketchpop
             {
                 string fileName = openFileDialog.SafeFileName; // Gets the file name
                 string filePath = openFileDialog.FileName; // Gets the full file path
-                dbm.ExecuteLocalPictureUploadQuery(fileName, filePath);
+                dbm.Execute_Local_Picture_Upload_Query(fileName, filePath);
             }
         }
 
@@ -351,12 +346,16 @@ namespace Sketchpop
 
             if (result == DialogResult.Yes)
             {
-                dbm.ExecuteDeleteDatabase();
+                dbm.Execute_Delete_Database();
                 ref_img_thumbnails.Controls.Clear();
                 select_button.Enabled = false;
                 _current_images.Clear();
             }
         }
+
+        /* 
+         *  End of -- Image Selection and Database Related Code
+         */
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
         private Rectangle left { get { return new Rectangle(0, 0, _grip_size, this.ClientSize.Height); } }

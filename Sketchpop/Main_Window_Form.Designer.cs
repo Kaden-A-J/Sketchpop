@@ -48,7 +48,7 @@ namespace Sketchpop
             this.color_label = new System.Windows.Forms.Label();
             this.upload_button = new System.Windows.Forms.Button();
             this.search_button = new System.Windows.Forms.Button();
-            this.ref_img_search_query = new System.Windows.Forms.TextBox();
+            this.image_search_text_entry = new System.Windows.Forms.TextBox();
             this.search_picture_label = new System.Windows.Forms.Label();
             this.quick_launch_bar = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -185,6 +185,19 @@ namespace Sketchpop
             this.reference_img.TabIndex = 3;
             this.reference_img.TabStop = false;
             // 
+            // reference_img
+            // 
+            this.reference_img.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.reference_img.BackColor = System.Drawing.Color.Gray;
+            this.reference_img.Location = new System.Drawing.Point(3, 3);
+            this.reference_img.Name = "reference_img";
+            this.reference_img.Size = new System.Drawing.Size(166, 121);
+            this.reference_img.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.reference_img.TabIndex = 3;
+            this.reference_img.TabStop = false;
+            this.reference_img.UseWaitCursor = true;
+            // 
             // db_status_label
             // 
             this.db_status_label.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
@@ -193,6 +206,7 @@ namespace Sketchpop
             this.db_status_label.Name = "db_status_label";
             this.db_status_label.Size = new System.Drawing.Size(157, 13);
             this.db_status_label.TabIndex = 0;
+            this.db_status_label.UseWaitCursor = true;
             this.db_status_label.Visible = false;
             // 
             // color_display_box
@@ -202,6 +216,7 @@ namespace Sketchpop
             this.color_display_box.Name = "color_display_box";
             this.color_display_box.Size = new System.Drawing.Size(31, 19);
             this.color_display_box.TabIndex = 1;
+            this.color_display_box.UseWaitCursor = true;
             // 
             // blue_label
             // 
@@ -211,6 +226,7 @@ namespace Sketchpop
             this.blue_label.Size = new System.Drawing.Size(27, 13);
             this.blue_label.TabIndex = 0;
             this.blue_label.Text = "blue";
+            this.blue_label.UseWaitCursor = true;
             // 
             // green_label
             // 
@@ -220,6 +236,7 @@ namespace Sketchpop
             this.green_label.Size = new System.Drawing.Size(34, 13);
             this.green_label.TabIndex = 0;
             this.green_label.Text = "green";
+            this.green_label.UseWaitCursor = true;
             // 
             // red_label
             // 
@@ -229,6 +246,7 @@ namespace Sketchpop
             this.red_label.Size = new System.Drawing.Size(22, 13);
             this.red_label.TabIndex = 0;
             this.red_label.Text = "red";
+            this.red_label.UseWaitCursor = true;
             // 
             // stroke_label
             // 
@@ -238,6 +256,7 @@ namespace Sketchpop
             this.stroke_label.Size = new System.Drawing.Size(64, 13);
             this.stroke_label.TabIndex = 0;
             this.stroke_label.Text = "Stroke Size:";
+            this.stroke_label.UseWaitCursor = true;
             // 
             // color_label
             // 
@@ -247,6 +266,7 @@ namespace Sketchpop
             this.color_label.Size = new System.Drawing.Size(34, 13);
             this.color_label.TabIndex = 0;
             this.color_label.Text = "Color:";
+            this.color_label.UseWaitCursor = true;
             // 
             // upload_button
             // 
@@ -268,13 +288,13 @@ namespace Sketchpop
             this.search_button.UseVisualStyleBackColor = true;
             this.search_button.Click += new System.EventHandler(this.search_button_Click);
             // 
-            // ref_img_search_query
+            // image_search_text_entry
             // 
-            this.ref_img_search_query.Location = new System.Drawing.Point(36, 172);
-            this.ref_img_search_query.Name = "ref_img_search_query";
-            this.ref_img_search_query.Size = new System.Drawing.Size(100, 20);
-            this.ref_img_search_query.TabIndex = 1;
-            this.ref_img_search_query.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ref_img_search_query_KeyDown);
+            this.image_search_text_entry.Location = new System.Drawing.Point(36, 172);
+            this.image_search_text_entry.Name = "image_search_text_entry";
+            this.image_search_text_entry.Size = new System.Drawing.Size(100, 20);
+            this.image_search_text_entry.TabIndex = 1;
+            this.image_search_text_entry.KeyDown += new System.Windows.Forms.KeyEventHandler(this.image_search_text_entry_KeyDown);
             // 
             // search_picture_label
             // 
@@ -354,6 +374,18 @@ namespace Sketchpop
             this.clear_canvas_button.TabIndex = 10;
             this.clear_canvas_button.Text = "Clear";
             this.clear_canvas_button.UseVisualStyleBackColor = true;
+            this.clear_canvas_button.Click += new System.EventHandler(this.clear_canvas_button_Click);
+            // 
+            // clear_canvas_button
+            // 
+            this.clear_canvas_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.clear_canvas_button.Location = new System.Drawing.Point(828, 3);
+            this.clear_canvas_button.Name = "clear_canvas_button";
+            this.clear_canvas_button.Size = new System.Drawing.Size(75, 23);
+            this.clear_canvas_button.TabIndex = 10;
+            this.clear_canvas_button.Text = "Clear";
+            this.clear_canvas_button.UseVisualStyleBackColor = true;
+            this.clear_canvas_button.UseWaitCursor = true;
             this.clear_canvas_button.Click += new System.EventHandler(this.clear_canvas_button_Click);
             // 
             // pen_button
@@ -527,7 +559,7 @@ namespace Sketchpop
             this.Controls.Add(this.red_input_box);
             this.Controls.Add(this.search_picture_label);
             this.Controls.Add(this.search_button);
-            this.Controls.Add(this.ref_img_search_query);
+            this.Controls.Add(this.image_search_text_entry);
             this.Controls.Add(this.upload_button);
             this.Controls.Add(this.right_settings_panel);
             this.Controls.Add(this.canvas_panel);
@@ -581,7 +613,7 @@ namespace Sketchpop
         // Database additions
         private System.Windows.Forms.PictureBox reference_img;
         private System.Windows.Forms.Button search_button;
-        private System.Windows.Forms.TextBox ref_img_search_query;
+        private System.Windows.Forms.TextBox image_search_text_entry;
         private System.Windows.Forms.Label search_picture_label;
         private System.Windows.Forms.Label blue_label;
         private System.Windows.Forms.Label green_label;

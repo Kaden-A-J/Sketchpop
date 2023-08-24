@@ -68,7 +68,7 @@ namespace Sketchpop
             return images; 
         }
 
-        public void ClearIDs()
+        public void Clear_IDs()
         {
             _unique_ids.Clear();
         }
