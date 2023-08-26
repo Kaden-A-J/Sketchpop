@@ -138,9 +138,7 @@
     <Compile Include="Canvas_Manager.cs" />
     <Compile Include="Brush.cs" />
     <Compile Include="Database_Manager.cs" />
-    <Compile Include="Login_Window.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Login_Window.cs" />
     <Compile Include="Login_Window.Designer.cs">
       <DependentUpon>Login_Window.cs</DependentUpon>
     </Compile>
