@@ -138,6 +138,10 @@
     <Compile Include="Canvas_Manager.cs" />
     <Compile Include="Brush.cs" />
     <Compile Include="Database_Manager.cs" />
+    <Compile Include="Login_Window.cs" />
+    <Compile Include="Login_Window.Designer.cs">
+      <DependentUpon>Login_Window.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main_Window_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +159,9 @@
     </Compile>
     <Compile Include="Unsplash_Image.cs" />
     <Compile Include="Unsplash_Manager.cs" />
+    <EmbeddedResource Include="Login_Window.resx">
+      <DependentUpon>Login_Window.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main_Window_Form.resx">
       <DependentUpon>Main_Window_Form.cs</DependentUpon>
       <SubType>Designer</SubType>
