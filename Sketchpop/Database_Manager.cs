@@ -216,5 +216,51 @@ namespace Sketchpop
                 MessageBox.Show("Error::\n" + ex);
             }
         }
+
+        // login_system_window
+
+        public bool Execute_Login_Signup_Query(string username, string password)
+        {
+            try
+            {
+                using(MySqlConnection conn =new MySqlConnection(_connection_string))
+                {
+                    conn.Open();
+                    
+                    // Check if username exists
+                    string checkUsernameQuery = "SELECT password FROM users WHERE username = @username";
+                    using(MySqlCommand cmd = new MySqlCommand(checkUsernameQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@username", username);
+                        object result = cmd.ExecuteScalar();
+
+                        if (result == null) 
+                        {
+                            string signupQuery = "INSERT INTO users (username, password) VALUES (@username, @password)";
+                            using (MySqlCommand signupCmd = new MySqlCommand(signupQuery, conn))
+                            {
+                                signupCmd.Parameters.AddWithValue("@username", username);
+                                signupCmd.Parameters.AddWithValue("@password", password);
+                                signupCmd.ExecuteNonQuery();
+                            }
+                            return true; 
+                        }
+                        // Username exists and check its password
+                        else
+                        {
+                            if(result.ToString().Equals(password))
+                                return true;
+                            else 
+                                return false;
+                        }
+                    } 
+                }
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show("Error: "+ex.Message);
+                return false;                
+            }
+        }
     }
 }

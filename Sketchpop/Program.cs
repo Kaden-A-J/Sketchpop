@@ -20,7 +20,12 @@ namespace Sketchpop
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new main_window());
+            login_window login_window = new login_window();
+            DialogResult result = login_window.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                Application.Run(new main_window());
+            }
         }
 
     }
