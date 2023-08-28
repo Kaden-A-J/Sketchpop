@@ -57,6 +57,9 @@ namespace Sketchpop
             this.repeatedCirclesPracticeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.canvas_panel = new System.Windows.Forms.Panel();
             this.clear_canvas_button = new System.Windows.Forms.Button();
+            this.b_layer_3 = new System.Windows.Forms.Button();
+            this.b_layer_2 = new System.Windows.Forms.Button();
+            this.b_layer_1 = new System.Windows.Forms.Button();
             this.pen_button = new System.Windows.Forms.Button();
             this.eraser_button = new System.Windows.Forms.Button();
             this.canvas_frame = new System.Windows.Forms.PictureBox();
@@ -356,6 +359,9 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
+            this.canvas_panel.Controls.Add(this.b_layer_3);
+            this.canvas_panel.Controls.Add(this.b_layer_2);
+            this.canvas_panel.Controls.Add(this.b_layer_1);
             this.canvas_panel.Controls.Add(this.clear_canvas_button);
             this.canvas_panel.Controls.Add(this.pen_button);
             this.canvas_panel.Controls.Add(this.eraser_button);
@@ -387,6 +393,39 @@ namespace Sketchpop
             this.clear_canvas_button.UseVisualStyleBackColor = true;
             this.clear_canvas_button.UseWaitCursor = true;
             this.clear_canvas_button.Click += new System.EventHandler(this.clear_canvas_button_Click);
+            // 
+            // b_layer_3
+            // 
+            this.b_layer_3.Location = new System.Drawing.Point(418, 2);
+            this.b_layer_3.Name = "b_layer_3";
+            this.b_layer_3.Size = new System.Drawing.Size(75, 23);
+            this.b_layer_3.TabIndex = 13;
+            this.b_layer_3.Text = "layer 3";
+            this.b_layer_3.UseVisualStyleBackColor = true;
+            this.b_layer_3.UseWaitCursor = true;
+            this.b_layer_3.Click += new System.EventHandler(this.b_layer_3_Click);
+            // 
+            // b_layer_2
+            // 
+            this.b_layer_2.Location = new System.Drawing.Point(305, 6);
+            this.b_layer_2.Name = "b_layer_2";
+            this.b_layer_2.Size = new System.Drawing.Size(75, 23);
+            this.b_layer_2.TabIndex = 12;
+            this.b_layer_2.Text = "layer 2";
+            this.b_layer_2.UseVisualStyleBackColor = true;
+            this.b_layer_2.UseWaitCursor = true;
+            this.b_layer_2.Click += new System.EventHandler(this.b_layer_2_Click);
+            // 
+            // b_layer_1
+            // 
+            this.b_layer_1.Location = new System.Drawing.Point(182, 2);
+            this.b_layer_1.Name = "b_layer_1";
+            this.b_layer_1.Size = new System.Drawing.Size(75, 23);
+            this.b_layer_1.TabIndex = 11;
+            this.b_layer_1.Text = "layer 1";
+            this.b_layer_1.UseVisualStyleBackColor = true;
+            this.b_layer_1.UseWaitCursor = true;
+            this.b_layer_1.Click += new System.EventHandler(this.b_layer_1_Click);
             // 
             // pen_button
             // 
@@ -642,6 +681,9 @@ namespace Sketchpop
         private System.Windows.Forms.Button cancel_button;
         private System.Windows.Forms.TextBox db_status_label;
         private System.Windows.Forms.Button clear_database_button;
+        private System.Windows.Forms.Button b_layer_3;
+        private System.Windows.Forms.Button b_layer_2;
+        private System.Windows.Forms.Button b_layer_1;
     }
 }
 

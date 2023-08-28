@@ -1,10 +1,4 @@
 ﻿using SkiaSharp;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sketchpop
 {
@@ -14,7 +8,7 @@ namespace Sketchpop
         private int _stroke;
         private SKColor _color;
         private SKPaint _paint;
-        public Brush(string name, int stroke, SKColor color)
+        public Brush(string name, int stroke, SKColor color, SKBlendMode blend = SKBlendMode.SrcOver)
         {
             _name = name;
             _stroke = stroke;
@@ -25,6 +19,7 @@ namespace Sketchpop
                 Color = _color,
                 StrokeCap = SKStrokeCap.Round,
                 Style = SKPaintStyle.Stroke,
+                BlendMode = blend,
                 StrokeWidth = _stroke
             };
         }
