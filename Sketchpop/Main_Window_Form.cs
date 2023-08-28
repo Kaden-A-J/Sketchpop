@@ -357,6 +357,21 @@ namespace Sketchpop
          *  End of -- Image Selection and Database Related Code
          */
 
+        private void b_layer_1_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.switchLayer(0);
+        }
+
+        private void b_layer_2_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.switchLayer(1);
+        }
+
+        private void b_layer_3_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.switchLayer(2);
+        }
+
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
         private Rectangle left { get { return new Rectangle(0, 0, _grip_size, this.ClientSize.Height); } }
         private Rectangle bottom { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, this.ClientSize.Width, _grip_size); } }

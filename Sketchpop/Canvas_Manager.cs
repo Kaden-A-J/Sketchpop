@@ -4,6 +4,7 @@ using SkiaSharp;
 using System.Collections.Concurrent;
 using System.Windows.Forms;
 using SkiaSharp.Views.Desktop;
+using System.Collections.Generic;
 
 namespace Sketchpop
 {
@@ -12,10 +13,11 @@ namespace Sketchpop
         private ConcurrentQueue<Point_Operation> pointsToDraw = new ConcurrentQueue<Point_Operation>();
         private SKPath current_path;
         private PictureBox picture_box;
-        private SKImage current_frame;
+        private Layer selected_layer;
+        private List<Layer> layers;
         private SKImageInfo canvas_info;
-
         private Brush_Manager brush_manager;
+
         public Canvas_Manager(ref PictureBox canvas_frame) {
             brush_manager = new Brush_Manager();
             picture_box = canvas_frame;
@@ -41,6 +43,11 @@ namespace Sketchpop
             
         }
 
+        public void switchLayer(int layer)
+        {
+            selected_layer = layers[layer];
+        }
+
         public void Update_Color(byte red, byte green, byte blue, byte alpha)
         {
             brush_manager.Get_Current_Brush().Set_Color(new SKColor(red, green, blue, alpha));
@@ -58,14 +65,21 @@ namespace Sketchpop
         /// < returns ></ returns >
         public void Draw_Bitmap(object state)
         {
-            picture_box.Image = current_frame.ToBitmap();
+            using (SKSurface surface = SKSurface.Create(selected_layer.img.Info))
+            {
+                foreach (Layer l in layers)
+                {
+                    surface.Canvas.DrawImage(l.img, l.img.Info.Rect);
+                }
+                picture_box.Image = surface.Snapshot().ToBitmap();
+            }
         }
 
         public void Draw_Path_Points(object state)
         {
             if (current_path != null)
             {
-                using (SKSurface surface = SKSurface.Create(current_frame.PeekPixels()))
+                using (SKSurface surface = SKSurface.Create(selected_layer.img.PeekPixels()))
                 {
                     if (pointsToDraw.TryDequeue(out Point_Operation po))
                     {
@@ -89,7 +103,9 @@ namespace Sketchpop
             using (SKSurface surface = SKSurface.Create(canvas_info))
             {
                 surface.Canvas.Clear();
-                current_frame = SKImage.FromPixelCopy(surface.PeekPixels());
+                selected_layer = new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 0);
+                // note: the first and last layers are just placeholders for testing
+                layers = new List<Layer> { new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 0), selected_layer, new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 0) };
             }
         }
 
@@ -113,7 +129,7 @@ namespace Sketchpop
                 StrokeWidth = 5
             };
 
-            int length = (current_frame.PeekPixels().Width + current_frame.PeekPixels().Height) * 10;
+            int length = (selected_layer.img.PeekPixels().Width + selected_layer.img.PeekPixels().Height) * 10;
             double angle_radians = -angle * (Math.PI / 180); 
             double orth_angle_radians = angle_radians + (Math.PI / 2); // used to create parallel lines
             SKPoint vector = new SKPoint((float)(length * Math.Cos(angle_radians)), (float)(length * Math.Sin(angle_radians))); // direction and magnitude of all lines
@@ -121,8 +137,8 @@ namespace Sketchpop
             // We draw two lines at a time to make it easier to keep lines on the screen with any angle input
             // You can think of line one as the line below our previous line, and line two as the line above our previous line.
             // (this comes in handy if the angle is high enough, it makes it so we don't have to adjust our starting position or any angles or anything)
-            SKPoint line_one_middle = new SKPoint(-current_frame.PeekPixels().Width, 3);
-            SKPoint line_two_middle = new SKPoint(-current_frame.PeekPixels().Width, 3);
+            SKPoint line_one_middle = new SKPoint(-selected_layer.img.PeekPixels().Width, 3);
+            SKPoint line_two_middle = new SKPoint(-selected_layer.img.PeekPixels().Width, 3);
 
             // don't worry this doesn't really affect performance from my testing on my wimpy laptop at all
             for (int i = 0; i < 100; i++)
@@ -130,7 +146,7 @@ namespace Sketchpop
                 SKPath path = new SKPath();
 
                 path.MoveTo(line_one_middle);
-                using (SKSurface surface = SKSurface.Create(current_frame.PeekPixels()))
+                using (SKSurface surface = SKSurface.Create(selected_layer.img.PeekPixels()))
                 {
                     // draw line one
                     path.MoveTo(-vector.X + line_one_middle.X, -vector.Y + line_one_middle.Y);
