@@ -22,12 +22,12 @@ namespace Sketchpop
         public System.Windows.Forms.Timer draw_timer = new System.Windows.Forms.Timer();
         bool mouse_down = false;
 
-        private Database_Manager dbm = new Database_Manager();
+        private Database_Manager _dbm = new Database_Manager();
         private List<UnsplashImage> _current_images = new List<UnsplashImage>();
 
-        private PictureBox selected_picturebox;
-        private PictureBox prev_selected_picturebox;
-        private string last_searched_query;
+        private PictureBox _selected_picturebox;
+        private PictureBox _prev_selected_picturebox;
+        private string _last_searched_query;
 
         public void draw_timer_method(Object my_object, EventArgs my_event_args)
         {
@@ -199,158 +199,14 @@ namespace Sketchpop
                 MessageBox.Show(ex.Message);
                 return null;
             }
-        }
+        }      
 
-        private void image_search_text_entry_KeyDown(object sender, KeyEventArgs e)
+        private void img_form_buttonClick(object sender, EventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.SuppressKeyPress = true;
-                search_button_Click(sender, e); // user presses the search button
-            }
-        }
+            var _ims = new Image_Search_Form(reference_img);
 
-        private async void search_button_Click(object sender, EventArgs e)
-        {
-            // display to the user that a search is being done
-            db_status_label.Visible = true;
-            db_status_label.Text = "Gathering Images...";
-
-            // show the panel to the user
-            ref_img_thumbnails.Visible = true;
-            back_panel.Visible = true;
-            db_status_label.Visible = false;
-
-            string query = image_search_text_entry.Text; // get the user's query
-
-            // if the user searches the same string, don't query the database
-            if (query.Equals(last_searched_query) && _current_images.Count > 0)
-            {
-                // display the pre-queued selection view to the user
-                back_panel.Visible = true;
-                ref_img_thumbnails.Visible = true;
-                last_searched_query = query; // save the last searched query
-            }
-            else
-            {
-                ref_img_thumbnails.Controls.Clear(); // clear the selection view so that only the searched query shows 
-
-                _current_images = dbm.Execute_Image_Request_Query(query);
-
-                // get images from database -- empty string searches all entries of the database, if no entries exist in db, count will be 0
-                if (_current_images.Count > 0)
-                {
-                    if (!select_button.Enabled)
-                        select_button.Enabled = true;
-
-                    // loop through all returned images and display them in the selection view
-                    foreach (UnsplashImage image in _current_images)
-                    {
-                        // create pictureboxes for each image
-                        PictureBox pictureBox = new PictureBox();
-                        pictureBox.Image = await convert_to_imageAsync(image.Get_Image_URL());
-                        pictureBox.Width = 100;
-                        pictureBox.Height = 100;
-                        pictureBox.Margin = new Padding(5);
-                        pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-
-                        // each picturebox gets an event to detect user selection
-                        pictureBox.Click += (s, args) =>
-                        {
-                            // logic for displaying the selected image to the user
-                            if (selected_picturebox == null)
-                            {
-                                selected_picturebox = pictureBox;
-                                prev_selected_picturebox = pictureBox;
-
-                                pictureBox.BorderStyle = BorderStyle.FixedSingle;
-                                pictureBox.BackColor = Color.Transparent;
-                            }
-                            else
-                            {
-                                if (prev_selected_picturebox != pictureBox)
-                                {
-                                    prev_selected_picturebox.BorderStyle = BorderStyle.None;
-                                    prev_selected_picturebox.BackColor = Color.Transparent;
-
-                                    selected_picturebox = pictureBox;
-                                    prev_selected_picturebox = pictureBox;
-
-                                    selected_picturebox.BorderStyle = BorderStyle.FixedSingle;
-                                    selected_picturebox.BackColor = Color.Transparent;
-                                }
-                            }
-                        };
-
-                        ref_img_thumbnails.Controls.Add(pictureBox); // add images to the panel
-                    }
-                    last_searched_query = image_search_text_entry.Text; // save the search query in case the user uses the same search again
-                }
-                else
-                {
-                    db_status_label.Text = "No Entries in the Database.";
-                }
-            }
-        }
-
-        private async Task<Image> convert_to_imageAsync(string url)
-        {
-            using (var client = new HttpClient())
-            {
-                var response = await client.GetAsync(url);
-                using (var stream = await response.Content.ReadAsStreamAsync())
-                {
-                    var image = Image.FromStream(stream);
-
-                    // Do something with the image object
-                    return image;
-                }
-            }
-        }
-
-        private void upload_button_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image Files (*.jpg;*.jpeg;*.png;*.gif)|*.jpg;*.jpeg;*.png;*.gif";
-            openFileDialog.Multiselect = false;
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string fileName = openFileDialog.SafeFileName; // Gets the file name
-                string filePath = openFileDialog.FileName; // Gets the full file path
-                dbm.Execute_Local_Picture_Upload_Query(fileName, filePath);
-            }
-        }
-
-        private void select_button_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                reference_img.Image = selected_picturebox.Image;
-            }
-            catch (Exception ex)
-            {
-                db_status_label.Visible = true;
-            }
-        }
-
-        private void cancel_button_Click(object sender, EventArgs e)
-        {
-            back_panel.Visible = false;
-            ref_img_thumbnails.Visible = false;
-            db_status_label.Visible = false;
-        }
-
-        private void clear_database_button_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("Are you sure you want to clear the database? This will permanently delete all existing images in the database.", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
-            {
-                dbm.Execute_Delete_Database();
-                ref_img_thumbnails.Controls.Clear();
-                select_button.Enabled = false;
-                _current_images.Clear();
-            }
+            _ims.Location = canvas_frame.Location;
+            _ims.Show();
         }
 
         /* 
