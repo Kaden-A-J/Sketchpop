@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql;
 using MySql.Data.MySqlClient;
+using Mysqlx;
+using Newtonsoft.Json.Linq;
 
 namespace Sketchpop
 {
@@ -18,24 +20,12 @@ namespace Sketchpop
         private string _connection_string = "server=store-for-images.ce93uhqibbvf.us-east-2.rds.amazonaws.com;database=Sketchpop;uid=admin;pwd=SketchPop;";
         private Unsplash_Manager _um = new Unsplash_Manager();
 
-        public List<UnsplashImage> Execute_Image_Request_Query(string query)
+        public List<UnsplashImage> Execute_Image_Request_Query(string query, int num_pics)
         {
-            // first check to see if db contains images of query
-            var db_images = Get_Db_Images(query);
-            if (db_images.Count > 0)
-            {
-                return db_images;
-            }
-            else // otherwise, make an API call to get images
-            {
-                // get images from the Unsplash Manager
-                List<UnsplashImage> ret_images = _um.Get_Images(query);
+            // get images from the Unsplash Manager
+            List<UnsplashImage> ret_images = _um.Get_Images(query, num_pics);
 
-                // insert the images into the database for the next time
-                Insert_New_Images(ret_images);
-
-                return ret_images;
-            }
+            return ret_images;
         }
 
         public void Insert_New_Images(List<UnsplashImage> images)
@@ -60,77 +50,60 @@ namespace Sketchpop
 
                     cmd.ExecuteNonQuery();
                 }
-            }        
+            }
         }
 
-        public List<UnsplashImage> Get_Db_Images(string query)
+        public void Remove_Images_By_Id(List<string> ids)
         {
-            var db_images = new List<UnsplashImage>();
-            if (!query.Equals(""))
-            {                
-                try
+            string sql_query = "DELETE FROM images WHERE image_id = @image_id";
+
+            using (MySqlConnection conn = new MySqlConnection(_connection_string))
+            {
+                conn.Open();
+
+                foreach (string id in ids)
                 {
-                    string sql_query = $"SELECT * FROM images WHERE image_id LIKE '%{query}%'";
-                    using (MySqlConnection conn = new MySqlConnection(_connection_string))
-                    {
-                        conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(sql_query, conn);
 
-                        // create an sql command to be executed
-                        MySqlCommand cmd = new MySqlCommand(sql_query, conn);
+                    cmd.Parameters.AddWithValue("@image_id", id);
 
-                        // create a reader to read the image data
-                        MySqlDataReader rdr = cmd.ExecuteReader();
-                        while (rdr.Read())
-                        {
-                            string image_id = rdr["image_id"].ToString();
-                            string image_description = rdr["image_description"].ToString();
-                            string image_author = rdr["image_author"].ToString();
-                            string image_author_profile = rdr["image_author_profile"].ToString();
-                            string image_url = rdr["image_url"].ToString();
-                            string url = rdr["url"].ToString();
-
-                            UnsplashImage image = new UnsplashImage(image_id, image_description, image_author, image_author_profile, image_url, url);
-                            db_images.Add(image);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error:\n\n" + ex.Message);
+                    cmd.ExecuteNonQuery();
                 }
             }
-            else
+        }
+
+        public List<UnsplashImage> Get_Db_Images()
+        {
+            var db_images = new List<UnsplashImage>();
+            try
             {
-                try
+                string sql_query = $"SELECT * FROM images";
+                using (MySqlConnection conn = new MySqlConnection(_connection_string))
                 {
-                    string sql_query = $"SELECT * FROM images";
-                    using (MySqlConnection conn = new MySqlConnection(_connection_string))
+                    conn.Open();
+
+                    // create an sql command to be executed
+                    MySqlCommand cmd = new MySqlCommand(sql_query, conn);
+
+                    // create a reader to read the image data
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
                     {
-                        conn.Open();
+                        string image_id = rdr["image_id"].ToString();
+                        string image_description = rdr["image_description"].ToString();
+                        string image_author = rdr["image_author"].ToString();
+                        string image_author_profile = rdr["image_author_profile"].ToString();
+                        string image_url = rdr["image_url"].ToString();
+                        string url = rdr["url"].ToString();
 
-                        // create an sql command to be executed
-                        MySqlCommand cmd = new MySqlCommand(sql_query, conn);
-
-                        // create a reader to read the image data
-                        MySqlDataReader rdr = cmd.ExecuteReader();
-                        while (rdr.Read())
-                        {
-                            string image_id = rdr["image_id"].ToString();
-                            string image_description = rdr["image_description"].ToString();
-                            string image_author = rdr["image_author"].ToString();
-                            string image_author_profile = rdr["image_author_profile"].ToString();
-                            string image_url = rdr["image_url"].ToString();
-                            string url = rdr["url"].ToString();
-
-                            UnsplashImage image = new UnsplashImage(image_id, image_description, image_author, image_author_profile, image_url, url);
-                            db_images.Add(image);
-                        }
+                        UnsplashImage image = new UnsplashImage(image_id, image_description, image_author, image_author_profile, image_url, url);
+                        db_images.Add(image);
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error:\n\n" + ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error:\n\n" + ex.Message);
             }
             return db_images;
         }
@@ -148,7 +121,8 @@ namespace Sketchpop
             // Insert image into database
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(_connection_string)) {
+                using (MySqlConnection conn = new MySqlConnection(_connection_string))
+                {
                     conn.Open();
 
                     string query = "INSERT INTO local_pictures (Name, ImageData) VALUES (@Name, @ImageData)";
@@ -211,7 +185,7 @@ namespace Sketchpop
                 }
                 _um.Clear_IDs();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("Error::\n" + ex);
             }
