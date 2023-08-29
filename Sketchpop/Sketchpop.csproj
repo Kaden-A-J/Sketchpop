@@ -139,6 +139,12 @@
     <Compile Include="Canvas_Manager.cs" />
     <Compile Include="Brush.cs" />
     <Compile Include="Database_Manager.cs" />
+    <Compile Include="Image_Search_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Image_Search_Form.Designer.cs">
+      <DependentUpon>Image_Search_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Layer.cs" />
     <Compile Include="Main_Window_Form.cs">
       <SubType>Form</SubType>
@@ -157,6 +163,9 @@
     </Compile>
     <Compile Include="Unsplash_Image.cs" />
     <Compile Include="Unsplash_Manager.cs" />
+    <EmbeddedResource Include="Image_Search_Form.resx">
+      <DependentUpon>Image_Search_Form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main_Window_Form.resx">
       <DependentUpon>Main_Window_Form.cs</DependentUpon>
       <SubType>Designer</SubType>

@@ -539,6 +539,7 @@ namespace Sketchpop
         private System.Windows.Forms.Panel tool_bar;
         private System.Windows.Forms.Label title_label;
         private System.Windows.Forms.Panel left_settings_panel;
+        private System.Windows.Forms.Button img_form_button;
         private System.Windows.Forms.Panel quick_launch_bar;
         private System.Windows.Forms.Panel canvas_panel;
         private System.Windows.Forms.Panel right_settings_panel;
