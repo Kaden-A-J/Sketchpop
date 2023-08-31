@@ -56,9 +56,7 @@ namespace Sketchpop
             this.repeatedCirclesPracticeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.canvas_panel = new System.Windows.Forms.Panel();
-            this.b_layer_3 = new System.Windows.Forms.Button();
-            this.b_layer_2 = new System.Windows.Forms.Button();
-            this.b_layer_1 = new System.Windows.Forms.Button();
+            this.layers_box = new System.Windows.Forms.ListBox();
             this.clear_canvas_button = new System.Windows.Forms.Button();
             this.pen_button = new System.Windows.Forms.Button();
             this.eraser_button = new System.Windows.Forms.Button();
@@ -342,9 +340,7 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
-            this.canvas_panel.Controls.Add(this.b_layer_3);
-            this.canvas_panel.Controls.Add(this.b_layer_2);
-            this.canvas_panel.Controls.Add(this.b_layer_1);
+            this.canvas_panel.Controls.Add(this.layers_box);
             this.canvas_panel.Controls.Add(this.clear_canvas_button);
             this.canvas_panel.Controls.Add(this.pen_button);
             this.canvas_panel.Controls.Add(this.eraser_button);
@@ -354,38 +350,15 @@ namespace Sketchpop
             this.canvas_panel.Size = new System.Drawing.Size(906, 653);
             this.canvas_panel.TabIndex = 6;
             // 
-            // b_layer_3
+            // layers_box
             // 
-            this.b_layer_3.Location = new System.Drawing.Point(418, 2);
-            this.b_layer_3.Name = "b_layer_3";
-            this.b_layer_3.Size = new System.Drawing.Size(75, 23);
-            this.b_layer_3.TabIndex = 13;
-            this.b_layer_3.Text = "layer 3";
-            this.b_layer_3.UseVisualStyleBackColor = true;
-            this.b_layer_3.UseWaitCursor = true;
-            this.b_layer_3.Click += new System.EventHandler(this.b_layer_3_Click);
-            // 
-            // b_layer_2
-            // 
-            this.b_layer_2.Location = new System.Drawing.Point(305, 6);
-            this.b_layer_2.Name = "b_layer_2";
-            this.b_layer_2.Size = new System.Drawing.Size(75, 23);
-            this.b_layer_2.TabIndex = 12;
-            this.b_layer_2.Text = "layer 2";
-            this.b_layer_2.UseVisualStyleBackColor = true;
-            this.b_layer_2.UseWaitCursor = true;
-            this.b_layer_2.Click += new System.EventHandler(this.b_layer_2_Click);
-            // 
-            // b_layer_1
-            // 
-            this.b_layer_1.Location = new System.Drawing.Point(182, 2);
-            this.b_layer_1.Name = "b_layer_1";
-            this.b_layer_1.Size = new System.Drawing.Size(75, 23);
-            this.b_layer_1.TabIndex = 11;
-            this.b_layer_1.Text = "layer 1";
-            this.b_layer_1.UseVisualStyleBackColor = true;
-            this.b_layer_1.UseWaitCursor = true;
-            this.b_layer_1.Click += new System.EventHandler(this.b_layer_1_Click);
+            this.layers_box.FormattingEnabled = true;
+            this.layers_box.Location = new System.Drawing.Point(497, 0);
+            this.layers_box.Name = "layers_box";
+            this.layers_box.Size = new System.Drawing.Size(114, 30);
+            this.layers_box.Sorted = true;
+            this.layers_box.TabIndex = 14;
+            this.layers_box.SelectedIndexChanged += new System.EventHandler(this.layers_box_SelectedIndexChanged);
             // 
             // clear_canvas_button
             // 
