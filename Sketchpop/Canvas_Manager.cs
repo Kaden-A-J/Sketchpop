@@ -14,7 +14,7 @@ namespace Sketchpop
         private SKPath current_path;
         private PictureBox picture_box;
         private Layer selected_layer;
-        private List<Layer> layers;
+        public List<Layer> Layers { get; private set; }
         private SKImageInfo canvas_info;
         private Brush_Manager brush_manager;
 
@@ -26,7 +26,7 @@ namespace Sketchpop
     }
 
 
-        public void AddPointToDraw(Point point)
+        public void Add_Point_To_Draw(Point point)
         {
             pointsToDraw.Enqueue(new Point_Operation(point, Point_Operation.OperationType.line_to));
         }
@@ -43,10 +43,54 @@ namespace Sketchpop
             
         }
 
-        public void switchLayer(int layer)
+        /// <summary>
+        /// Selects the layer at the specified 0-based index
+        /// </summary>
+        /// <param name="index">0 based index</param>
+        public void Select_Layer(int index)
         {
-            selected_layer = layers[layer];
+            selected_layer = Layers[index];
         }
+
+        /// <summary>
+        /// Adds a layer to the end/top of our layers list
+        /// </summary>
+        /// <returns> Returns the index of the added layer</returns>
+        public int Add_Layer()
+        {
+            Layers.Add(new Layer(SKImage.Create(canvas_info), 0));
+            return Layers.Count - 1;
+        }
+
+        /// <summary>
+        /// Removes a layer 
+        /// </summary>
+        /// <param name="index">0 based index</param>
+        public void Remove_Layer(int index)
+        {
+            Layers.RemoveAt(index);
+        }
+
+        /// <summary>
+        /// Takes the layer at the specified old_index, and places it at the specified new_index. 0-based indexes.
+        /// </summary>
+        public void Reorder_Layer(int old_index, int new_index)
+        {
+            List<Layer> new_order = new List<Layer>(Layers.Count);
+            for (int i = 0; i < Layers.Count; i++) 
+            {
+                if (i == new_index)
+                {
+                    new_order.Add(Layers[old_index]);
+                    new_order.Add(Layers[i]);
+                }
+                else if (i != old_index)
+                {
+                    new_order.Add(Layers[i]);
+                }
+            }
+        }
+
 
         public void Update_Color(byte red, byte green, byte blue, byte alpha)
         {
@@ -67,7 +111,7 @@ namespace Sketchpop
         {
             using (SKSurface surface = SKSurface.Create(selected_layer.img.Info))
             {
-                foreach (Layer l in layers)
+                foreach (Layer l in Layers)
                 {
                     surface.Canvas.DrawImage(l.img, l.img.Info.Rect);
                 }
@@ -105,7 +149,7 @@ namespace Sketchpop
                 surface.Canvas.Clear();
                 selected_layer = new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 0);
                 // note: the first and last layers are just placeholders for testing
-                layers = new List<Layer> { new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 0), selected_layer, new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 0) };
+                Layers = new List<Layer> { new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 0), selected_layer, new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 0) };
             }
         }
 
