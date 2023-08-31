@@ -234,6 +234,12 @@ namespace Sketchpop
             Program.canvas_manager.Select_Layer(layers_box.SelectedIndex);
         }
 
+        private void RegisterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            login_window login = new login_window();
+            login.Show();
+        }
+
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
         private Rectangle left { get { return new Rectangle(0, 0, _grip_size, this.ClientSize.Height); } }
         private Rectangle bottom { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, this.ClientSize.Width, _grip_size); } }
