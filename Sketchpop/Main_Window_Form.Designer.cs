@@ -561,11 +561,9 @@ namespace Sketchpop
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox db_status_label;
         private System.Windows.Forms.Button clear_database_button;
-        private System.Windows.Forms.Button b_layer_3;
-        private System.Windows.Forms.Button b_layer_2;
-        private System.Windows.Forms.Button b_layer_1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RegisterToolStripMenuItem;
+        private System.Windows.Forms.ListBox layers_box;
     }
 }
 
