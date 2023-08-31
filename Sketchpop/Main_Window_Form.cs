@@ -11,7 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
-using static Sketchpop.Image_Search_Form;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Image = System.Drawing.Image;
@@ -23,7 +22,12 @@ namespace Sketchpop
         public System.Windows.Forms.Timer draw_timer = new System.Windows.Forms.Timer();
         bool mouse_down = false;
 
-        private string _author_link;
+        private Database_Manager _dbm = new Database_Manager();
+        private List<UnsplashImage> _current_images = new List<UnsplashImage>();
+
+        private PictureBox _selected_picturebox;
+        private PictureBox _prev_selected_picturebox;
+        private string _last_searched_query;
 
         public void draw_timer_method(Object my_object, EventArgs my_event_args)
         {
@@ -112,7 +116,7 @@ namespace Sketchpop
             //    var click_pos = canvas_frame.PointToClient(MousePosition);
             //    Program.canvas_manager.AddPointToDraw(click_pos);
             //}
-        }
+        }        
 
         private void red_input_box_ValueChanged(object sender, EventArgs e)
         {
@@ -163,12 +167,6 @@ namespace Sketchpop
          *  Start of -- Image Selection and Database Related Code
          */
 
-        /// <summary>
-        /// Changes the opacity of an image.
-        /// </summary>
-        /// <param name="image">the image being modified</param>
-        /// <param name="opacity">the level of opacity to set the image</param>
-        /// <returns></returns>
         public Image set_image_opacity(Image image, float opacity)
         {
             try
@@ -202,81 +200,14 @@ namespace Sketchpop
                 MessageBox.Show(ex.Message);
                 return null;
             }
-        }
+        }      
 
-        /// <summary>
-        /// When the user clicks this button, a new form is created, with an event
-        /// handler to signify the main form when the user selects an image.
-        /// </summary>
-        /// <param name="sender">the user clicks button to open new ref img form</param>
-        /// <param name="e">n/a</param>
         private void img_form_buttonClick(object sender, EventArgs e)
         {
-            var _ims = new Image_Search_Form();
+            var _ims = new Image_Search_Form(reference_img);
 
-            _ims._image_selected += image_selected; // subscribe to the selected image even            
-            _ims.StartPosition = FormStartPosition.CenterParent;
-
-            _ims.ShowDialog();
-        }
-
-        /// <summary>
-        /// An event handler for when the user selects an image from the Image Selection Form.
-        /// 
-        /// Once an image has been selected, the relevant data such as the Image selected, the
-        /// photographer's name that took the image, and the photographer's profile page are all
-        /// encapsulated into an object that can be accessed by the Main Form. The event also 
-        /// triggers some labels to be shown to the user displaying this data.
-        /// </summary>
-        /// <param name="sender">the form that is invoking this event</param>
-        /// <param name="data">the photographer's name/link to profile and the image that was selected</param>
-        private void image_selected(object sender, SelectedImageData data)
-        {
-            // extract data
-            reference_img.Image = data.Image;
-            _author_link = data.Link;
-
-            // truncate the lenght of the string to 8 chars
-            if (data.Name.Length > 8)
-                author_link_label.Text = data.Name.Substring(0, 8);
-            else
-            {
-                author_link_label.Text += data.Name;
-            }
-
-            // make image description labels visible
-            pb_label.Visible = true;
-            author_link_label.Visible = true;
-            on_label.Visible = true;
-            unsplash_link.Visible = true;
-
-            // create tool tips for the links
-            ToolTip auth_tt = new ToolTip();
-            auth_tt.SetToolTip(author_link_label, $"Photographer: {data.Name} - - Profile: {_author_link}");
-            auth_tt.AutoPopDelay = 5000;
-            ToolTip unsp_tt = new ToolTip();
-            unsp_tt.SetToolTip(unsplash_link, "https://www.unsplash.com/?utm_source=Sketchpop&utm_medium=referral");
-            unsp_tt.AutoPopDelay = 5000;
-        }
-
-        /// <summary>
-        /// The user clicks the LinkLabel associated with the Unsplash API website.
-        /// </summary>
-        /// <param name="sender">user clicks this button</param>
-        /// <param name="e">n/a</param>
-        private void unsplash_link_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://www.unsplash.com/?utm_source=Sketchpop&utm_medium=referral");
-        }
-
-        /// <summary>
-        /// The user clicks the LinkLabel associated with the photographer of the Image selected.
-        /// </summary>
-        /// <param name="sender">user clicks this button</param>
-        /// <param name="e">n/a</param>
-        private void author_link_label_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start(_author_link);
+            _ims.Location = canvas_frame.Location;
+            _ims.Show();
         }
 
         /* 

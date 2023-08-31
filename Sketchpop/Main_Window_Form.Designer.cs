@@ -39,10 +39,6 @@ namespace Sketchpop
             this.fullscreen_button = new System.Windows.Forms.Button();
             this.tool_bar = new System.Windows.Forms.Panel();
             this.left_settings_panel = new System.Windows.Forms.Panel();
-            this.unsplash_link = new System.Windows.Forms.LinkLabel();
-            this.on_label = new System.Windows.Forms.Label();
-            this.author_link_label = new System.Windows.Forms.LinkLabel();
-            this.pb_label = new System.Windows.Forms.Label();
             this.img_form_button = new System.Windows.Forms.Button();
             this.reference_img = new System.Windows.Forms.PictureBox();
             this.db_status_label = new System.Windows.Forms.TextBox();
@@ -166,10 +162,6 @@ namespace Sketchpop
             this.left_settings_panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.left_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
-            this.left_settings_panel.Controls.Add(this.unsplash_link);
-            this.left_settings_panel.Controls.Add(this.on_label);
-            this.left_settings_panel.Controls.Add(this.author_link_label);
-            this.left_settings_panel.Controls.Add(this.pb_label);
             this.left_settings_panel.Controls.Add(this.img_form_button);
             this.left_settings_panel.Controls.Add(this.reference_img);
             this.left_settings_panel.Controls.Add(this.db_status_label);
@@ -185,57 +177,9 @@ namespace Sketchpop
             this.left_settings_panel.Size = new System.Drawing.Size(172, 694);
             this.left_settings_panel.TabIndex = 4;
             // 
-            // unsplash_link
-            // 
-            this.unsplash_link.AutoSize = true;
-            this.unsplash_link.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.unsplash_link.Location = new System.Drawing.Point(111, 124);
-            this.unsplash_link.Name = "unsplash_link";
-            this.unsplash_link.Size = new System.Drawing.Size(44, 12);
-            this.unsplash_link.TabIndex = 14;
-            this.unsplash_link.TabStop = true;
-            this.unsplash_link.Text = "Unsplash";
-            this.unsplash_link.Visible = false;
-            this.unsplash_link.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.unsplash_link_LinkClicked);
-            // 
-            // on_label
-            // 
-            this.on_label.AutoSize = true;
-            this.on_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.on_label.Location = new System.Drawing.Point(97, 124);
-            this.on_label.Name = "on_label";
-            this.on_label.Size = new System.Drawing.Size(15, 12);
-            this.on_label.TabIndex = 14;
-            this.on_label.Text = "on";
-            this.on_label.Visible = false;
-            // 
-            // author_link_label
-            // 
-            this.author_link_label.AutoSize = true;
-            this.author_link_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.author_link_label.Location = new System.Drawing.Point(54, 124);
-            this.author_link_label.Name = "author_link_label";
-            this.author_link_label.Size = new System.Drawing.Size(45, 12);
-            this.author_link_label.TabIndex = 14;
-            this.author_link_label.TabStop = true;
-            this.author_link_label.Text = "12345678";
-            this.author_link_label.Visible = false;
-            this.author_link_label.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.author_link_label_LinkClicked);
-            // 
-            // pb_label
-            // 
-            this.pb_label.AutoSize = true;
-            this.pb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pb_label.Location = new System.Drawing.Point(16, 124);
-            this.pb_label.Name = "pb_label";
-            this.pb_label.Size = new System.Drawing.Size(41, 12);
-            this.pb_label.TabIndex = 14;
-            this.pb_label.Text = "Photo by";
-            this.pb_label.Visible = false;
-            // 
             // img_form_button
             // 
-            this.img_form_button.Location = new System.Drawing.Point(97, 140);
+            this.img_form_button.Location = new System.Drawing.Point(97, 130);
             this.img_form_button.Name = "img_form_button";
             this.img_form_button.Size = new System.Drawing.Size(72, 23);
             this.img_form_button.TabIndex = 4;
