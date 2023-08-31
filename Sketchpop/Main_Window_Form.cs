@@ -34,7 +34,7 @@ namespace Sketchpop
             if (mouse_down)
             {
                 var click_pos = canvas_frame.PointToClient(MousePosition);
-                Program.canvas_manager.AddPointToDraw(click_pos);
+                Program.canvas_manager.Add_Point_To_Draw(click_pos);
             }
 
             Program.canvas_manager.Draw_Path_Points(new object());
@@ -46,6 +46,7 @@ namespace Sketchpop
             InitializeComponent();
             Program.canvas_manager = new Canvas_Manager(ref canvas_frame);
 
+            layers_box.Items.AddRange(Program.canvas_manager.Layers.ToArray());
             draw_timer.Tick += new EventHandler(draw_timer_method);
             draw_timer.Interval = 8; // 11.111... ms is 90 fps
             draw_timer.Start();
@@ -215,17 +216,22 @@ namespace Sketchpop
 
         private void b_layer_1_Click(object sender, EventArgs e)
         {
-            Program.canvas_manager.switchLayer(0);
+            Program.canvas_manager.Select_Layer(0);
         }
 
         private void b_layer_2_Click(object sender, EventArgs e)
         {
-            Program.canvas_manager.switchLayer(1);
+            Program.canvas_manager.Select_Layer(1);
         }
 
         private void b_layer_3_Click(object sender, EventArgs e)
         {
-            Program.canvas_manager.switchLayer(2);
+            Program.canvas_manager.Select_Layer(2);
+        }
+
+        private void layers_box_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Select_Layer(layers_box.SelectedIndex);
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
@@ -259,7 +265,7 @@ namespace Sketchpop
                 // Resizing the window
                 var cursor = this.PointToClient(Cursor.Position);
 
-                Console.WriteLine(cursor);
+                //Console.WriteLine(cursor);
 
                 if (top_left.Contains(cursor)) message.Result = (IntPtr)HTTOPLEFT;
                 else if (top_right.Contains(cursor)) message.Result = (IntPtr)HTTOPRIGHT;
