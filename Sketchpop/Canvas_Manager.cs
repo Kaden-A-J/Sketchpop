@@ -23,7 +23,7 @@ namespace Sketchpop
             picture_box = canvas_frame;
             canvas_info = new SKImageInfo(906, 625);
             Reset_Canvas_State();
-    }
+        }
 
 
         public void Add_Point_To_Draw(Point point)
@@ -58,7 +58,7 @@ namespace Sketchpop
         /// <returns> Returns the index of the added layer</returns>
         public int Add_Layer()
         {
-            Layers.Add(new Layer(SKImage.Create(canvas_info), 0));
+            Layers.Add(new Layer(SKImage.Create(canvas_info), 1));
             return Layers.Count - 1;
         }
 
@@ -70,6 +70,17 @@ namespace Sketchpop
         {
             Layers.RemoveAt(index);
         }
+
+        public void Set_Layer_Transparency(int index, float transparency)
+        {
+            Layers[index].Opacity = transparency;
+        }
+
+        public void Set_Layer_Transparency(float transparency)
+        {
+            selected_layer.Opacity = transparency;
+        }
+
 
         /// <summary>
         /// Takes the layer at the specified old_index, and places it at the specified new_index. 0-based indexes.
@@ -109,11 +120,13 @@ namespace Sketchpop
         /// < returns ></ returns >
         public void Draw_Bitmap(object state)
         {
-            using (SKSurface surface = SKSurface.Create(selected_layer.img.Info))
+            using (SKSurface surface = SKSurface.Create(selected_layer.Img.Info))
+            using (SKPaint paint = new SKPaint())
             {
                 foreach (Layer l in Layers)
                 {
-                    surface.Canvas.DrawImage(l.img, l.img.Info.Rect);
+                    paint.Color = paint.Color.WithAlpha((byte)(0xFF * l.Opacity));
+                    surface.Canvas.DrawImage(l.Img, l.Img.Info.Rect, paint);
                 }
                 picture_box.Image = surface.Snapshot().ToBitmap();
             }
@@ -123,7 +136,7 @@ namespace Sketchpop
         {
             if (current_path != null)
             {
-                using (SKSurface surface = SKSurface.Create(selected_layer.img.PeekPixels()))
+                using (SKSurface surface = SKSurface.Create(selected_layer.Img.PeekPixels()))
                 {
                     if (pointsToDraw.TryDequeue(out Point_Operation po))
                     {
@@ -147,9 +160,9 @@ namespace Sketchpop
             using (SKSurface surface = SKSurface.Create(canvas_info))
             {
                 surface.Canvas.Clear();
-                selected_layer = new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 0);
+                selected_layer = new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 1);
                 // note: the first and last layers are just placeholders for testing
-                Layers = new List<Layer> { new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 0), selected_layer, new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 0) };
+                Layers = new List<Layer> { selected_layer, new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 1), new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 1) };
             }
         }
 
@@ -173,7 +186,7 @@ namespace Sketchpop
                 StrokeWidth = 5
             };
 
-            int length = (selected_layer.img.PeekPixels().Width + selected_layer.img.PeekPixels().Height) * 10;
+            int length = (selected_layer.Img.PeekPixels().Width + selected_layer.Img.PeekPixels().Height) * 10;
             double angle_radians = -angle * (Math.PI / 180); 
             double orth_angle_radians = angle_radians + (Math.PI / 2); // used to create parallel lines
             SKPoint vector = new SKPoint((float)(length * Math.Cos(angle_radians)), (float)(length * Math.Sin(angle_radians))); // direction and magnitude of all lines
@@ -181,8 +194,8 @@ namespace Sketchpop
             // We draw two lines at a time to make it easier to keep lines on the screen with any angle input
             // You can think of line one as the line below our previous line, and line two as the line above our previous line.
             // (this comes in handy if the angle is high enough, it makes it so we don't have to adjust our starting position or any angles or anything)
-            SKPoint line_one_middle = new SKPoint(-selected_layer.img.PeekPixels().Width, 3);
-            SKPoint line_two_middle = new SKPoint(-selected_layer.img.PeekPixels().Width, 3);
+            SKPoint line_one_middle = new SKPoint(-selected_layer.Img.PeekPixels().Width, 3);
+            SKPoint line_two_middle = new SKPoint(-selected_layer.Img.PeekPixels().Width, 3);
 
             // don't worry this doesn't really affect performance from my testing on my wimpy laptop at all
             for (int i = 0; i < 100; i++)
@@ -190,7 +203,7 @@ namespace Sketchpop
                 SKPath path = new SKPath();
 
                 path.MoveTo(line_one_middle);
-                using (SKSurface surface = SKSurface.Create(selected_layer.img.PeekPixels()))
+                using (SKSurface surface = SKSurface.Create(selected_layer.Img.PeekPixels()))
                 {
                     // draw line one
                     path.MoveTo(-vector.X + line_one_middle.X, -vector.Y + line_one_middle.Y);

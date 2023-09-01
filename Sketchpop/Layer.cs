@@ -4,26 +4,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Sketchpop
 {
     public class Layer
     {
-        public SKImage img { get; set; }
-        public float transparency { get; set; }
-        public String name { get; set; }
-        
-        public Layer(SKImage img, float transparency)
+        public SKImage Img { get; set; }
+        private float _opacity;
+        /// <summary>
+        /// value between 0 and 1; 0 being fully transparent, 1 being fully opaque
+        /// </summary>
+        public float Opacity 
         {
-            this.img = img;
-            this.transparency = transparency;
+            get { return _opacity; }
+            set
+            {
+                if (value < 0)
+                {
+                    _opacity = 0;
+                }
+                else if (value > 1)
+                {
+                    _opacity = 1;
+                }
+                else
+                {
+                    _opacity = value;
+                }
+            }
         }
 
-        public Layer(String name, SKImage img, float transparency)
+        public String Name { get; set; }
+        
+        public Layer(SKImage img, float opacity)
         {
-            this.name = name;
-            this.img = img;
-            this.transparency = transparency;
+            this.Img = img;
+            this.Opacity = opacity;
+        }
+
+        public Layer(String name, SKImage img, float opacity)
+        {
+            this.Name = name;
+            this.Img = img;
+            this.Opacity = opacity;
         }
     }
 }

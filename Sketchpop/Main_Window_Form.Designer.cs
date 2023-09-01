@@ -43,6 +43,7 @@ namespace Sketchpop
             this.on_label = new System.Windows.Forms.Label();
             this.author_link_label = new System.Windows.Forms.LinkLabel();
             this.pb_label = new System.Windows.Forms.Label();
+            this.temp_transparency_num_up_down = new System.Windows.Forms.NumericUpDown();
             this.img_form_button = new System.Windows.Forms.Button();
             this.reference_img = new System.Windows.Forms.PictureBox();
             this.db_status_label = new System.Windows.Forms.TextBox();
@@ -73,6 +74,7 @@ namespace Sketchpop
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.title_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.temp_transparency_num_up_down)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reference_img)).BeginInit();
             this.quick_launch_bar.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -170,6 +172,7 @@ namespace Sketchpop
             this.left_settings_panel.Controls.Add(this.on_label);
             this.left_settings_panel.Controls.Add(this.author_link_label);
             this.left_settings_panel.Controls.Add(this.pb_label);
+            this.left_settings_panel.Controls.Add(this.temp_transparency_num_up_down);
             this.left_settings_panel.Controls.Add(this.img_form_button);
             this.left_settings_panel.Controls.Add(this.reference_img);
             this.left_settings_panel.Controls.Add(this.db_status_label);
@@ -232,6 +235,25 @@ namespace Sketchpop
             this.pb_label.TabIndex = 15;
             this.pb_label.Text = "Photo by";
             this.pb_label.Visible = false;
+            // 
+            // temp_transparency_num_up_down
+            // 
+            this.temp_transparency_num_up_down.DecimalPlaces = 2;
+            this.temp_transparency_num_up_down.Increment = new decimal(new int[] {
+            15,
+            0,
+            0,
+            131072});
+            this.temp_transparency_num_up_down.Location = new System.Drawing.Point(37, 478);
+            this.temp_transparency_num_up_down.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.temp_transparency_num_up_down.Name = "temp_transparency_num_up_down";
+            this.temp_transparency_num_up_down.Size = new System.Drawing.Size(120, 20);
+            this.temp_transparency_num_up_down.TabIndex = 5;
+            this.temp_transparency_num_up_down.ValueChanged += new System.EventHandler(this.temp_transparency_ValueChanged);
             // 
             // img_form_button
             // 
@@ -562,6 +584,7 @@ namespace Sketchpop
             this.title_bar.PerformLayout();
             this.left_settings_panel.ResumeLayout(false);
             this.left_settings_panel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.temp_transparency_num_up_down)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reference_img)).EndInit();
             this.quick_launch_bar.ResumeLayout(false);
             this.quick_launch_bar.PerformLayout();
@@ -623,6 +646,7 @@ namespace Sketchpop
         private System.Windows.Forms.LinkLabel author_link_label;
         private System.Windows.Forms.Label pb_label;
         private System.Windows.Forms.LinkLabel unsplash_link;
+        private System.Windows.Forms.NumericUpDown temp_transparency_num_up_down;
     }
 }
 
