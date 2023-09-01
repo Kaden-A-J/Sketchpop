@@ -72,6 +72,9 @@ namespace Sketchpop
             this.blue_input_box = new System.Windows.Forms.NumericUpDown();
             this.stroke_size_input_box = new System.Windows.Forms.NumericUpDown();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.layer_panel = new System.Windows.Forms.Panel();
+            this.layer_add_button = new System.Windows.Forms.Button();
+            this.layer_delete_button = new System.Windows.Forms.Button();
             this.title_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.temp_transparency_num_up_down)).BeginInit();
@@ -80,6 +83,7 @@ namespace Sketchpop
             this.menuStrip1.SuspendLayout();
             this.canvas_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).BeginInit();
+            this.right_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.red_input_box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blue_input_box)).BeginInit();
@@ -491,6 +495,9 @@ namespace Sketchpop
             this.right_settings_panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.right_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
+            this.right_settings_panel.Controls.Add(this.layer_delete_button);
+            this.right_settings_panel.Controls.Add(this.layer_add_button);
+            this.right_settings_panel.Controls.Add(this.layer_panel);
             this.right_settings_panel.Location = new System.Drawing.Point(1123, 26);
             this.right_settings_panel.Name = "right_settings_panel";
             this.right_settings_panel.Size = new System.Drawing.Size(154, 694);
@@ -554,6 +561,35 @@ namespace Sketchpop
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // layer_panel
+            // 
+            this.layer_panel.AutoScroll = true;
+            this.layer_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
+            this.layer_panel.Location = new System.Drawing.Point(7, 322);
+            this.layer_panel.Name = "layer_panel";
+            this.layer_panel.Size = new System.Drawing.Size(138, 262);
+            this.layer_panel.TabIndex = 0;
+            // 
+            // layer_add_button
+            // 
+            this.layer_add_button.Location = new System.Drawing.Point(7, 296);
+            this.layer_add_button.Name = "layer_add_button";
+            this.layer_add_button.Size = new System.Drawing.Size(23, 23);
+            this.layer_add_button.TabIndex = 1;
+            this.layer_add_button.Text = "+";
+            this.layer_add_button.UseVisualStyleBackColor = true;
+            this.layer_add_button.Click += new System.EventHandler(this.layer_add_button_Click);
+            // 
+            // layer_delete_button
+            // 
+            this.layer_delete_button.Location = new System.Drawing.Point(36, 296);
+            this.layer_delete_button.Name = "layer_delete_button";
+            this.layer_delete_button.Size = new System.Drawing.Size(23, 23);
+            this.layer_delete_button.TabIndex = 1;
+            this.layer_delete_button.Text = "-";
+            this.layer_delete_button.UseVisualStyleBackColor = true;
+            this.layer_delete_button.Click += new System.EventHandler(this.layer_delete_button_Click);
+            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -592,6 +628,7 @@ namespace Sketchpop
             this.menuStrip1.PerformLayout();
             this.canvas_panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).EndInit();
+            this.right_settings_panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.red_input_box)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.blue_input_box)).EndInit();
@@ -647,6 +684,9 @@ namespace Sketchpop
         private System.Windows.Forms.Label pb_label;
         private System.Windows.Forms.LinkLabel unsplash_link;
         private System.Windows.Forms.NumericUpDown temp_transparency_num_up_down;
+        private System.Windows.Forms.Button layer_delete_button;
+        private System.Windows.Forms.Button layer_add_button;
+        private System.Windows.Forms.Panel layer_panel;
     }
 }
 

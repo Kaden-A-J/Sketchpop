@@ -22,6 +22,7 @@ namespace Sketchpop
     {
         public System.Windows.Forms.Timer draw_timer = new System.Windows.Forms.Timer();
         bool mouse_down = false;
+        List<Panel> layers_ui;
 
         private string _author_link;
 
@@ -41,6 +42,8 @@ namespace Sketchpop
         {
             InitializeComponent();
             Program.canvas_manager = new Canvas_Manager(ref canvas_frame);
+
+            layers_ui = new List<Panel>();
 
             layers_box.Items.AddRange(Program.canvas_manager.Layers.ToArray());
             draw_timer.Tick += new EventHandler(draw_timer_method);
@@ -189,12 +192,38 @@ namespace Sketchpop
             Program.canvas_manager.Set_Layer_Transparency((float)temp_transparency_num_up_down.Value);
         }
 
+        private void layer_add_button_Click(object sender, EventArgs e)
+        {
+            Panel temp = new Panel();
+            //temp.Size = new Size(130, 40);
+            temp.Size = new Size(115, 40);
+            temp.Location = new Point(4, 44 * layers_ui.Count);
+            temp.BackColor = Color.White;
+
+            layers_ui.Add(temp);
+
+            this.layer_panel.Controls.Add(temp);
+
+            Label t_label = new Label();
+            t_label.Text = "Layer (" + layers_ui.Count + ")";
+            t_label.Location = new Point(5, 5);
+            temp.Controls.Add(t_label);
+        }
+
+        private void layer_delete_button_Click(object sender, EventArgs e)
+        {
+            if (layers_ui.Count == 0) { return; }
+            this.layer_panel.Controls.Remove(layers_ui[layers_ui.Count - 1]);
+            layers_ui.RemoveAt(layers_ui.Count - 1);
+        }
+
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
         private Rectangle left { get { return new Rectangle(0, 0, _grip_size, this.ClientSize.Height); } }
         private Rectangle bottom { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, this.ClientSize.Width, _grip_size); } }
         private Rectangle right { get { return new Rectangle(this.ClientSize.Width - _grip_size, 0, _grip_size, this.ClientSize.Height); } }
 
         private Rectangle top_left { get { return new Rectangle(0, 0, _grip_size, _grip_size); } }
+
 
         private Rectangle top_right { get { return new Rectangle(this.ClientSize.Width - _grip_size, 0, _grip_size, _grip_size); } }
         private Rectangle bottom_left { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }
