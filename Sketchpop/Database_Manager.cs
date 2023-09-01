@@ -15,11 +15,22 @@ using Newtonsoft.Json.Linq;
 
 namespace Sketchpop
 {
+    /// <summary>
+    /// This class organizes the methods needed to make calls to our database. Calls for adding
+    /// and removing images from our database, and methods for retrieving existing images as well.    
+    /// </summary>
     public class Database_Manager
     {
         private string _connection_string = "server=store-for-images.ce93uhqibbvf.us-east-2.rds.amazonaws.com;database=Sketchpop;uid=admin;pwd=SketchPop;";
         private Unsplash_Manager _um = new Unsplash_Manager();
 
+        /// <summary>
+        /// Makes a call to the Unsplash API and returns a list of the number of images 
+        /// specified by the user.
+        /// </summary>
+        /// <param name="query">search string entered by the user</param>
+        /// <param name="num_pics">number of images to return chosen by the user</param>
+        /// <returns>list of images returned by API call</returns>
         public List<UnsplashImage> Execute_Image_Request_Query(string query, int num_pics)
         {
             // get images from the Unsplash Manager
@@ -28,6 +39,11 @@ namespace Sketchpop
             return ret_images;
         }
 
+        /// <summary>
+        /// Inserts images chosen by the user to the database. The database reptresents
+        /// a 'favorites' list that the user can add and remove images for later use.
+        /// </summary>
+        /// <param name="images">list of images chosen by the user</param>
         public void Insert_New_Images(List<UnsplashImage> images)
         {
             string sql_query = "INSERT INTO images (image_id, image_description, image_author, image_author_profile, image_url,url) " +
@@ -41,6 +57,7 @@ namespace Sketchpop
                 {
                     MySqlCommand cmd = new MySqlCommand(sql_query, conn);
 
+                    // columns in the database
                     cmd.Parameters.AddWithValue("@image_id", image.Get_ID());
                     cmd.Parameters.AddWithValue("@image_description", image.Get_Description());
                     cmd.Parameters.AddWithValue("@image_author", image.Get_Author());
@@ -53,6 +70,11 @@ namespace Sketchpop
             }
         }
 
+        /// <summary>
+        /// Removes images based on image ids. The list of ids comes from the
+        /// user selecting images they would like to remove from the database.
+        /// </summary>
+        /// <param name="ids">ids of the images to be removed</param>
         public void Remove_Images_By_Id(List<string> ids)
         {
             string sql_query = "DELETE FROM images WHERE image_id = @image_id";
@@ -72,9 +94,17 @@ namespace Sketchpop
             }
         }
 
+        /// <summary>
+        /// Retrieves existing images from the database. This method as of now
+        /// gets called when the user requests to see their favorited images. A
+        /// MySQL query is constructed and sent to return all of the images from
+        /// the favorites DB
+        /// </summary>
+        /// <returns>list of images retrieved from the database</returns>
         public List<UnsplashImage> Get_Db_Images()
         {
             var db_images = new List<UnsplashImage>();
+
             try
             {
                 string sql_query = $"SELECT * FROM images";
@@ -108,6 +138,13 @@ namespace Sketchpop
             return db_images;
         }
 
+        /// <summary>
+        /// Executes a MySQL query to add a locally uploaded image to our 
+        /// database. This database currently is not accessible from the UI
+        /// and is planned to be accessible by the user.
+        /// </summary>
+        /// <param name="_picture_name">name of image to be saved</param>
+        /// <param name="_picture_path">path of image to be saved</param>
         public void Execute_Local_Picture_Upload_Query(string _picture_name, string _picture_path)
         {
             // Read image file
@@ -138,35 +175,9 @@ namespace Sketchpop
             }
         }
 
-        public void Execute_Image_Upload_Query(string query, string name)
-        {
-            // for testing purposes, the query to insert the butterfly image is:
-            query = "INSERT INTO images (name, image) VALUES (@name, @image)";
-
-            // for testing purposes, enter name of the file here,
-            // the file must also be in the Images folder.
-            string name_of_file = "butterfly.jpg";
-            var x = Directory.GetCurrentDirectory();
-            string img_path = Path.Combine(x, @"..\..\..\Sketchpop\Images", name_of_file);
-
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection(_connection_string))
-                {
-                    conn.Open();
-
-                    MySqlCommand cmd = new MySqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@name", name_of_file);
-                    cmd.Parameters.AddWithValue("@image", File.ReadAllBytes(img_path));
-                    cmd.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error:\n" + ex);
-            }
-        }
-
+        /// <summary>
+        /// Deletes the entire database, mainly for testing purposes.
+        /// </summary>
         public void Execute_Delete_Database()
         {
             try
@@ -183,7 +194,6 @@ namespace Sketchpop
                         Console.WriteLine(rowsAffected + " rows cleared.");
                     }
                 }
-                _um.Clear_IDs();
             }
             catch (Exception ex)
             {
@@ -191,6 +201,12 @@ namespace Sketchpop
             }
         }
 
+        /// <summary>
+        /// Enters user login information to the database to be stored for future login. 
+        /// </summary>
+        /// <param name="username">username</param>
+        /// <param name="password">password</param>
+        /// <returns>true if login signup was successful, false otherwise</returns>
         public bool Execute_Login_Signup_Query(string username, string password)
         {
             try

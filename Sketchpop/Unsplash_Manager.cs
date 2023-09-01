@@ -10,18 +10,26 @@ using System.Threading.Tasks;
 
 namespace Sketchpop
 {
+    /// <summary>
+    /// This class manages the calls and methods for getting images using the Unsplash API calls.
+    /// </summary>
     public class Unsplash_Manager
     {
-        private readonly string _access_key = "uSAp84GR3QQdBCCXAENt-gHQKs4-8DhvxhMCTWVTOZ4";
-        private string _user_query;
-        private int _max_page_count = 5;
-
-        private HashSet<string> _unique_ids = new HashSet<string>();
+        private readonly string _access_key = "uSAp84GR3QQdBCCXAENt-gHQKs4-8DhvxhMCTWVTOZ4"; // access key provided by Unsplash API
+        private int _max_page_count = 5; // number of pages to look for images
 
         public Unsplash_Manager()
         {
         }
 
+        /// <summary>
+        /// Retrieves the number of images requested by the user. Searches through 
+        /// number of pages specified by the _max_page_count variable. Returns the 
+        /// collected images in a List.
+        /// </summary>
+        /// <param name="query">search string entered by the user</param>
+        /// <param name="num_pics">number of requested images chosen by the user</param>
+        /// <returns></returns>
         public List<UnsplashImage> Get_Images(string query, int num_pics)
         {
             // Generate the HTTP request to Unsplash 
@@ -29,6 +37,8 @@ namespace Sketchpop
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Client-ID", _access_key);
 
             List<UnsplashImage> images = new List<UnsplashImage>();
+
+            // loop through pages until the number of images requested has been reached
             for (int p = 1; p <= _max_page_count; p++)
             {
                 string url = $"https://api.unsplash.com/search/photos?query={query}&per_page={num_pics}&page={p}";
@@ -43,6 +53,7 @@ namespace Sketchpop
                     JObject jo = JsonConvert.DeserializeObject<JObject>(response);
                     JArray json_images = (JArray)jo["results"];
 
+                    // construct the Unsplash_Image object
                     foreach (JObject result in json_images)
                     {
                         string id = query + "-" + result["id"].ToString();
@@ -56,8 +67,6 @@ namespace Sketchpop
                         UnsplashImage image = new UnsplashImage(id, description, author_name, author_profile, image_url, unsplash_url);
 
                         images.Add(image);
-                        //_unique_ids.Add(id);
-                        //_per_page--;
                     }
                 }
                 catch (Exception ex)
@@ -65,15 +74,9 @@ namespace Sketchpop
                     Console.WriteLine(ex.Message);
                     break;
                 }
-                Console.WriteLine(p);
-                if (images.Count == num_pics) { break; }
+                if (images.Count == num_pics) { break; } // exit loop if number of images has been reached
             }
             return images;
-        }
-
-        public void Clear_IDs()
-        {
-            _unique_ids.Clear();
         }
     }
 }
