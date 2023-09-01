@@ -184,6 +184,11 @@ namespace Sketchpop
             login.Show();
         }
 
+        private void temp_transparency_ValueChanged(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Set_Layer_Transparency((float)temp_transparency_num_up_down.Value);
+        }
+
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
         private Rectangle left { get { return new Rectangle(0, 0, _grip_size, this.ClientSize.Height); } }
         private Rectangle bottom { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, this.ClientSize.Width, _grip_size); } }
