@@ -194,20 +194,32 @@ namespace Sketchpop
 
         private void layer_add_button_Click(object sender, EventArgs e)
         {
-            Panel temp = new Panel();
-            //temp.Size = new Size(130, 40);
-            temp.Size = new Size(115, 40);
-            temp.Location = new Point(4, 44 * layers_ui.Count);
-            temp.BackColor = Color.White;
+            int buffer = 4;
+            Panel t_panel = new Panel();
+            t_panel.BackColor = Color.White;
+            t_panel.Size = new Size(this.layer_panel.Width - buffer - 20, 60);
+            t_panel.Location = new Point(4, (t_panel.Height + buffer) * layers_ui.Count);
 
-            layers_ui.Add(temp);
+            RadioButton t_visible_button = new RadioButton();
+            t_visible_button.Size = new Size(20, 20);
+            t_visible_button.Location = new Point(buffer, t_panel.Height / 2 - t_visible_button.Height / 2);
+            t_panel.Controls.Add(t_visible_button);
 
-            this.layer_panel.Controls.Add(temp);
+            Panel t_preview_panel = new Panel();
+            t_preview_panel.BackColor = Color.FromArgb(255, 167, 167, 167);
+            t_preview_panel.Size = new Size((t_panel.Height - buffer*2) / 9 * 16, t_panel.Height - 8);
+            t_preview_panel.Location = new Point(t_visible_button.Width + buffer, buffer);
+            t_panel.Controls.Add(t_preview_panel);
 
-            Label t_label = new Label();
-            t_label.Text = "Layer (" + layers_ui.Count + ")";
-            t_label.Location = new Point(5, 5);
-            temp.Controls.Add(t_label);
+            Label t_name_label = new Label();
+            //t_name_label.Font = new Font("Microsoft Sans Serif", 6);
+            t_name_label.Location = new Point(t_preview_panel.Location.X + t_preview_panel.Width + buffer, t_panel.Height / 4);
+            t_name_label.Text = "layer (" + layers_ui.Count.ToString() + ")";
+            t_panel.Controls.Add(t_name_label);
+
+
+            layers_ui.Add(t_panel);
+            this.layer_panel.Controls.Add(t_panel);
         }
 
         private void layer_delete_button_Click(object sender, EventArgs e)

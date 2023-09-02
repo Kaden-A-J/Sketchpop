@@ -67,14 +67,14 @@ namespace Sketchpop
             this.eraser_button = new System.Windows.Forms.Button();
             this.canvas_frame = new System.Windows.Forms.PictureBox();
             this.right_settings_panel = new System.Windows.Forms.Panel();
+            this.layer_delete_button = new System.Windows.Forms.Button();
+            this.layer_add_button = new System.Windows.Forms.Button();
+            this.layer_panel = new System.Windows.Forms.Panel();
             this.red_input_box = new System.Windows.Forms.NumericUpDown();
             this.green_input_box = new System.Windows.Forms.NumericUpDown();
             this.blue_input_box = new System.Windows.Forms.NumericUpDown();
             this.stroke_size_input_box = new System.Windows.Forms.NumericUpDown();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.layer_panel = new System.Windows.Forms.Panel();
-            this.layer_add_button = new System.Windows.Forms.Button();
-            this.layer_delete_button = new System.Windows.Forms.Button();
             this.title_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.temp_transparency_num_up_down)).BeginInit();
@@ -300,7 +300,6 @@ namespace Sketchpop
             this.color_display_box.Name = "color_display_box";
             this.color_display_box.Size = new System.Drawing.Size(31, 19);
             this.color_display_box.TabIndex = 1;
-            this.color_display_box.UseWaitCursor = true;
             // 
             // blue_label
             // 
@@ -310,7 +309,6 @@ namespace Sketchpop
             this.blue_label.Size = new System.Drawing.Size(27, 13);
             this.blue_label.TabIndex = 0;
             this.blue_label.Text = "blue";
-            this.blue_label.UseWaitCursor = true;
             // 
             // search_picture_label
             // 
@@ -329,7 +327,6 @@ namespace Sketchpop
             this.green_label.Size = new System.Drawing.Size(34, 13);
             this.green_label.TabIndex = 0;
             this.green_label.Text = "green";
-            this.green_label.UseWaitCursor = true;
             // 
             // red_label
             // 
@@ -339,7 +336,6 @@ namespace Sketchpop
             this.red_label.Size = new System.Drawing.Size(22, 13);
             this.red_label.TabIndex = 0;
             this.red_label.Text = "red";
-            this.red_label.UseWaitCursor = true;
             // 
             // stroke_label
             // 
@@ -349,7 +345,6 @@ namespace Sketchpop
             this.stroke_label.Size = new System.Drawing.Size(64, 13);
             this.stroke_label.TabIndex = 0;
             this.stroke_label.Text = "Stroke Size:";
-            this.stroke_label.UseWaitCursor = true;
             // 
             // color_label
             // 
@@ -359,7 +354,6 @@ namespace Sketchpop
             this.color_label.Size = new System.Drawing.Size(34, 13);
             this.color_label.TabIndex = 0;
             this.color_label.Text = "Color:";
-            this.color_label.UseWaitCursor = true;
             // 
             // quick_launch_bar
             // 
@@ -369,7 +363,7 @@ namespace Sketchpop
             this.quick_launch_bar.Controls.Add(this.menuStrip1);
             this.quick_launch_bar.Location = new System.Drawing.Point(210, 26);
             this.quick_launch_bar.Name = "quick_launch_bar";
-            this.quick_launch_bar.Size = new System.Drawing.Size(906, 36);
+            this.quick_launch_bar.Size = new System.Drawing.Size(767, 36);
             this.quick_launch_bar.TabIndex = 5;
             // 
             // menuStrip1
@@ -380,7 +374,7 @@ namespace Sketchpop
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(906, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(767, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -428,13 +422,13 @@ namespace Sketchpop
             this.canvas_panel.Controls.Add(this.canvas_frame);
             this.canvas_panel.Location = new System.Drawing.Point(210, 63);
             this.canvas_panel.Name = "canvas_panel";
-            this.canvas_panel.Size = new System.Drawing.Size(906, 653);
+            this.canvas_panel.Size = new System.Drawing.Size(767, 653);
             this.canvas_panel.TabIndex = 6;
             // 
             // layers_box
             // 
             this.layers_box.FormattingEnabled = true;
-            this.layers_box.Location = new System.Drawing.Point(497, 0);
+            this.layers_box.Location = new System.Drawing.Point(380, 0);
             this.layers_box.Name = "layers_box";
             this.layers_box.Size = new System.Drawing.Size(114, 30);
             this.layers_box.Sorted = true;
@@ -444,19 +438,18 @@ namespace Sketchpop
             // clear_canvas_button
             // 
             this.clear_canvas_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.clear_canvas_button.Location = new System.Drawing.Point(828, 3);
+            this.clear_canvas_button.Location = new System.Drawing.Point(689, 3);
             this.clear_canvas_button.Name = "clear_canvas_button";
             this.clear_canvas_button.Size = new System.Drawing.Size(75, 23);
             this.clear_canvas_button.TabIndex = 10;
             this.clear_canvas_button.Text = "Clear";
             this.clear_canvas_button.UseVisualStyleBackColor = true;
-            this.clear_canvas_button.UseWaitCursor = true;
             this.clear_canvas_button.Click += new System.EventHandler(this.clear_canvas_button_Click);
             // 
             // pen_button
             // 
             this.pen_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pen_button.Location = new System.Drawing.Point(665, 3);
+            this.pen_button.Location = new System.Drawing.Point(526, 3);
             this.pen_button.Name = "pen_button";
             this.pen_button.Size = new System.Drawing.Size(75, 23);
             this.pen_button.TabIndex = 2;
@@ -467,7 +460,7 @@ namespace Sketchpop
             // eraser_button
             // 
             this.eraser_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.eraser_button.Location = new System.Drawing.Point(747, 3);
+            this.eraser_button.Location = new System.Drawing.Point(608, 3);
             this.eraser_button.Name = "eraser_button";
             this.eraser_button.Size = new System.Drawing.Size(75, 23);
             this.eraser_button.TabIndex = 1;
@@ -483,7 +476,7 @@ namespace Sketchpop
             this.canvas_frame.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(167)))), ((int)(((byte)(167)))));
             this.canvas_frame.Location = new System.Drawing.Point(0, 28);
             this.canvas_frame.Name = "canvas_frame";
-            this.canvas_frame.Size = new System.Drawing.Size(906, 625);
+            this.canvas_frame.Size = new System.Drawing.Size(767, 625);
             this.canvas_frame.TabIndex = 0;
             this.canvas_frame.TabStop = false;
             this.canvas_frame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
@@ -498,10 +491,41 @@ namespace Sketchpop
             this.right_settings_panel.Controls.Add(this.layer_delete_button);
             this.right_settings_panel.Controls.Add(this.layer_add_button);
             this.right_settings_panel.Controls.Add(this.layer_panel);
-            this.right_settings_panel.Location = new System.Drawing.Point(1123, 26);
+            this.right_settings_panel.Location = new System.Drawing.Point(983, 26);
             this.right_settings_panel.Name = "right_settings_panel";
-            this.right_settings_panel.Size = new System.Drawing.Size(154, 694);
+            this.right_settings_panel.Size = new System.Drawing.Size(294, 694);
             this.right_settings_panel.TabIndex = 7;
+            // 
+            // layer_delete_button
+            // 
+            this.layer_delete_button.Location = new System.Drawing.Point(36, 396);
+            this.layer_delete_button.Name = "layer_delete_button";
+            this.layer_delete_button.Size = new System.Drawing.Size(23, 23);
+            this.layer_delete_button.TabIndex = 1;
+            this.layer_delete_button.Text = "-";
+            this.layer_delete_button.UseVisualStyleBackColor = true;
+            this.layer_delete_button.Click += new System.EventHandler(this.layer_delete_button_Click);
+            // 
+            // layer_add_button
+            // 
+            this.layer_add_button.Location = new System.Drawing.Point(7, 396);
+            this.layer_add_button.Name = "layer_add_button";
+            this.layer_add_button.Size = new System.Drawing.Size(23, 23);
+            this.layer_add_button.TabIndex = 1;
+            this.layer_add_button.Text = "+";
+            this.layer_add_button.UseVisualStyleBackColor = true;
+            this.layer_add_button.Click += new System.EventHandler(this.layer_add_button_Click);
+            // 
+            // layer_panel
+            // 
+            this.layer_panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.layer_panel.AutoScroll = true;
+            this.layer_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
+            this.layer_panel.Location = new System.Drawing.Point(7, 425);
+            this.layer_panel.Name = "layer_panel";
+            this.layer_panel.Size = new System.Drawing.Size(284, 262);
+            this.layer_panel.TabIndex = 0;
             // 
             // red_input_box
             // 
@@ -560,35 +584,6 @@ namespace Sketchpop
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // layer_panel
-            // 
-            this.layer_panel.AutoScroll = true;
-            this.layer_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
-            this.layer_panel.Location = new System.Drawing.Point(7, 322);
-            this.layer_panel.Name = "layer_panel";
-            this.layer_panel.Size = new System.Drawing.Size(138, 262);
-            this.layer_panel.TabIndex = 0;
-            // 
-            // layer_add_button
-            // 
-            this.layer_add_button.Location = new System.Drawing.Point(7, 296);
-            this.layer_add_button.Name = "layer_add_button";
-            this.layer_add_button.Size = new System.Drawing.Size(23, 23);
-            this.layer_add_button.TabIndex = 1;
-            this.layer_add_button.Text = "+";
-            this.layer_add_button.UseVisualStyleBackColor = true;
-            this.layer_add_button.Click += new System.EventHandler(this.layer_add_button_Click);
-            // 
-            // layer_delete_button
-            // 
-            this.layer_delete_button.Location = new System.Drawing.Point(36, 296);
-            this.layer_delete_button.Name = "layer_delete_button";
-            this.layer_delete_button.Size = new System.Drawing.Size(23, 23);
-            this.layer_delete_button.TabIndex = 1;
-            this.layer_delete_button.Text = "-";
-            this.layer_delete_button.UseVisualStyleBackColor = true;
-            this.layer_delete_button.Click += new System.EventHandler(this.layer_delete_button_Click);
             // 
             // main_window
             // 

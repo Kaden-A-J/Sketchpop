@@ -128,7 +128,12 @@ namespace Sketchpop
                     paint.Color = paint.Color.WithAlpha((byte)(0xFF * l.Opacity));
                     surface.Canvas.DrawImage(l.Img, l.Img.Info.Rect, paint);
                 }
-                picture_box.Image = surface.Snapshot().ToBitmap();
+
+                if(picture_box.Image != null)
+                    picture_box.Image.Dispose();
+                SKImage t_image = surface.Snapshot();
+                picture_box.Image = t_image.ToBitmap();
+                t_image.Dispose();
             }
         }
 
