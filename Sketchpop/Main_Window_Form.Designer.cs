@@ -286,7 +286,6 @@ namespace Sketchpop
             this.reference_img.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.reference_img.TabIndex = 3;
             this.reference_img.TabStop = false;
-            this.reference_img.UseWaitCursor = true;
             // 
             // db_status_label
             // 
@@ -296,7 +295,6 @@ namespace Sketchpop
             this.db_status_label.Name = "db_status_label";
             this.db_status_label.Size = new System.Drawing.Size(157, 13);
             this.db_status_label.TabIndex = 0;
-            this.db_status_label.UseWaitCursor = true;
             this.db_status_label.Visible = false;
             // 
             // color_display_box
