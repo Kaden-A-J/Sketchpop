@@ -61,7 +61,6 @@ namespace Sketchpop
             this.repeatedCirclesPracticeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.canvas_panel = new System.Windows.Forms.Panel();
-            this.layers_box = new System.Windows.Forms.ListBox();
             this.clear_canvas_button = new System.Windows.Forms.Button();
             this.pen_button = new System.Windows.Forms.Button();
             this.eraser_button = new System.Windows.Forms.Button();
@@ -111,7 +110,9 @@ namespace Sketchpop
             // 
             // title_bar
             // 
+            this.title_bar.AutoSize = true;
             this.title_bar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(167)))), ((int)(((byte)(167)))));
+            this.title_bar.CausesValidation = false;
             this.title_bar.Controls.Add(this.title_label);
             this.title_bar.Dock = System.Windows.Forms.DockStyle.Top;
             this.title_bar.Enabled = false;
@@ -122,15 +123,18 @@ namespace Sketchpop
             // 
             // title_label
             // 
-            this.title_label.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.title_label.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.title_label.AutoSize = true;
             this.title_label.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
+            this.title_label.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.title_label.Location = new System.Drawing.Point(610, 4);
             this.title_label.Name = "title_label";
             this.title_label.Size = new System.Drawing.Size(59, 13);
             this.title_label.TabIndex = 4;
             this.title_label.Text = "Sketchpop";
+            this.title_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // minimize_button
             // 
@@ -161,8 +165,7 @@ namespace Sketchpop
             this.tool_bar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.tool_bar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
-            this.tool_bar.Enabled = false;
-            this.tool_bar.Location = new System.Drawing.Point(0, 26);
+            this.tool_bar.Location = new System.Drawing.Point(2, 26);
             this.tool_bar.Name = "tool_bar";
             this.tool_bar.Size = new System.Drawing.Size(25, 687);
             this.tool_bar.TabIndex = 3;
@@ -172,6 +175,10 @@ namespace Sketchpop
             this.left_settings_panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.left_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
+            this.left_settings_panel.Controls.Add(this.green_input_box);
+            this.left_settings_panel.Controls.Add(this.blue_input_box);
+            this.left_settings_panel.Controls.Add(this.red_input_box);
+            this.left_settings_panel.Controls.Add(this.stroke_size_input_box);
             this.left_settings_panel.Controls.Add(this.unsplash_link);
             this.left_settings_panel.Controls.Add(this.on_label);
             this.left_settings_panel.Controls.Add(this.author_link_label);
@@ -187,9 +194,9 @@ namespace Sketchpop
             this.left_settings_panel.Controls.Add(this.red_label);
             this.left_settings_panel.Controls.Add(this.stroke_label);
             this.left_settings_panel.Controls.Add(this.color_label);
-            this.left_settings_panel.Location = new System.Drawing.Point(30, 26);
+            this.left_settings_panel.Location = new System.Drawing.Point(32, 26);
             this.left_settings_panel.Name = "left_settings_panel";
-            this.left_settings_panel.Size = new System.Drawing.Size(172, 694);
+            this.left_settings_panel.Size = new System.Drawing.Size(172, 690);
             this.left_settings_panel.TabIndex = 4;
             // 
             // unsplash_link
@@ -257,7 +264,6 @@ namespace Sketchpop
             this.temp_transparency_num_up_down.Name = "temp_transparency_num_up_down";
             this.temp_transparency_num_up_down.Size = new System.Drawing.Size(120, 20);
             this.temp_transparency_num_up_down.TabIndex = 5;
-            this.temp_transparency_num_up_down.ValueChanged += new System.EventHandler(this.temp_transparency_ValueChanged);
             // 
             // img_form_button
             // 
@@ -415,7 +421,6 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
-            this.canvas_panel.Controls.Add(this.layers_box);
             this.canvas_panel.Controls.Add(this.clear_canvas_button);
             this.canvas_panel.Controls.Add(this.pen_button);
             this.canvas_panel.Controls.Add(this.eraser_button);
@@ -424,16 +429,6 @@ namespace Sketchpop
             this.canvas_panel.Name = "canvas_panel";
             this.canvas_panel.Size = new System.Drawing.Size(767, 653);
             this.canvas_panel.TabIndex = 6;
-            // 
-            // layers_box
-            // 
-            this.layers_box.FormattingEnabled = true;
-            this.layers_box.Location = new System.Drawing.Point(380, 0);
-            this.layers_box.Name = "layers_box";
-            this.layers_box.Size = new System.Drawing.Size(114, 30);
-            this.layers_box.Sorted = true;
-            this.layers_box.TabIndex = 14;
-            this.layers_box.SelectedIndexChanged += new System.EventHandler(this.layers_box_SelectedIndexChanged);
             // 
             // clear_canvas_button
             // 
@@ -493,7 +488,7 @@ namespace Sketchpop
             this.right_settings_panel.Controls.Add(this.layer_panel);
             this.right_settings_panel.Location = new System.Drawing.Point(983, 26);
             this.right_settings_panel.Name = "right_settings_panel";
-            this.right_settings_panel.Size = new System.Drawing.Size(294, 694);
+            this.right_settings_panel.Size = new System.Drawing.Size(294, 690);
             this.right_settings_panel.TabIndex = 7;
             // 
             // layer_delete_button
@@ -524,12 +519,12 @@ namespace Sketchpop
             this.layer_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
             this.layer_panel.Location = new System.Drawing.Point(7, 425);
             this.layer_panel.Name = "layer_panel";
-            this.layer_panel.Size = new System.Drawing.Size(284, 262);
+            this.layer_panel.Size = new System.Drawing.Size(284, 258);
             this.layer_panel.TabIndex = 0;
             // 
             // red_input_box
             // 
-            this.red_input_box.Location = new System.Drawing.Point(36, 289);
+            this.red_input_box.Location = new System.Drawing.Point(6, 263);
             this.red_input_box.Maximum = new decimal(new int[] {
             255,
             0,
@@ -542,7 +537,7 @@ namespace Sketchpop
             // 
             // green_input_box
             // 
-            this.green_input_box.Location = new System.Drawing.Point(87, 289);
+            this.green_input_box.Location = new System.Drawing.Point(57, 263);
             this.green_input_box.Maximum = new decimal(new int[] {
             255,
             0,
@@ -555,7 +550,7 @@ namespace Sketchpop
             // 
             // blue_input_box
             // 
-            this.blue_input_box.Location = new System.Drawing.Point(142, 289);
+            this.blue_input_box.Location = new System.Drawing.Point(112, 263);
             this.blue_input_box.Maximum = new decimal(new int[] {
             255,
             0,
@@ -568,7 +563,7 @@ namespace Sketchpop
             // 
             // stroke_size_input_box
             // 
-            this.stroke_size_input_box.Location = new System.Drawing.Point(36, 348);
+            this.stroke_size_input_box.Location = new System.Drawing.Point(3, 335);
             this.stroke_size_input_box.Name = "stroke_size_input_box";
             this.stroke_size_input_box.Size = new System.Drawing.Size(45, 20);
             this.stroke_size_input_box.TabIndex = 9;
@@ -592,10 +587,6 @@ namespace Sketchpop
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.ClientSize = new System.Drawing.Size(1280, 720);
             this.ControlBox = false;
-            this.Controls.Add(this.stroke_size_input_box);
-            this.Controls.Add(this.blue_input_box);
-            this.Controls.Add(this.green_input_box);
-            this.Controls.Add(this.red_input_box);
             this.Controls.Add(this.right_settings_panel);
             this.Controls.Add(this.canvas_panel);
             this.Controls.Add(this.quick_launch_bar);
@@ -629,6 +620,7 @@ namespace Sketchpop
             ((System.ComponentModel.ISupportInitialize)(this.blue_input_box)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stroke_size_input_box)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -673,7 +665,6 @@ namespace Sketchpop
         private System.Windows.Forms.Button clear_database_button;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem RegisterToolStripMenuItem;
-        private System.Windows.Forms.ListBox layers_box;
         private System.Windows.Forms.Label on_label;
         private System.Windows.Forms.LinkLabel author_link_label;
         private System.Windows.Forms.Label pb_label;

@@ -146,6 +146,7 @@
       <DependentUpon>Image_Search_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="Layer.cs" />
+    <Compile Include="Layer_Manager.cs" />
     <Compile Include="login_window.cs">
       <SubType>Form</SubType>
     </Compile>
