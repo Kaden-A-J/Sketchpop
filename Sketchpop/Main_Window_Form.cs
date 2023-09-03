@@ -112,7 +112,7 @@ namespace Sketchpop
             //    var click_pos = canvas_frame.PointToClient(MousePosition);
             //    Program.canvas_manager.AddPointToDraw(click_pos);
             //}
-        }        
+        }
 
         private void red_input_box_ValueChanged(object sender, EventArgs e)
         {
@@ -317,14 +317,17 @@ namespace Sketchpop
                 author_link_label.Text = data.Name.Substring(0, 8);
             else
             {
-                author_link_label.Text += data.Name;
+                author_link_label.Text = data.Name;
             }
 
-            // make image description labels visible
-            pb_label.Visible = true;
-            author_link_label.Visible = true;
-            on_label.Visible = true;
-            unsplash_link.Visible = true;
+            // make image description labels visible if unsplash image chosen
+            if (!data.Name.Equals("user"))
+            {
+                pb_label.Visible = true;
+                author_link_label.Visible = true;
+                on_label.Visible = true;
+                unsplash_link.Visible = true;
+            }
 
             // create tool tips for the links
             ToolTip auth_tt = new ToolTip();
