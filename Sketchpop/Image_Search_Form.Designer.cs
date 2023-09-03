@@ -45,6 +45,7 @@
             this.num_images_textbox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.user_images_button = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -52,6 +53,7 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.Silver;
+            this.panel1.Controls.Add(this.user_images_button);
             this.panel1.Controls.Add(this.remove_fav_button);
             this.panel1.Controls.Add(this.cancel_button);
             this.panel1.Controls.Add(this.view_fav_button);
@@ -91,9 +93,9 @@
             // 
             // view_fav_button
             // 
-            this.view_fav_button.Location = new System.Drawing.Point(431, 7);
+            this.view_fav_button.Location = new System.Drawing.Point(355, 7);
             this.view_fav_button.Name = "view_fav_button";
-            this.view_fav_button.Size = new System.Drawing.Size(85, 23);
+            this.view_fav_button.Size = new System.Drawing.Size(84, 23);
             this.view_fav_button.TabIndex = 7;
             this.view_fav_button.Text = "View Favorites";
             this.view_fav_button.UseVisualStyleBackColor = true;
@@ -138,19 +140,20 @@
             this.help_button.BackColor = System.Drawing.Color.Transparent;
             this.help_button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.help_button.ForeColor = System.Drawing.SystemColors.MenuHighlight;
-            this.help_button.Location = new System.Drawing.Point(533, 6);
+            this.help_button.Location = new System.Drawing.Point(549, 6);
             this.help_button.Name = "help_button";
             this.help_button.Size = new System.Drawing.Size(25, 25);
             this.help_button.TabIndex = 4;
             this.help_button.Text = "?";
             this.help_button.UseVisualStyleBackColor = false;
+            this.help_button.Click += new System.EventHandler(this.help_button_Click);
             // 
             // search_textbox
             // 
             this.search_textbox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.search_textbox.Location = new System.Drawing.Point(103, 9);
             this.search_textbox.Name = "search_textbox";
-            this.search_textbox.Size = new System.Drawing.Size(241, 20);
+            this.search_textbox.Size = new System.Drawing.Size(147, 20);
             this.search_textbox.TabIndex = 3;
             this.search_textbox.TextChanged += new System.EventHandler(this.search_textbox_TextChanged);
             this.search_textbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.search_textbox_KeyDown);
@@ -167,9 +170,9 @@
             // search_button
             // 
             this.search_button.Enabled = false;
-            this.search_button.Location = new System.Drawing.Point(350, 7);
+            this.search_button.Location = new System.Drawing.Point(256, 7);
             this.search_button.Name = "search_button";
-            this.search_button.Size = new System.Drawing.Size(75, 23);
+            this.search_button.Size = new System.Drawing.Size(52, 23);
             this.search_button.TabIndex = 1;
             this.search_button.Text = "Search";
             this.search_button.UseVisualStyleBackColor = true;
@@ -234,6 +237,15 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "User Options:";
             // 
+            // user_images_button
+            // 
+            this.user_images_button.Location = new System.Drawing.Point(442, 7);
+            this.user_images_button.Name = "user_images_button";
+            this.user_images_button.Size = new System.Drawing.Size(84, 23);
+            this.user_images_button.TabIndex = 4;
+            this.user_images_button.Text = "My Images";
+            this.user_images_button.UseVisualStyleBackColor = true;
+            // 
             // Image_Search_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -272,5 +284,6 @@
         private System.Windows.Forms.Button view_fav_button;
         private System.Windows.Forms.Button cancel_button;
         private System.Windows.Forms.Button remove_fav_button;
+        private System.Windows.Forms.Button user_images_button;
     }
 }

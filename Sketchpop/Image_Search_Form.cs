@@ -200,7 +200,6 @@ namespace Sketchpop
                 {
                     select_button.Enabled = true;
                     add_fav_button.Enabled = true;
-                    remove_fav_button.Visible = false;
                 }
                 else if (_favs_showing)
                 {
@@ -249,10 +248,12 @@ namespace Sketchpop
         /// <param name="e">n/a</param>
         private void search_button_Click(object sender, EventArgs e)
         {
-            // check to make sure a number of images to search for has been chosen.
+            // check to make sure a valid number of images to search for has been chosen.
             if (num_images_textbox.Text.Equals("0")) { MessageBox.Show("Value must be greater than 0."); }
+            else if (int.Parse(num_images_textbox.Text) > 30) { MessageBox.Show("Max number of returned images cannot exceed 30."); }
             else
             {
+                remove_fav_button.Visible = false;
                 Get_Images(sender, e);
             }
         }
@@ -455,6 +456,38 @@ namespace Sketchpop
         }
 
         /// <summary>
+        /// Help Button. Displays helpful information for how to use the Image Search Form.
+        /// </summary>
+        /// <param name="sender">user clicks this button</param>
+        /// <param name="e">n/a</param>
+        private void help_button_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("User Help: Image Search\r\n\r\n" +
+                "Image Search\r\n\r\n" +
+                "\u2022 Use the search bar to find reference images.\r\n" +
+                "\u2022 Searches are limited to 50 per hour due to Unsplash's API requirements.\r\n" +
+                "\u2022 Note: Not all queries return images, and a search term is required.\r\n\r\n" +
+                "Favorites\r\n\r\n" +
+                "\u2022 Click 'View Favorites' to see saved images.\r\n" +
+                "\u2022 Use 'Select' to add images to the canvas.\r\n" +
+                "\u2022 Images can be added to favorites by clicking 'Add to Favorites'.\r\n" +
+                "\u2022 Images can be removed from favorites by clicking 'Remove'.\r\n\r\n" +
+                "Upload Images\r\n\r\n" +
+                "\u2022 Add local images to 'My Images' by clicking 'Upload Images'.\r\n" +
+                "\u2022 Supported formats: .jpg, .jpeg, .png, .gif.\r\n\r\n" +
+                "My Images\r\n\r\n" +
+                "\u2022 Click 'My Images to view locally uploaded images.\r\n" +
+                "\u2022 Use 'Select' to add images to the canvas.\r\n" +
+                "\u2022 Add them to favorites by clicking 'Add to Favorites'.\r\n\r\n" +
+                "Select Multiple Images\r\n\r\n" +
+                "\u2022 Enable to select multiple images for actions.\r\n" +
+                "\u2022 Note: only one image can be used on the canvas at a time.\r\n\r\n" +
+                "User Options\r\n" +
+                "\u2022 Customize the number of images (1-30) returned by the 'Search' button.\r\n" +
+                "\u2022 0 images or over 30 images are not allowed.");
+        }
+
+        /// <summary>
         /// Checkbox that sets a global boolean variable. The variable determines
         /// how many images can be selected by the user.
         /// </summary>
@@ -515,6 +548,6 @@ namespace Sketchpop
             public string Name => _author_name;
             public string Link => _author_link;
 
-        }
+        }        
     }
 }
