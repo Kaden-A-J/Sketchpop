@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.user_images_button = new System.Windows.Forms.Button();
             this.remove_fav_button = new System.Windows.Forms.Button();
             this.cancel_button = new System.Windows.Forms.Button();
             this.view_fav_button = new System.Windows.Forms.Button();
@@ -45,7 +46,6 @@
             this.num_images_textbox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.user_images_button = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -70,6 +70,16 @@
             this.panel1.Size = new System.Drawing.Size(578, 426);
             this.panel1.TabIndex = 0;
             // 
+            // user_images_button
+            // 
+            this.user_images_button.Location = new System.Drawing.Point(431, 8);
+            this.user_images_button.Name = "user_images_button";
+            this.user_images_button.Size = new System.Drawing.Size(84, 23);
+            this.user_images_button.TabIndex = 4;
+            this.user_images_button.Text = "My Images";
+            this.user_images_button.UseVisualStyleBackColor = true;
+            this.user_images_button.Click += new System.EventHandler(this.user_images_button_Click);
+            // 
             // remove_fav_button
             // 
             this.remove_fav_button.Location = new System.Drawing.Point(337, 392);
@@ -93,7 +103,7 @@
             // 
             // view_fav_button
             // 
-            this.view_fav_button.Location = new System.Drawing.Point(355, 7);
+            this.view_fav_button.Location = new System.Drawing.Point(341, 7);
             this.view_fav_button.Name = "view_fav_button";
             this.view_fav_button.Size = new System.Drawing.Size(84, 23);
             this.view_fav_button.TabIndex = 7;
@@ -103,13 +113,13 @@
             // 
             // add_fav_button
             // 
-            this.add_fav_button.Enabled = false;
             this.add_fav_button.Location = new System.Drawing.Point(238, 391);
             this.add_fav_button.Name = "add_fav_button";
             this.add_fav_button.Size = new System.Drawing.Size(93, 23);
             this.add_fav_button.TabIndex = 6;
             this.add_fav_button.Text = "Add to Favorites";
             this.add_fav_button.UseVisualStyleBackColor = true;
+            this.add_fav_button.Visible = false;
             this.add_fav_button.Click += new System.EventHandler(this.add_fav_button_Click);
             // 
             // multi_image_selection
@@ -236,15 +246,6 @@
             this.label2.Size = new System.Drawing.Size(84, 13);
             this.label2.TabIndex = 0;
             this.label2.Text = "User Options:";
-            // 
-            // user_images_button
-            // 
-            this.user_images_button.Location = new System.Drawing.Point(442, 7);
-            this.user_images_button.Name = "user_images_button";
-            this.user_images_button.Size = new System.Drawing.Size(84, 23);
-            this.user_images_button.TabIndex = 4;
-            this.user_images_button.Text = "My Images";
-            this.user_images_button.UseVisualStyleBackColor = true;
             // 
             // Image_Search_Form
             // 
