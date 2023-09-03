@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Sketchpop
 {
@@ -20,6 +21,9 @@ namespace Sketchpop
         private string _image_url; // image url from unsplash
         private string _unsplash_url;
 
+        // associating image with unsplash
+        private byte[] _img_data;
+
         public UnsplashImage(string id, string description, string author, string author_profile_link, string image_url, string unsplash_url)
         {
             _id = id;
@@ -36,5 +40,8 @@ namespace Sketchpop
         public string Get_Author_Profile() { return _author_profile_link; }
         public string Get_Image_URL() { return _image_url; }
         public string Get_Unsplash_URL() { return _unsplash_url; }
+        public byte[] Get_Image_Data() { return _img_data; }
+
+        public void Set_Image(byte[] img) { _img_data = img; }
     }
 }
