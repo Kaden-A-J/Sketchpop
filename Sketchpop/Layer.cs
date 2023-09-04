@@ -10,6 +10,7 @@ namespace Sketchpop
 {
     public class Layer
     {
+        int idx = -1;
         public SKImage Img { get; set; }
         private float _opacity;
         /// <summary>
@@ -37,8 +38,9 @@ namespace Sketchpop
 
         public String Name { get; set; }
         
-        public Layer(SKImage img, float opacity)
+        public Layer(int idx, SKImage img, float opacity)
         {
+            this.idx = idx;
             this.Img = img;
             this.Opacity = opacity;
         }

@@ -22,6 +22,7 @@ namespace Sketchpop
     {
         public System.Windows.Forms.Timer draw_timer = new System.Windows.Forms.Timer();
         bool mouse_down = false;
+        List<Panel> layers_ui;
 
         private string _author_link;
 
@@ -42,7 +43,11 @@ namespace Sketchpop
             InitializeComponent();
             Program.canvas_manager = new Canvas_Manager(ref canvas_frame);
 
-            layers_box.Items.AddRange(Program.canvas_manager.Layers.ToArray());
+            layers_ui = new List<Panel>();
+            
+            // TODO make it so stuff works with no layers, right now it breaks so i'm restricting it to always have atleast one
+            layer_add_button_Click(null, null);
+
             draw_timer.Tick += new EventHandler(draw_timer_method);
             draw_timer.Interval = 8; // 11.111... ms is 90 fps
             draw_timer.Start();
@@ -158,25 +163,6 @@ namespace Sketchpop
             options_form.ShowDialog();
         }
 
-        private void b_layer_1_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Select_Layer(0);
-        }
-
-        private void b_layer_2_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Select_Layer(1);
-        }
-
-        private void b_layer_3_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Select_Layer(2);
-        }
-
-        private void layers_box_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Select_Layer(layers_box.SelectedIndex);
-        }
 
         private void RegisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -184,9 +170,83 @@ namespace Sketchpop
             login.Show();
         }
 
-        private void temp_transparency_ValueChanged(object sender, EventArgs e)
+        public void layer_visible_button_clicked(Object my_object, EventArgs my_event_args)
         {
-            Program.canvas_manager.Set_Layer_Transparency((float)temp_transparency_num_up_down.Value);
+            RadioButton c_button = (RadioButton)(my_object);
+            Panel c_panel = (Panel)(c_button).Parent;
+            int c_idx = Int32.Parse(c_panel.Name);
+
+            // uncheck old selection
+            foreach (Control c in layers_ui[Program.canvas_manager.layer_manager.selected_layer].Controls)
+                if (c.GetType() == typeof(RadioButton))
+                    ((RadioButton)c).Checked = false;
+
+            c_button.Checked = true;
+
+            Program.canvas_manager.layer_manager.selected_layer = c_idx;
+        }
+
+        private void layer_add_button_Click(object sender, EventArgs e)
+        {
+            int buffer = 4;
+            Panel t_panel = new Panel();
+            // panel name is its layer's index to help with layer selection
+            t_panel.Name = layers_ui.Count.ToString();
+            t_panel.BackColor = Color.FromArgb(255, 157, 157, 157);
+            t_panel.Size = new Size(this.layer_panel.Width - buffer - 20, 60);
+            t_panel.Location = new Point(4, (t_panel.Height + buffer) * layers_ui.Count);
+
+            RadioButton t_visible_button = new RadioButton();
+            t_visible_button.Size = new Size(20, 20);
+            t_visible_button.Location = new Point(buffer, t_panel.Height / 2 - t_visible_button.Height / 2);
+            t_panel.Controls.Add(t_visible_button);
+
+            Panel t_preview_panel = new Panel();
+            t_preview_panel.BackColor = Color.FromArgb(255, 167, 167, 167);
+            t_preview_panel.Size = new Size((t_panel.Height - buffer*2) / 9 * 16, t_panel.Height - buffer * 2);
+            t_preview_panel.Location = new Point(t_visible_button.Width + buffer, buffer);
+            t_panel.Controls.Add(t_preview_panel);
+
+            Label t_name_label = new Label();
+            //t_name_label.Font = new Font("Microsoft Sans Serif", 6);
+            t_name_label.Location = new Point(t_preview_panel.Location.X + t_preview_panel.Width + buffer, t_panel.Height / 4);
+            t_name_label.Text = "layer (" + layers_ui.Count.ToString() + ")";
+            t_panel.Controls.Add(t_name_label);
+
+
+            layers_ui.Add(t_panel);
+            this.layer_panel.Controls.Add(t_panel);
+
+            Program.canvas_manager.layer_manager.add_layer(Program.canvas_manager.canvas_info);
+
+            // autocheck the first layer
+            if(layers_ui.Count == 1)
+                t_visible_button.Checked = true;
+
+            t_visible_button.Click += new EventHandler(layer_visible_button_clicked);
+        }
+
+        // temp just delete the last layer, eventually change to delete a selection
+        private void layer_delete_button_Click(object sender, EventArgs e)
+        {
+            if (layers_ui.Count < 2) { return; }
+
+            int last_idx = layers_ui.Count - 1;
+
+            // if selected layer is deleted -> shift it one down
+            if(last_idx == Program.canvas_manager.layer_manager.selected_layer)
+            {
+                Program.canvas_manager.layer_manager.selected_layer -= 1;
+
+                foreach (Control c in layers_ui[Program.canvas_manager.layer_manager.selected_layer].Controls)
+                    if (c.GetType() == typeof(RadioButton))
+                        ((RadioButton)c).Checked = true;
+            }
+
+            Program.canvas_manager.layer_manager.delete_layer(last_idx);
+
+            this.layer_panel.Controls.Remove(layers_ui[last_idx]);
+            layers_ui.RemoveAt(last_idx);
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
@@ -195,6 +255,7 @@ namespace Sketchpop
         private Rectangle right { get { return new Rectangle(this.ClientSize.Width - _grip_size, 0, _grip_size, this.ClientSize.Height); } }
 
         private Rectangle top_left { get { return new Rectangle(0, 0, _grip_size, _grip_size); } }
+
 
         private Rectangle top_right { get { return new Rectangle(this.ClientSize.Width - _grip_size, 0, _grip_size, _grip_size); } }
         private Rectangle bottom_left { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }

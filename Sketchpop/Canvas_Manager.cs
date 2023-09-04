@@ -13,15 +13,23 @@ namespace Sketchpop
         private ConcurrentQueue<Point_Operation> pointsToDraw = new ConcurrentQueue<Point_Operation>();
         private SKPath current_path;
         private PictureBox picture_box;
-        private Layer selected_layer;
-        public List<Layer> Layers { get; private set; }
-        private SKImageInfo canvas_info;
+        //private Layer selected_layer;
+        //public List<Layer> Layers { get; private set; }
+        public SKImageInfo canvas_info;
         private Brush_Manager brush_manager;
+
+        public Layer_Manager layer_manager;
 
         public Canvas_Manager(ref PictureBox canvas_frame) {
             brush_manager = new Brush_Manager();
+            layer_manager = new Layer_Manager();
+            
             picture_box = canvas_frame;
             canvas_info = new SKImageInfo(906, 625);
+
+            // remove when everything works with no layers
+            layer_manager.add_layer(canvas_info);
+
             Reset_Canvas_State();
         }
 
@@ -42,6 +50,8 @@ namespace Sketchpop
         {
             
         }
+
+        /*
 
         /// <summary>
         /// Selects the layer at the specified 0-based index
@@ -102,6 +112,8 @@ namespace Sketchpop
             }
         }
 
+        */
+
 
         public void Update_Color(byte red, byte green, byte blue, byte alpha)
         {
@@ -120,15 +132,21 @@ namespace Sketchpop
         /// < returns ></ returns >
         public void Draw_Bitmap(object state)
         {
-            using (SKSurface surface = SKSurface.Create(selected_layer.Img.Info))
+            using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).Info))
             using (SKPaint paint = new SKPaint())
             {
-                foreach (Layer l in Layers)
+                for(int idx = 0; idx < layer_manager.count; idx++)
                 {
-                    paint.Color = paint.Color.WithAlpha((byte)(0xFF * l.Opacity));
-                    surface.Canvas.DrawImage(l.Img, l.Img.Info.Rect, paint);
+                    SKImage c_image = layer_manager.get_image(idx);
+                    paint.Color = paint.Color.WithAlpha((byte)(0xFF * layer_manager.get_layer_opacity(idx)));
+                    surface.Canvas.DrawImage(c_image, c_image.Info.Rect, paint);
                 }
-                picture_box.Image = surface.Snapshot().ToBitmap();
+
+                if(picture_box.Image != null)
+                    picture_box.Image.Dispose();
+                SKImage t_image = surface.Snapshot();
+                picture_box.Image = t_image.ToBitmap();
+                t_image.Dispose();
             }
         }
 
@@ -136,7 +154,7 @@ namespace Sketchpop
         {
             if (current_path != null)
             {
-                using (SKSurface surface = SKSurface.Create(selected_layer.Img.PeekPixels()))
+                using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels()))
                 {
                     if (pointsToDraw.TryDequeue(out Point_Operation po))
                     {
@@ -155,8 +173,10 @@ namespace Sketchpop
             }
         }
 
+
         public void Reset_Canvas_State()
         {
+            /*
             using (SKSurface surface = SKSurface.Create(canvas_info))
             {
                 surface.Canvas.Clear();
@@ -164,6 +184,7 @@ namespace Sketchpop
                 // note: the first and last layers are just placeholders for testing
                 Layers = new List<Layer> { selected_layer, new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 1), new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 1) };
             }
+            */
         }
 
         public void Change_Brush(string brush_name, NumericUpDown stroke_input_box)
@@ -186,7 +207,7 @@ namespace Sketchpop
                 StrokeWidth = 5
             };
 
-            int length = (selected_layer.Img.PeekPixels().Width + selected_layer.Img.PeekPixels().Height) * 10;
+            int length = (layer_manager.get_image(layer_manager.selected_layer).PeekPixels().Width + layer_manager.get_image(layer_manager.selected_layer).PeekPixels().Height) * 10;
             double angle_radians = -angle * (Math.PI / 180); 
             double orth_angle_radians = angle_radians + (Math.PI / 2); // used to create parallel lines
             SKPoint vector = new SKPoint((float)(length * Math.Cos(angle_radians)), (float)(length * Math.Sin(angle_radians))); // direction and magnitude of all lines
@@ -194,8 +215,8 @@ namespace Sketchpop
             // We draw two lines at a time to make it easier to keep lines on the screen with any angle input
             // You can think of line one as the line below our previous line, and line two as the line above our previous line.
             // (this comes in handy if the angle is high enough, it makes it so we don't have to adjust our starting position or any angles or anything)
-            SKPoint line_one_middle = new SKPoint(-selected_layer.Img.PeekPixels().Width, 3);
-            SKPoint line_two_middle = new SKPoint(-selected_layer.Img.PeekPixels().Width, 3);
+            SKPoint line_one_middle = new SKPoint(-layer_manager.get_image(layer_manager.selected_layer).PeekPixels().Width, 3);
+            SKPoint line_two_middle = new SKPoint(-layer_manager.get_image(layer_manager.selected_layer).PeekPixels().Width, 3);
 
             // don't worry this doesn't really affect performance from my testing on my wimpy laptop at all
             for (int i = 0; i < 100; i++)
@@ -203,7 +224,7 @@ namespace Sketchpop
                 SKPath path = new SKPath();
 
                 path.MoveTo(line_one_middle);
-                using (SKSurface surface = SKSurface.Create(selected_layer.Img.PeekPixels()))
+                using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels()))
                 {
                     // draw line one
                     path.MoveTo(-vector.X + line_one_middle.X, -vector.Y + line_one_middle.Y);
