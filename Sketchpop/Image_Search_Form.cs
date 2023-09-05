@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Net.Http;
@@ -20,10 +21,11 @@ namespace Sketchpop
         private Database_Manager _dbm = new Database_Manager();
 
         private List<UnsplashImage> _favorite_images;
-        private List<UnsplashImage> _cached_images = new List<UnsplashImage>();
+        private List<UnsplashImage> _cached_images;
+        private List<UnsplashImage> _uploaded_images;
 
-        private PictureBox _selected_picturebox;
-        private PictureBox _prev_selected_picturebox;
+        //private PictureBox _selected_picturebox;
+        //private PictureBox _prev_selected_picturebox;
         private Dictionary<PictureBox, UnsplashImage> _currently_selected;
 
         public event EventHandler<SelectedImageData> _image_selected; // event for notifying the Main form
@@ -31,6 +33,7 @@ namespace Sketchpop
         private bool _multi_select = false;
         private bool _favs_showing = false;
         private bool _search_results_showing = false;
+        private bool _uploaded_showing = false;
 
         private CancellationTokenSource _cts = new CancellationTokenSource();
 
@@ -39,6 +42,7 @@ namespace Sketchpop
         /// </summary>
         public Image_Search_Form()
         {
+            _favorite_images = _dbm.Get_Db_Images();
             InitializeComponent();
         }
 
@@ -67,6 +71,7 @@ namespace Sketchpop
             {
                 _search_results_showing = true;
                 _favs_showing = false;
+                _uploaded_showing = false;
                 Add_Images_To_Panel(_cached_images, _cts);
             }
         }
@@ -115,7 +120,17 @@ namespace Sketchpop
 
                     // create pictureboxes for each image
                     PictureBox pictureBox = new PictureBox();
-                    pictureBox.Image = await Convert_To_ImageAsync(image.Get_Image_URL());
+
+                    if (!image.Get_Author_Profile().Equals(""))
+                        pictureBox.Image = await Convert_To_ImageAsync(image.Get_Image_URL());
+                    else
+                    {
+                        using (MemoryStream ms = new MemoryStream(image.Get_Image_Data()))
+                        {
+                            pictureBox.Image = Image.FromStream(ms);
+                        }
+                    }
+
                     pictureBox.Width = 100;
                     pictureBox.Height = 100;
                     pictureBox.Margin = new Padding(5);
@@ -146,49 +161,41 @@ namespace Sketchpop
                         }
                         else // a single image is being selected
                         {
-                            // no image has been selected yet
-                            if (_selected_picturebox == null)
+                            // no images have been selected
+                            if (_currently_selected.Count == 0)
                             {
-                                _selected_picturebox = pictureBox; // save the clicked pb as the selected one
-                                _prev_selected_picturebox = _selected_picturebox;
+                                _currently_selected.Add(pictureBox, image);
 
-                                // indicate selection to the user
-                                _selected_picturebox.BorderStyle = BorderStyle.FixedSingle;
-                                _selected_picturebox.BackColor = Color.FromArgb(255, Color.LightGoldenrodYellow);
-
-                                _currently_selected.Add(_selected_picturebox, image);
+                                // add selection and color indication
+                                pictureBox.BorderStyle = BorderStyle.FixedSingle;
+                                pictureBox.BackColor = Color.FromArgb(255, Color.LightGoldenrodYellow);
                             }
-                            else
+                            else // there is 1 image already selected
                             {
-                                // if user clicks on the same image, 'unselect' it
-                                if (pictureBox == _selected_picturebox)
+                                if (_currently_selected.ContainsKey(pictureBox))
                                 {
-                                    _selected_picturebox.BorderStyle = BorderStyle.None;
-                                    _selected_picturebox.BackColor = Color.Transparent;
+                                    _currently_selected.Remove(_currently_selected.Single().Key);
 
-                                    _currently_selected.Remove(_selected_picturebox);
-
-                                    _selected_picturebox = null;
-                                    _prev_selected_picturebox = null;
+                                    // add selection and color indication
+                                    pictureBox.BorderStyle = BorderStyle.None;
+                                    pictureBox.BackColor = Color.Transparent;
                                 }
-                                else // otherwise, change selection to the newly selected image
+                                else
                                 {
-                                    // remove old selection
-                                    _prev_selected_picturebox.BorderStyle = BorderStyle.None;
-                                    _prev_selected_picturebox.BackColor = Color.Transparent;
+                                    var tmp = _currently_selected.Single().Key; // get the existing element
 
-                                    _currently_selected.Remove(_prev_selected_picturebox);
+                                    // set it back to its original state
+                                    tmp.BorderStyle = BorderStyle.None;
+                                    tmp.BackColor = Color.Transparent;
 
-                                    _selected_picturebox = pictureBox;
-                                    _selected_picturebox.BorderStyle = BorderStyle.FixedSingle;
-                                    _selected_picturebox.BackColor = Color.FromArgb(255, Color.LightGoldenrodYellow);
+                                    _currently_selected.Remove(tmp);
 
-                                    _currently_selected.Add(_selected_picturebox, image);
+                                    pictureBox.BorderStyle = BorderStyle.FixedSingle;
+                                    pictureBox.BackColor = Color.FromArgb(255, Color.LightGoldenrodYellow);
 
-                                    _prev_selected_picturebox = _selected_picturebox;
+                                    _currently_selected.Add(pictureBox, image);
                                 }
                             }
-
                         }
                     };
 
@@ -198,21 +205,16 @@ namespace Sketchpop
                 // display relevant ui to the user
                 if (_search_results_showing)
                 {
-                    select_button.Enabled = true;
-                    add_fav_button.Enabled = true;
-                    remove_fav_button.Visible = false;
+
                 }
                 else if (_favs_showing)
                 {
-                    remove_fav_button.Visible = true;
-                    add_fav_button.Enabled = false;
-                    select_button.Enabled = true;
-                    view_fav_button.Enabled = true;
-                }
 
-                // reset the selected image when new images are pulled in
-                _selected_picturebox = null;
-                _prev_selected_picturebox = null;
+                }
+                else if (_uploaded_showing)
+                {
+
+                }
             }
             catch (OperationCanceledException)
             {
@@ -249,10 +251,20 @@ namespace Sketchpop
         /// <param name="e">n/a</param>
         private void search_button_Click(object sender, EventArgs e)
         {
-            // check to make sure a number of images to search for has been chosen.
+            // check to make sure a valid number of images to search for has been chosen.
             if (num_images_textbox.Text.Equals("0")) { MessageBox.Show("Value must be greater than 0."); }
+            else if (int.Parse(num_images_textbox.Text) > 30) { MessageBox.Show("Max number of returned images cannot exceed 30."); }
             else
             {
+                // enable/disable unnecessary buttons
+                select_button.Enabled = true;
+                add_fav_button.Visible = true;
+                remove_fav_button.Visible = false;
+
+                _search_results_showing = true;
+                _favs_showing = false;
+                _uploaded_showing = false;
+
                 Get_Images(sender, e);
             }
         }
@@ -348,15 +360,46 @@ namespace Sketchpop
 
             images_panel.Controls.Clear();
 
-            // disable certain ui elements based on which images are being shown (in this case the fav images are being displayed)
-            view_fav_button.Enabled = false;
-            _favs_showing = true;
-            _search_results_showing = false;
-
             // update the local favorites collection to the 
             _favorite_images = _dbm.Get_Db_Images();
 
+            // enable/disable unnecessary buttons
+            select_button.Enabled = true;
+            remove_fav_button.Visible = true;
+            add_fav_button.Visible = false;
+
+            _favs_showing = true;
+            _search_results_showing = false;
+            _uploaded_showing = false;
+
             Add_Images_To_Panel(_favorite_images, _cts); // pass the cancel token so that the search criteria can cancel if needed
+        }
+
+        /// <summary>
+        /// User clicks this button when they want to view the images that were uploaded locally.
+        /// These images belong to a different db than the favorites.
+        /// </summary>
+        /// <param name="sender">the user clicks this button</param>
+        /// <param name="e">n/a</param>
+        private void user_images_button_Click(object sender, EventArgs e)
+        {
+            _cts.Cancel();
+            _cts = new CancellationTokenSource();
+
+            images_panel.Controls.Clear();
+
+            _uploaded_images = _dbm.Get_User_Images();
+
+            // enable/disable unnecessary buttons
+            select_button.Enabled = true;
+            remove_fav_button.Visible = true;
+            add_fav_button.Visible = true;
+
+            _uploaded_showing = true;
+            _favs_showing = false;
+            _search_results_showing = false;
+
+            Add_Images_To_Panel(_uploaded_images, _cts);
         }
 
         /// <summary>
@@ -433,25 +476,69 @@ namespace Sketchpop
             // only remove images that are selected by the user
             if (_currently_selected.Count > 0)
             {
+                var pb_to_remove = new List<PictureBox>();
                 var ids_to_remove = new List<string>();
 
                 // a pair is a Picturebox containing the image and an Unsplash_Image object
                 foreach (var pair in _currently_selected)
                 {
+                    pb_to_remove.Add(pair.Key);
                     ids_to_remove.Add(pair.Value.Get_ID());
 
                     // remove the image from the local favorites collection and from the flow layout
                     _favorite_images.Remove(pair.Value);
                     images_panel.Controls.Remove(pair.Key);
                 }
+                
+                foreach (PictureBox pb in pb_to_remove)
+                {
+                    _currently_selected.Remove(pb);
+                }
 
                 if (ids_to_remove.Count > 0)
-                    _dbm.Remove_Images_By_Id(ids_to_remove); // make a MySQL query to delete the image from the DB
+                {
+                    if (_favs_showing)
+                        _dbm.Remove_Images_By_Unsplash_Id(ids_to_remove); // make a MySQL query to delete the image from the DB
+                    if (_uploaded_showing)
+                        _dbm.Remove_Images_By_Id(ids_to_remove);
+                }
             }
             else
             {
                 MessageBox.Show("No image was selected.");
             }
+        }
+
+        /// <summary>
+        /// Help Button. Displays helpful information for how to use the Image Search Form.
+        /// </summary>
+        /// <param name="sender">user clicks this button</param>
+        /// <param name="e">n/a</param>
+        private void help_button_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("User Help: Image Search\r\n\r\n" +
+                "Image Search\r\n\r\n" +
+                "\u2022 Use the search bar to find reference images.\r\n" +
+                "\u2022 Searches are limited to 50 per hour due to Unsplash's API requirements.\r\n" +
+                "\u2022 Note: Not all queries return images, and a search term is required.\r\n\r\n" +
+                "Favorites\r\n\r\n" +
+                "\u2022 Click 'View Favorites' to see saved images.\r\n" +
+                "\u2022 Use 'Select' to add images to the canvas.\r\n" +
+                "\u2022 Images can be added to favorites by clicking 'Add to Favorites'.\r\n" +
+                "\u2022 Images can be removed from favorites by clicking 'Remove'.\r\n\r\n" +
+                "Upload Images\r\n\r\n" +
+                "\u2022 Add local images to 'My Images' by clicking 'Upload Images'.\r\n" +
+                "\u2022 Supported formats: .jpg, .jpeg, .png, .gif.\r\n\r\n" +
+                "My Images\r\n\r\n" +
+                "\u2022 Click 'My Images to view locally uploaded images.\r\n" +
+                "\u2022 Use 'Select' to add images to the canvas.\r\n" +
+                "\u2022 Add them to favorites by clicking 'Add to Favorites'.\r\n\r\n" +
+                "Select Multiple Images\r\n\r\n" +
+                "\u2022 Enable to select multiple images for actions.\r\n" +
+                "\u2022 Note: only one image can be used on the canvas at a time.\r\n\r\n" +
+                "User Options\r\n" +
+                "\u2022 Customize the number of images (1-30) returned by the 'Search' button.\r\n" +
+                "\u2022 0 images or over 30 images are not allowed.");
         }
 
         /// <summary>
@@ -480,9 +567,6 @@ namespace Sketchpop
                     }
 
                     _currently_selected.Clear();
-
-                    _prev_selected_picturebox = null;
-                    _selected_picturebox = null;
                 }
             }
         }

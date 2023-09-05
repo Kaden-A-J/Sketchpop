@@ -3,15 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using MySql;
 using MySql.Data.MySqlClient;
 using Mysqlx;
 using Newtonsoft.Json.Linq;
+using Org.BouncyCastle.Utilities;
 
 namespace Sketchpop
 {
@@ -46,8 +49,8 @@ namespace Sketchpop
         /// <param name="images">list of images chosen by the user</param>
         public void Insert_New_Images(List<UnsplashImage> images)
         {
-            string sql_query = "INSERT INTO images (image_id, image_description, image_author, image_author_profile, image_url,url) " +
-                                          "VALUES (@image_id, @image_description, @image_author, @image_author_profile, @image_url, @url)";
+            string sql_query = "INSERT INTO images (image_id, image_description, image_author, image_author_profile, image_url,url, image_data) " +
+                                          "VALUES (@image_id, @image_description, @image_author, @image_author_profile, @image_url, @url, @image_data)";
 
             using (MySqlConnection conn = new MySqlConnection(_connection_string))
             {
@@ -64,6 +67,7 @@ namespace Sketchpop
                     cmd.Parameters.AddWithValue("@image_author_profile", image.Get_Author_Profile());
                     cmd.Parameters.AddWithValue("@image_url", image.Get_Image_URL());
                     cmd.Parameters.AddWithValue("@url", image.Get_Unsplash_URL());
+                    cmd.Parameters.AddWithValue("@image_data", image.Get_Image_Data());
 
                     cmd.ExecuteNonQuery();
                 }
@@ -72,10 +76,10 @@ namespace Sketchpop
 
         /// <summary>
         /// Removes images based on image ids. The list of ids comes from the
-        /// user selecting images they would like to remove from the database.
+        /// user selecting images they would like to remove from the favorites database.
         /// </summary>
         /// <param name="ids">ids of the images to be removed</param>
-        public void Remove_Images_By_Id(List<string> ids)
+        public void Remove_Images_By_Unsplash_Id(List<string> ids)
         {
             string sql_query = "DELETE FROM images WHERE image_id = @image_id";
 
@@ -88,6 +92,31 @@ namespace Sketchpop
                     MySqlCommand cmd = new MySqlCommand(sql_query, conn);
 
                     cmd.Parameters.AddWithValue("@image_id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes images based on image ids. The list of ids comes from the
+        /// user selecting images they would like to remove from the user
+        /// uploaded image database.
+        /// </summary>
+        /// <param name="ids">ids of the images to be removed</param>
+        public void Remove_Images_By_Id(List<string> ids)
+        {
+            string sql_query = "DELETE FROM local_pictures WHERE Id = @Id";
+
+            using (MySqlConnection conn = new MySqlConnection(_connection_string))
+            {
+                conn.Open();
+
+                foreach (string id in ids)
+                {
+                    MySqlCommand cmd = new MySqlCommand(sql_query, conn);
+
+                    cmd.Parameters.AddWithValue("@Id", int.Parse(id));
 
                     cmd.ExecuteNonQuery();
                 }
@@ -127,6 +156,13 @@ namespace Sketchpop
                         string url = rdr["url"].ToString();
 
                         UnsplashImage image = new UnsplashImage(image_id, image_description, image_author, image_author_profile, image_url, url);
+
+                        // check to see if entry contains image_data
+                        if (!rdr.IsDBNull((rdr.GetOrdinal("image_data")))) {
+                            byte[] img_data = (byte[])rdr["image_data"];
+                            image.Set_Image(img_data);
+                        }                                               
+
                         db_images.Add(image);
                     }
                 }
@@ -136,6 +172,56 @@ namespace Sketchpop
                 MessageBox.Show("Error:\n\n" + ex.Message);
             }
             return db_images;
+        }
+
+        /// <summary>
+        /// Retrieves the user uploaded images from the local_images database.
+        /// </summary>
+        /// <returns>list of images returned from MySQL request</returns>
+        public List<UnsplashImage> Get_User_Images()
+        {
+            var user_images = new List<UnsplashImage>();
+
+            try
+            {
+                string sql_query = $"SELECT * FROM local_pictures";
+                using (MySqlConnection conn = new MySqlConnection(_connection_string))
+                {
+                    conn.Open();
+
+                    // create an sql command to be executed
+                    MySqlCommand cmd = new MySqlCommand(sql_query, conn);
+
+                    // create a reader to read the image data
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        int id = rdr.GetInt32("Id");
+                        string name = rdr.GetString("Name");
+                        byte[] data = (byte[])rdr["ImageData"];
+
+                        using (MemoryStream ms = new MemoryStream(data))
+                        {
+                            Image image = Image.FromStream(ms);
+                            user_images.Add(ConvertImageToUnsplashImage(id, name, data));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error:\n\n" + ex.Message);
+            }
+
+            return user_images;
+        }
+
+        public UnsplashImage ConvertImageToUnsplashImage(int id, string name, byte[] img)
+        {
+            // create an Unsplash representation of the image
+            UnsplashImage user_img = new UnsplashImage(id.ToString(), name, "user", "", "", "");
+            user_img.Set_Image(img);
+            return user_img;
         }
 
         /// <summary>
