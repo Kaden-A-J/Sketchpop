@@ -5,6 +5,10 @@ using System.Collections.Concurrent;
 using System.Windows.Forms;
 using SkiaSharp.Views.Desktop;
 using System.Collections.Generic;
+using System.IO;
+using System.Drawing.Imaging;
+using Org.BouncyCastle.Crypto;
+using System.Net.NetworkInformation;
 
 namespace Sketchpop
 {
@@ -20,10 +24,11 @@ namespace Sketchpop
 
         public Layer_Manager layer_manager;
 
-        public Canvas_Manager(ref PictureBox canvas_frame) {
+        public Canvas_Manager(ref PictureBox canvas_frame)
+        {
             brush_manager = new Brush_Manager();
             layer_manager = new Layer_Manager();
-            
+
             picture_box = canvas_frame;
             canvas_info = new SKImageInfo(906, 625);
 
@@ -31,8 +36,7 @@ namespace Sketchpop
             layer_manager.add_layer(canvas_info);
 
             Reset_Canvas_State();
-        }
-
+        }        
 
         public void Add_Point_To_Draw(Point point)
         {
@@ -48,7 +52,7 @@ namespace Sketchpop
 
         public void End_Draw_Path()
         {
-            
+
         }
 
         /*
@@ -135,14 +139,14 @@ namespace Sketchpop
             using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).Info))
             using (SKPaint paint = new SKPaint())
             {
-                for(int idx = 0; idx < layer_manager.count; idx++)
+                for (int idx = 0; idx < layer_manager.count; idx++)
                 {
                     SKImage c_image = layer_manager.get_image(idx);
                     paint.Color = paint.Color.WithAlpha((byte)(0xFF * layer_manager.get_layer_opacity(idx)));
                     surface.Canvas.DrawImage(c_image, c_image.Info.Rect, paint);
                 }
 
-                if(picture_box.Image != null)
+                if (picture_box.Image != null)
                     picture_box.Image.Dispose();
                 SKImage t_image = surface.Snapshot();
                 picture_box.Image = t_image.ToBitmap();
@@ -176,12 +180,16 @@ namespace Sketchpop
 
         public void Reset_Canvas_State()
         {
+            using (SKSurface sks = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels())) {
+                sks.Canvas.Clear();
+            }
+            
             /*
             using (SKSurface surface = SKSurface.Create(canvas_info))
             {
                 surface.Canvas.Clear();
                 selected_layer = new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 1);
-                // note: the first and last layers are just placeholders for testing
+                 note: the first and last layers are just placeholders for testing
                 Layers = new List<Layer> { selected_layer, new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 1), new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 1) };
             }
             */
@@ -208,7 +216,7 @@ namespace Sketchpop
             };
 
             int length = (layer_manager.get_image(layer_manager.selected_layer).PeekPixels().Width + layer_manager.get_image(layer_manager.selected_layer).PeekPixels().Height) * 10;
-            double angle_radians = -angle * (Math.PI / 180); 
+            double angle_radians = -angle * (Math.PI / 180);
             double orth_angle_radians = angle_radians + (Math.PI / 2); // used to create parallel lines
             SKPoint vector = new SKPoint((float)(length * Math.Cos(angle_radians)), (float)(length * Math.Sin(angle_radians))); // direction and magnitude of all lines
 
@@ -242,6 +250,43 @@ namespace Sketchpop
 
                 line_two_middle.X -= (float)(spacing * Math.Cos(orth_angle_radians));
                 line_two_middle.Y -= (float)(spacing * Math.Sin(orth_angle_radians));
+            }
+        }
+
+        /// <summary>
+        /// Draws a use specified image onto the canvas with a given opacity. The image is
+        /// displayed over the canvas and can be drawn on. The image is drawn onto an SKRect
+        /// with its dimensions set by centering and scaling the image to fit its orignal size,
+        /// but be drawn onto a smaller/bigger surface (depending on the image used).
+        /// </summary>
+        /// <param name="image_data">the bytes of the image to be drawn</param>
+        /// <param name="pb">the picturebox of the original image</param>
+        /// <param name="opacity">the opacity to set the image to</param>
+        public void DrawImageWithOpacity(byte[] image_data, PictureBox pb, float opacity)
+        {
+            using (SKImage image = SKImage.FromEncodedData(image_data))
+            {
+                using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels()))
+                {
+                    using (SKPaint paint = new SKPaint())
+                    {
+                        paint.Color = new SKColor(paint.Color.Red, paint.Color.Green, paint.Color.Blue, (byte)(255 * opacity)); // Set the opacity
+
+                        // center the image
+                        float x = (pb.Width - canvas_info.Width) / 2;
+                        float y = (pb.Height - canvas_info.Height) / 2;
+
+                        // fit the image into the picturebox
+                        float scaleX = pb.Width / (float)image.Width;
+                        float scaleY = pb.Height / (float)image.Height;
+                        float scale = Math.Min(scaleX, scaleY);
+
+                        // create the rectangle that fits the image to draw on
+                        SKRect skR = new SKRect(x, y, x + image.Width * scale, y + image.Height * scale);
+
+                        surface.Canvas.DrawImage(image, skR, paint);
+                    }
+                }
             }
         }
     }

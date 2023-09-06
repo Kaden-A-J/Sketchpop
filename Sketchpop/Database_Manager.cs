@@ -158,10 +158,11 @@ namespace Sketchpop
                         UnsplashImage image = new UnsplashImage(image_id, image_description, image_author, image_author_profile, image_url, url);
 
                         // check to see if entry contains image_data
-                        if (!rdr.IsDBNull((rdr.GetOrdinal("image_data")))) {
+                        if (!rdr.IsDBNull((rdr.GetOrdinal("image_data"))))
+                        {
                             byte[] img_data = (byte[])rdr["image_data"];
                             image.Set_Image(img_data);
-                        }                                               
+                        }
 
                         db_images.Add(image);
                     }
@@ -199,12 +200,9 @@ namespace Sketchpop
                         int id = rdr.GetInt32("Id");
                         string name = rdr.GetString("Name");
                         byte[] data = (byte[])rdr["ImageData"];
-
-                        using (MemoryStream ms = new MemoryStream(data))
-                        {
-                            Image image = Image.FromStream(ms);
-                            user_images.Add(ConvertImageToUnsplashImage(id, name, data));
-                        }
+                        
+                        // convert to an Unsplash_Image type
+                        user_images.Add(ConvertImageToUnsplashImage(id, name, data));
                     }
                 }
             }
@@ -216,6 +214,16 @@ namespace Sketchpop
             return user_images;
         }
 
+        /// <summary>
+        /// Converts the user's uploaded image into an 'Unsplash_Image' object so
+        /// that they can be stored in the same database. The Unsplash_Image 
+        /// representation of the image will contain a bytes[] so that the image
+        /// data can be saved for storing and retrieving the images.
+        /// </summary>
+        /// <param name="id">DB id of the image</param>
+        /// <param name="name">name of the file</param>
+        /// <param name="img">byte[] representation of the image</param>
+        /// <returns>returns an Unsplash_Image object for the user uploaded image</returns>
         public UnsplashImage ConvertImageToUnsplashImage(int id, string name, byte[] img)
         {
             // create an Unsplash representation of the image

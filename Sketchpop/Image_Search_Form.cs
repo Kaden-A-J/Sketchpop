@@ -24,8 +24,6 @@ namespace Sketchpop
         private List<UnsplashImage> _cached_images;
         private List<UnsplashImage> _uploaded_images;
 
-        //private PictureBox _selected_picturebox;
-        //private PictureBox _prev_selected_picturebox;
         private Dictionary<PictureBox, UnsplashImage> _currently_selected;
 
         public event EventHandler<SelectedImageData> _image_selected; // event for notifying the Main form
@@ -97,6 +95,30 @@ namespace Sketchpop
         }
 
         /// <summary>
+        /// Converts url representations of images into a byte[]. This byte array is 
+        /// necessary for all unsplash images as it will be used to display the Unsplash 
+        /// image to the user on the main form.
+        /// </summary>
+        /// <param name="url">the url of the image to convert</param>
+        /// <returns>returns a byte[] of the url image</returns>
+        private async Task<byte[]> Convert_To_ByteArrayAsync(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(url);
+                using (var stream = await response.Content.ReadAsStreamAsync())
+                {
+                    // Read the image into a byte array
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await stream.CopyToAsync(memoryStream);
+                        return memoryStream.ToArray();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// This method iterates through the Unsplash_Images given to this method and 
         /// creates an Image object that is placed within a Picturebox object to be 
         /// displayed to the user. The PictureBoxes are placed in a flow-layout and each
@@ -121,9 +143,10 @@ namespace Sketchpop
                     // create pictureboxes for each image
                     PictureBox pictureBox = new PictureBox();
 
+                    // if the image has an author, it comes from Unsplash API and has a url
                     if (!image.Get_Author_Profile().Equals(""))
                         pictureBox.Image = await Convert_To_ImageAsync(image.Get_Image_URL());
-                    else
+                    else // image is stored as a byte[]
                     {
                         using (MemoryStream ms = new MemoryStream(image.Get_Image_Data()))
                         {
@@ -131,6 +154,7 @@ namespace Sketchpop
                         }
                     }
 
+                    // create uniform pictureboxes
                     pictureBox.Width = 100;
                     pictureBox.Height = 100;
                     pictureBox.Margin = new Padding(5);
@@ -277,7 +301,7 @@ namespace Sketchpop
         /// </summary>
         /// <param name="sender">user clicks this button</param>
         /// <param name="e">n/a</param>
-        private void select_button_Click(object sender, EventArgs e)
+        private async void select_button_Click(object sender, EventArgs e)
         {
             // there should only be one image selected for reference use
             if (_currently_selected.Count == 1)
@@ -286,11 +310,22 @@ namespace Sketchpop
 
                 // data we want to pass to the main form
                 Image thumbnail = selected.Key.Image;
+
+                byte[] img_data;
+                if (selected.Value.Get_Image_Data() == null)
+                {
+                    img_data = await Convert_To_ByteArrayAsync(selected.Value.Get_Image_URL()); ;
+                }
+                else
+                {
+                    img_data = selected.Value.Get_Image_Data();
+                }
+                
                 string author_name = selected.Value.Get_Author();
                 string author_link = selected.Value.Get_Author_Profile();
 
                 // send an event to the main form that the image has been selected so that the UI can update accordingly
-                _image_selected?.Invoke(this, new SelectedImageData(thumbnail, author_name, author_link));
+                _image_selected?.Invoke(this, new SelectedImageData(thumbnail, img_data, author_name, author_link));
 
                 Close();
             }
@@ -489,7 +524,7 @@ namespace Sketchpop
                     _favorite_images.Remove(pair.Value);
                     images_panel.Controls.Remove(pair.Key);
                 }
-                
+
                 foreach (PictureBox pb in pb_to_remove)
                 {
                     _currently_selected.Remove(pb);
@@ -584,18 +619,28 @@ namespace Sketchpop
         public class SelectedImageData : EventArgs
         {
             private Image _selected_image;
+            private byte[] _image_data;
             private string _author_name;
             private string _author_link;
 
-            public SelectedImageData(Image selected_image, string author_name, string author_link)
+            /// <summary>
+            /// Constructor for generating important data to pass to the main form.
+            /// </summary>
+            /// <param name="selected_image">image to set PictureBox.Image to</param>
+            /// <param name="image_data">image data used for creating an SKImage object</param>
+            /// <param name="author_name">name to display on photo citation</param>
+            /// <param name="author_link">link to photographer's profile</param>
+            public SelectedImageData(Image selected_image, byte[] image_data, string author_name, string author_link)
             {
                 _selected_image = selected_image;
+                _image_data = image_data;
                 _author_name = author_name;
                 _author_link = author_link;
             }
 
             // getters for retrieving the data
             public Image Image => _selected_image;
+            public byte[] Bytes => _image_data;
             public string Name => _author_name;
             public string Link => _author_link;
 
