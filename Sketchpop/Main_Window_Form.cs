@@ -24,7 +24,9 @@ namespace Sketchpop
         bool mouse_down = false;
         List<Panel> layers_ui;
 
+        // reference image variables
         private string _author_link;
+        private byte[] _ref_image_data;
 
         public void draw_timer_method(Object my_object, EventArgs my_event_args)
         {
@@ -44,7 +46,7 @@ namespace Sketchpop
             Program.canvas_manager = new Canvas_Manager(ref canvas_frame);
 
             layers_ui = new List<Panel>();
-            
+
             // TODO make it so stuff works with no layers, right now it breaks so i'm restricting it to always have atleast one
             layer_add_button_Click(null, null);
 
@@ -203,7 +205,7 @@ namespace Sketchpop
 
             Panel t_preview_panel = new Panel();
             t_preview_panel.BackColor = Color.FromArgb(255, 167, 167, 167);
-            t_preview_panel.Size = new Size((t_panel.Height - buffer*2) / 9 * 16, t_panel.Height - buffer * 2);
+            t_preview_panel.Size = new Size((t_panel.Height - buffer * 2) / 9 * 16, t_panel.Height - buffer * 2);
             t_preview_panel.Location = new Point(t_visible_button.Width + buffer, buffer);
             t_panel.Controls.Add(t_preview_panel);
 
@@ -220,7 +222,7 @@ namespace Sketchpop
             Program.canvas_manager.layer_manager.add_layer(Program.canvas_manager.canvas_info);
 
             // autocheck the first layer
-            if(layers_ui.Count == 1)
+            if (layers_ui.Count == 1)
                 t_visible_button.Checked = true;
 
             t_visible_button.Click += new EventHandler(layer_visible_button_clicked);
@@ -234,7 +236,7 @@ namespace Sketchpop
             int last_idx = layers_ui.Count - 1;
 
             // if selected layer is deleted -> shift it one down
-            if(last_idx == Program.canvas_manager.layer_manager.selected_layer)
+            if (last_idx == Program.canvas_manager.layer_manager.selected_layer)
             {
                 Program.canvas_manager.layer_manager.selected_layer -= 1;
 
@@ -258,6 +260,7 @@ namespace Sketchpop
 
 
         private Rectangle top_right { get { return new Rectangle(this.ClientSize.Width - _grip_size, 0, _grip_size, _grip_size); } }
+
         private Rectangle bottom_left { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }
         private Rectangle bottom_right { get { return new Rectangle(this.ClientSize.Width - _grip_size, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }
 
@@ -301,47 +304,6 @@ namespace Sketchpop
          */
 
         /// <summary>
-        /// Changes the opacity of an image.
-        /// </summary>
-        /// <param name="image">the image being modified</param>
-        /// <param name="opacity">the level of opacity to set the image</param>
-        /// <returns></returns>
-        public Image set_image_opacity(Image image, float opacity)
-        {
-            try
-            {
-                //create a Bitmap the size of the image provided  
-                Bitmap bmp = new Bitmap(image.Width, image.Height);
-
-                //create a graphics object from the image  
-                using (Graphics gfx = Graphics.FromImage(bmp))
-                {
-
-                    //create a color matrix object  
-                    ColorMatrix matrix = new ColorMatrix();
-
-                    //set the opacity  
-                    matrix.Matrix33 = opacity;
-
-                    //create image attributes  
-                    ImageAttributes attributes = new ImageAttributes();
-
-                    //set the color(opacity) of the image  
-                    attributes.SetColorMatrix(matrix, ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
-
-                    //draw the image  
-                    gfx.DrawImage(image, new Rectangle(0, 0, bmp.Width, bmp.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
-                }
-                return bmp;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                return null;
-            }
-        }
-
-        /// <summary>
         /// When the user clicks this button, a new form is created, with an event
         /// handler to signify the main form when the user selects an image.
         /// </summary>
@@ -372,6 +334,7 @@ namespace Sketchpop
             // extract data
             reference_img.Image = data.Image;
             _author_link = data.Link;
+            _ref_image_data = data.Bytes;
 
             // truncate the lenght of the string to 8 chars
             if (data.Name.Length > 8)
@@ -417,6 +380,33 @@ namespace Sketchpop
         private void author_link_label_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(_author_link);
+        }
+
+        /// <summary>
+        /// TODO: figure out UI for placing an image onto canvas.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void test_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.DrawImageWithOpacity(_ref_image_data, canvas_frame, (float)0.5);
+        }
+
+        /// <summary>
+        /// User can click the thumbnail reference image photo to get a fullscreen
+        /// view of the image they have selected. The fullscreen is a separate form
+        /// that displays the image in fullscreen.
+        /// </summary>
+        /// <param name="sender">user clicks the PictureBox</param>
+        /// <param name="e">n/a</param>
+        private void reference_img_Click(object sender, EventArgs e)
+        {
+            if (reference_img.Image != null)
+            {
+                var tmp = new Fullscreen_Image_Form(_ref_image_data);
+                tmp.StartPosition = FormStartPosition.CenterParent;
+                tmp.ShowDialog();
+            }
         }
 
         /* 
