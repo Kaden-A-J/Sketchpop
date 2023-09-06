@@ -4,11 +4,6 @@ using SkiaSharp;
 using System.Collections.Concurrent;
 using System.Windows.Forms;
 using SkiaSharp.Views.Desktop;
-using System.Collections.Generic;
-using System.IO;
-using System.Drawing.Imaging;
-using Org.BouncyCastle.Crypto;
-using System.Net.NetworkInformation;
 
 namespace Sketchpop
 {
@@ -17,8 +12,6 @@ namespace Sketchpop
         private ConcurrentQueue<Point_Operation> pointsToDraw = new ConcurrentQueue<Point_Operation>();
         private SKPath current_path;
         private PictureBox picture_box;
-        //private Layer selected_layer;
-        //public List<Layer> Layers { get; private set; }
         public SKImageInfo canvas_info;
         private Brush_Manager brush_manager;
 
@@ -32,8 +25,6 @@ namespace Sketchpop
             picture_box = canvas_frame;
             canvas_info = new SKImageInfo(906, 625);
 
-            // remove when everything works with no layers
-            layer_manager.add_layer(canvas_info);
 
             Reset_Canvas_State();
         }        
@@ -54,71 +45,7 @@ namespace Sketchpop
         {
 
         }
-
-        /*
-
-        /// <summary>
-        /// Selects the layer at the specified 0-based index
-        /// </summary>
-        /// <param name="index">0 based index</param>
-        public void Select_Layer(int index)
-        {
-            selected_layer = Layers[index];
-        }
-
-        /// <summary>
-        /// Adds a layer to the end/top of our layers list
-        /// </summary>
-        /// <returns> Returns the index of the added layer</returns>
-        public int Add_Layer()
-        {
-            Layers.Add(new Layer(SKImage.Create(canvas_info), 1));
-            return Layers.Count - 1;
-        }
-
-        /// <summary>
-        /// Removes a layer 
-        /// </summary>
-        /// <param name="index">0 based index</param>
-        public void Remove_Layer(int index)
-        {
-            Layers.RemoveAt(index);
-        }
-
-        public void Set_Layer_Transparency(int index, float transparency)
-        {
-            Layers[index].Opacity = transparency;
-        }
-
-        public void Set_Layer_Transparency(float transparency)
-        {
-            selected_layer.Opacity = transparency;
-        }
-
-
-        /// <summary>
-        /// Takes the layer at the specified old_index, and places it at the specified new_index. 0-based indexes.
-        /// </summary>
-        public void Reorder_Layer(int old_index, int new_index)
-        {
-            List<Layer> new_order = new List<Layer>(Layers.Count);
-            for (int i = 0; i < Layers.Count; i++) 
-            {
-                if (i == new_index)
-                {
-                    new_order.Add(Layers[old_index]);
-                    new_order.Add(Layers[i]);
-                }
-                else if (i != old_index)
-                {
-                    new_order.Add(Layers[i]);
-                }
-            }
-        }
-
-        */
-
-
+        
         public void Update_Color(byte red, byte green, byte blue, byte alpha)
         {
             brush_manager.Get_Current_Brush().Set_Color(new SKColor(red, green, blue, alpha));
@@ -178,21 +105,20 @@ namespace Sketchpop
         }
 
 
+        
+        /// <summary>
+        /// Resets the entire canvas back to its starting state; 1 empty layer
+        /// </summary>
         public void Reset_Canvas_State()
         {
-            using (SKSurface sks = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels())) {
-                sks.Canvas.Clear();
-            }
-            
-            /*
             using (SKSurface surface = SKSurface.Create(canvas_info))
             {
                 surface.Canvas.Clear();
-                selected_layer = new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 1);
-                 note: the first and last layers are just placeholders for testing
-                Layers = new List<Layer> { selected_layer, new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 1), new Layer(SKImage.FromPixelCopy(surface.PeekPixels()), 1) };
+                layer_manager.reset();
+
+                // remove when everything works with no layers
+                layer_manager.add_layer(canvas_info);
             }
-            */
         }
 
         public void Change_Brush(string brush_name, NumericUpDown stroke_input_box)

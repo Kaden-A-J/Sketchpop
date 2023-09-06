@@ -1,26 +1,14 @@
-﻿using SkiaSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using System.Windows.Forms;
 using static Sketchpop.Image_Search_Form;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using Image = System.Drawing.Image;
 
 namespace Sketchpop
 {
     public partial class main_window : Form
     {
-        public System.Windows.Forms.Timer draw_timer = new System.Windows.Forms.Timer();
+        public Timer draw_timer = new Timer();
         bool mouse_down = false;
         List<Panel> layers_ui;
 
@@ -146,6 +134,12 @@ namespace Sketchpop
 
         private void clear_canvas_button_Click(object sender, EventArgs e)
         {
+            layers_ui.Clear();
+            layer_panel.Controls.Clear();
+
+            // TODO make it so stuff works with no layers, right now it breaks so i'm restricting it to always have atleast one
+            layer_add_button_Click(null, null);
+
             Program.canvas_manager.Reset_Canvas_State();
         }
 
