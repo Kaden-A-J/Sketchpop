@@ -27,10 +27,16 @@ namespace Sketchpop
             _layers[idx].Name = name;
         }
 
-        public void set_layer_opacity(int idx, int opacity)
+        public void set_layer_opacity(int idx, float opacity)
         {
             _layers[idx].Opacity = opacity;
         }
+
+        public void set_layer_opacity(float opacity)
+        {
+            set_layer_opacity(selected_layer, opacity);
+        }
+
 
         public float get_layer_opacity(int idx)
         {

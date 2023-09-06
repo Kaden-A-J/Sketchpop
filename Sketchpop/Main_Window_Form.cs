@@ -166,6 +166,11 @@ namespace Sketchpop
             login.Show();
         }
 
+        private void temp_transparency_num_up_down_ValueChanged(object sender, EventArgs e)
+        {
+            Program.canvas_manager.layer_manager.set_layer_opacity((float)temp_transparency_num_up_down.Value);
+        }
+
         public void layer_visible_button_clicked(Object my_object, EventArgs my_event_args)
         {
             RadioButton c_button = (RadioButton)(my_object);
@@ -255,6 +260,7 @@ namespace Sketchpop
 
         private Rectangle top_right { get { return new Rectangle(this.ClientSize.Width - _grip_size, 0, _grip_size, _grip_size); } }
 
+        
         private Rectangle bottom_left { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }
         private Rectangle bottom_right { get { return new Rectangle(this.ClientSize.Width - _grip_size, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }
 
