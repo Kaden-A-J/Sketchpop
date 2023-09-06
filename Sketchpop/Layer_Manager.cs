@@ -45,7 +45,7 @@ namespace Sketchpop
 
         public void add_layer(SKImageInfo canvas_info)
         {
-            Layer t_layer = new Layer(_layers.Count, SKImage.Create(canvas_info), 255);
+            Layer t_layer = new Layer(_layers.Count, SKImage.Create(canvas_info), 1);
             _layers.Add(t_layer);
 
             // if no layer -> auto select it
