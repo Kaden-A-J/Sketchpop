@@ -132,7 +132,7 @@ namespace Sketchpop
             Program.canvas_manager.Update_Stroke_Size((int)stroke_size_input_box.Value);
         }
 
-        private void clear_canvas_button_Click(object sender, EventArgs e)
+        public void clear_canvas_button_Click(object sender, EventArgs e)
         {
             layers_ui.Clear();
             layer_panel.Controls.Clear();
@@ -155,7 +155,7 @@ namespace Sketchpop
 
         private void repeatedCirclesPracticeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var options_form = new Repeated_Circles_Options_Form();
+            var options_form = new Repeated_Circles_Options_Form(this);
             options_form.ShowDialog();
         }
 
@@ -187,7 +187,7 @@ namespace Sketchpop
             Program.canvas_manager.layer_manager.selected_layer = c_idx;
         }
 
-        private void layer_add_button_Click(object sender, EventArgs e)
+        public void layer_add_button_Click(object sender, EventArgs e)
         {
             int buffer = 4;
             Panel t_panel = new Panel();

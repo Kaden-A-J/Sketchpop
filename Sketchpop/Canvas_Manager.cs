@@ -131,7 +131,6 @@ namespace Sketchpop
 
         public void Repeated_Circles_Exercise(int spacing, int angle)
         {
-            Reset_Canvas_State();
             SKPaint exercise_paint = new SKPaint
             {
                 IsAntialias = true,

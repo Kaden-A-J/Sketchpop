@@ -1,24 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sketchpop
 {
     public partial class Repeated_Circles_Options_Form : Form
     {
-        public Repeated_Circles_Options_Form()
+        private main_window main_window_form;
+
+        public Repeated_Circles_Options_Form(main_window main_window)
         {
+            this.main_window_form = main_window;
             InitializeComponent();
         }
 
         private void start_button_Click(object sender, EventArgs e)
         {
+            main_window_form.clear_canvas_button_Click(null, null);
             Program.canvas_manager.Repeated_Circles_Exercise((int)spacing_num_up_down.Value, (int)angle_num_up_down.Value);
             this.Close();
         }
