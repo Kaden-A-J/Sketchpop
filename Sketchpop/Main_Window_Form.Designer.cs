@@ -318,6 +318,7 @@ namespace Sketchpop
             this.temp_transparency_num_up_down.Name = "temp_transparency_num_up_down";
             this.temp_transparency_num_up_down.Size = new System.Drawing.Size(120, 20);
             this.temp_transparency_num_up_down.TabIndex = 5;
+            this.temp_transparency_num_up_down.ValueChanged += new System.EventHandler(this.temp_transparency_num_up_down_ValueChanged);
             // 
             // img_form_button
             // 
