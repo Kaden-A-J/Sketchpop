@@ -25,7 +25,18 @@ namespace Sketchpop
             }
 
             Program.canvas_manager.Draw_Path_Points(new object());
-            Program.canvas_manager.Draw_Bitmap(new object());
+            Program.canvas_manager.Draw_Bitmap(canvas_frame, -1);
+            Program.canvas_manager.Draw_Bitmap(main_preview_picturebox, -1);
+        }
+
+        public void render_layer_previews(Object my_object, EventArgs my_event_args)
+        {
+            for (int idx = 0; idx < layers_ui.Count; idx++)
+                foreach (Control c in layers_ui[idx].Controls)
+                    if (c.Name == "preview_panel")
+                    {
+                        Program.canvas_manager.Draw_Bitmap((PictureBox)c, idx);
+                    }
         }
 
         public main_window()
@@ -39,6 +50,7 @@ namespace Sketchpop
             layer_add_button_Click(null, null);
 
             draw_timer.Tick += new EventHandler(draw_timer_method);
+            draw_timer.Tick += new EventHandler(render_layer_previews);
             draw_timer.Interval = 8; // 11.111... ms is 90 fps
             draw_timer.Start();
         }
@@ -202,10 +214,11 @@ namespace Sketchpop
             t_visible_button.Location = new Point(buffer, t_panel.Height / 2 - t_visible_button.Height / 2);
             t_panel.Controls.Add(t_visible_button);
 
-            Panel t_preview_panel = new Panel();
+            PictureBox t_preview_panel = new PictureBox();
             t_preview_panel.BackColor = Color.FromArgb(255, 167, 167, 167);
             t_preview_panel.Size = new Size((t_panel.Height - buffer * 2) / 9 * 16, t_panel.Height - buffer * 2);
             t_preview_panel.Location = new Point(t_visible_button.Width + buffer, buffer);
+            t_preview_panel.Name = "preview_panel";
             t_panel.Controls.Add(t_preview_panel);
 
             Label t_name_label = new Label();

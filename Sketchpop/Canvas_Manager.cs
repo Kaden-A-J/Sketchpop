@@ -4,6 +4,7 @@ using SkiaSharp;
 using System.Collections.Concurrent;
 using System.Windows.Forms;
 using SkiaSharp.Views.Desktop;
+using SkiaSharp.Views.WPF;
 
 namespace Sketchpop
 {
@@ -23,7 +24,7 @@ namespace Sketchpop
             layer_manager = new Layer_Manager();
 
             picture_box = canvas_frame;
-            canvas_info = new SKImageInfo(906, 625);
+            canvas_info = new SKImageInfo(767, 625);
 
 
             Reset_Canvas_State();
@@ -61,23 +62,40 @@ namespace Sketchpop
         /// </summary>
         /// <param name = "surface" ></ param >
         /// < returns ></ returns >
-        public void Draw_Bitmap(object state)
+        public void Draw_Bitmap(PictureBox target, int layer = -1)
         {
             using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).Info))
             using (SKPaint paint = new SKPaint())
             {
-                for (int idx = 0; idx < layer_manager.count; idx++)
+                if (layer == -1)
+                    for (int idx = 0; idx < layer_manager.count; idx++)
+                    {
+                        SKImage c_image = layer_manager.get_image(idx);
+                        paint.Color = paint.Color.WithAlpha((byte)(0xFF * layer_manager.get_layer_opacity(idx)));
+                        surface.Canvas.DrawImage(c_image, c_image.Info.Rect, paint);
+                    }
+                else
                 {
-                    SKImage c_image = layer_manager.get_image(idx);
-                    paint.Color = paint.Color.WithAlpha((byte)(0xFF * layer_manager.get_layer_opacity(idx)));
+                    SKImage c_image = layer_manager.get_image(layer);
+                    paint.Color = paint.Color.WithAlpha((byte)(0xFF * layer_manager.get_layer_opacity(layer)));
                     surface.Canvas.DrawImage(c_image, c_image.Info.Rect, paint);
                 }
 
-                if (picture_box.Image != null)
-                    picture_box.Image.Dispose();
+                if (target.Image != null)
+                    target.Image.Dispose();
                 SKImage t_image = surface.Snapshot();
-                picture_box.Image = t_image.ToBitmap();
+
+                SKBitmap t_bitmap = SKBitmap.FromImage(t_image);
+
+
+                SKSizeI target_size = new SKSizeI(target.Width, target.Height);
+                SKBitmap t_r_bitmap = t_bitmap.Resize(target_size, SKFilterQuality.High);
+
+                target.Image = t_r_bitmap.ToBitmap();
                 t_image.Dispose();
+                t_bitmap.Dispose();
+                t_r_bitmap.Dispose();
+
             }
         }
 
