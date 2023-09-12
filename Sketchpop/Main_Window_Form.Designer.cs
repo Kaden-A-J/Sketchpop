@@ -39,7 +39,7 @@ namespace Sketchpop
             this.fullscreen_button = new System.Windows.Forms.Button();
             this.tool_bar = new System.Windows.Forms.Panel();
             this.left_settings_panel = new System.Windows.Forms.Panel();
-            this.test_button = new System.Windows.Forms.Button();
+            this.ref_img_options = new System.Windows.Forms.Button();
             this.green_input_box = new System.Windows.Forms.NumericUpDown();
             this.blue_input_box = new System.Windows.Forms.NumericUpDown();
             this.red_input_box = new System.Windows.Forms.NumericUpDown();
@@ -66,6 +66,10 @@ namespace Sketchpop
             this.repeatedCirclesPracticeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.canvas_panel = new System.Windows.Forms.Panel();
+            this.ref_img_menustrip = new System.Windows.Forms.MenuStrip();
+            this.viewImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addImageToLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clear_canvas_button = new System.Windows.Forms.Button();
             this.pen_button = new System.Windows.Forms.Button();
             this.eraser_button = new System.Windows.Forms.Button();
@@ -74,8 +78,8 @@ namespace Sketchpop
             this.layer_delete_button = new System.Windows.Forms.Button();
             this.layer_add_button = new System.Windows.Forms.Button();
             this.layer_panel = new System.Windows.Forms.Panel();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.title_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).BeginInit();
@@ -87,6 +91,7 @@ namespace Sketchpop
             this.quick_launch_bar.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.canvas_panel.SuspendLayout();
+            this.ref_img_menustrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).BeginInit();
             this.right_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.main_preview_picturebox)).BeginInit();
@@ -178,7 +183,7 @@ namespace Sketchpop
             this.left_settings_panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.left_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
-            this.left_settings_panel.Controls.Add(this.test_button);
+            this.left_settings_panel.Controls.Add(this.ref_img_options);
             this.left_settings_panel.Controls.Add(this.green_input_box);
             this.left_settings_panel.Controls.Add(this.blue_input_box);
             this.left_settings_panel.Controls.Add(this.red_input_box);
@@ -203,15 +208,17 @@ namespace Sketchpop
             this.left_settings_panel.Size = new System.Drawing.Size(172, 690);
             this.left_settings_panel.TabIndex = 4;
             // 
-            // test_button
+            // ref_img_options
             // 
-            this.test_button.Location = new System.Drawing.Point(13, 184);
-            this.test_button.Name = "test_button";
-            this.test_button.Size = new System.Drawing.Size(75, 23);
-            this.test_button.TabIndex = 16;
-            this.test_button.Text = "test";
-            this.test_button.UseVisualStyleBackColor = true;
-            this.test_button.Click += new System.EventHandler(this.test_button_Click);
+            this.ref_img_options.Font = new System.Drawing.Font("Microsoft Sans Serif", 5.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ref_img_options.Location = new System.Drawing.Point(146, 108);
+            this.ref_img_options.Name = "ref_img_options";
+            this.ref_img_options.Size = new System.Drawing.Size(22, 15);
+            this.ref_img_options.TabIndex = 17;
+            this.ref_img_options.Text = "...";
+            this.ref_img_options.UseVisualStyleBackColor = true;
+            this.ref_img_options.Visible = false;
+            this.ref_img_options.Click += new System.EventHandler(this.ref_img_options_Click);
             // 
             // green_input_box
             // 
@@ -353,7 +360,6 @@ namespace Sketchpop
             this.reference_img.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.reference_img.TabIndex = 3;
             this.reference_img.TabStop = false;
-            this.reference_img.Click += new System.EventHandler(this.reference_img_Click);
             // 
             // db_status_label
             // 
@@ -487,6 +493,7 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
+            this.canvas_panel.Controls.Add(this.ref_img_menustrip);
             this.canvas_panel.Controls.Add(this.clear_canvas_button);
             this.canvas_panel.Controls.Add(this.pen_button);
             this.canvas_panel.Controls.Add(this.eraser_button);
@@ -495,6 +502,43 @@ namespace Sketchpop
             this.canvas_panel.Name = "canvas_panel";
             this.canvas_panel.Size = new System.Drawing.Size(767, 653);
             this.canvas_panel.TabIndex = 6;
+            // 
+            // ref_img_menustrip
+            // 
+            this.ref_img_menustrip.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.ref_img_menustrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.ref_img_menustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewImageToolStripMenuItem,
+            this.addImageToLayerToolStripMenuItem,
+            this.saveImageToolStripMenuItem});
+            this.ref_img_menustrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
+            this.ref_img_menustrip.Location = new System.Drawing.Point(0, 71);
+            this.ref_img_menustrip.Name = "ref_img_menustrip";
+            this.ref_img_menustrip.Size = new System.Drawing.Size(128, 61);
+            this.ref_img_menustrip.TabIndex = 11;
+            this.ref_img_menustrip.Text = "menuStrip2";
+            this.ref_img_menustrip.Visible = false;
+            // 
+            // viewImageToolStripMenuItem
+            // 
+            this.viewImageToolStripMenuItem.Name = "viewImageToolStripMenuItem";
+            this.viewImageToolStripMenuItem.Size = new System.Drawing.Size(80, 19);
+            this.viewImageToolStripMenuItem.Text = "View Image";
+            this.viewImageToolStripMenuItem.Click += new System.EventHandler(this.viewImageToolStripMenuItem_Click);
+            // 
+            // addImageToLayerToolStripMenuItem
+            // 
+            this.addImageToLayerToolStripMenuItem.Name = "addImageToLayerToolStripMenuItem";
+            this.addImageToLayerToolStripMenuItem.Size = new System.Drawing.Size(122, 19);
+            this.addImageToLayerToolStripMenuItem.Text = "Add Image to Layer";
+            this.addImageToLayerToolStripMenuItem.Click += new System.EventHandler(this.addImageToLayerToolStripMenuItem_Click);
+            // 
+            // saveImageToolStripMenuItem
+            // 
+            this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
+            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(79, 19);
+            this.saveImageToolStripMenuItem.Text = "Save Image";
+            this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
             // 
             // clear_canvas_button
             // 
@@ -589,12 +633,6 @@ namespace Sketchpop
             this.layer_panel.Size = new System.Drawing.Size(284, 258);
             this.layer_panel.TabIndex = 0;
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
             // main_preview_picturebox
             // 
             this.main_preview_picturebox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -609,6 +647,12 @@ namespace Sketchpop
             this.main_preview_picturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
             this.main_preview_picturebox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseMove);
             this.main_preview_picturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // main_window
             // 
@@ -647,6 +691,9 @@ namespace Sketchpop
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.canvas_panel.ResumeLayout(false);
+            this.canvas_panel.PerformLayout();
+            this.ref_img_menustrip.ResumeLayout(false);
+            this.ref_img_menustrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).EndInit();
             this.right_settings_panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.main_preview_picturebox)).EndInit();
@@ -704,8 +751,12 @@ namespace Sketchpop
         private System.Windows.Forms.Button layer_delete_button;
         private System.Windows.Forms.Button layer_add_button;
         private System.Windows.Forms.Panel layer_panel;
-        private System.Windows.Forms.Button test_button;
         private System.Windows.Forms.PictureBox main_preview_picturebox;
+        private System.Windows.Forms.Button ref_img_options;
+        private System.Windows.Forms.MenuStrip ref_img_menustrip;
+        private System.Windows.Forms.ToolStripMenuItem viewImageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addImageToLayerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveImageToolStripMenuItem;
     }
 }
 
