@@ -31,7 +31,7 @@ namespace Sketchpop
         // picturebox dragging variables
         private bool _dragging = false;
         private int _currentX, _currentY;
-        
+
         /// <summary>
         /// Constructor. Image data in the form of a byte[] is passed into
         /// the constructor, then this data is used to construct the fullscreen
@@ -75,7 +75,7 @@ namespace Sketchpop
         /// <param name="sender">user moves mousewheel</param>
         /// <param name="e">mousewheel direction, cursor position</param>
         private void Image_Mouse_Wheel(object sender, MouseEventArgs e)
-        {          
+        {
             // mousewheel direction will either be + or -
             if (e.Delta > 0)
             {
@@ -103,7 +103,6 @@ namespace Sketchpop
                     image_picturebox.Left = (int)(e.X - 0.80 * (e.X - image_picturebox.Left));
                 }
             }
-
         }
 
         /// <summary>

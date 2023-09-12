@@ -25,7 +25,7 @@ namespace Sketchpop
 
             picture_box = canvas_frame;
             canvas_info = new SKImageInfo(767, 625);
-
+         
 
             Reset_Canvas_State();
         }        
@@ -46,7 +46,7 @@ namespace Sketchpop
         {
 
         }
-        
+
         public void Update_Color(byte red, byte green, byte blue, byte alpha)
         {
             brush_manager.Get_Current_Brush().Set_Color(new SKColor(red, green, blue, alpha));
@@ -123,7 +123,7 @@ namespace Sketchpop
         }
 
 
-        
+
         /// <summary>
         /// Resets the entire canvas back to its starting state; 1 empty layer
         /// </summary>
@@ -205,15 +205,15 @@ namespace Sketchpop
         /// <param name="image_data">the bytes of the image to be drawn</param>
         /// <param name="pb">the picturebox of the original image</param>
         /// <param name="opacity">the opacity to set the image to</param>
-        public void DrawImageWithOpacity(byte[] image_data, PictureBox pb, float opacity)
+        public void DrawImageWithOpacity(byte[] image_data, PictureBox pb, int layer_idx)
         {
             using (SKImage image = SKImage.FromEncodedData(image_data))
             {
-                using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels()))
+                using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_idx).PeekPixels()))
                 {
                     using (SKPaint paint = new SKPaint())
                     {
-                        paint.Color = new SKColor(paint.Color.Red, paint.Color.Green, paint.Color.Blue, (byte)(255 * opacity)); // Set the opacity
+                        paint.Color = new SKColor(paint.Color.Red, paint.Color.Green, paint.Color.Blue); // Set the opacity
 
                         // center the image
                         float x = (pb.Width - canvas_info.Width) / 2;
