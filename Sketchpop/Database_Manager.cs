@@ -262,6 +262,8 @@ namespace Sketchpop
                     comm.Parameters.AddWithValue("@ImageData", imageBytes);
                     comm.ExecuteNonQuery();
                 }
+
+                MessageBox.Show("Image Uploaded Successfully.");
             }
             catch (Exception ex)
             {

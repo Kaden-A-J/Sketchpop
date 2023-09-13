@@ -166,6 +166,7 @@
             this.search_textbox.Size = new System.Drawing.Size(147, 20);
             this.search_textbox.TabIndex = 3;
             this.search_textbox.TextChanged += new System.EventHandler(this.search_textbox_TextChanged);
+            this.search_textbox.DoubleClick += new System.EventHandler(this.search_textbox_DoubleClick);
             this.search_textbox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.search_textbox_KeyDown);
             // 
             // label1

@@ -89,7 +89,7 @@ namespace Sketchpop
 
 
                 SKSizeI target_size = new SKSizeI(target.Width, target.Height);
-                SKBitmap t_r_bitmap = t_bitmap.Resize(target_size, SKFilterQuality.High);
+                SKBitmap t_r_bitmap = Resize_Canvas_To_Preview(t_bitmap, target_size);//t_bitmap.Resize(target_size, SKFilterQuality.High);
 
                 target.Image = t_r_bitmap.ToBitmap();
                 t_image.Dispose();
@@ -97,6 +97,30 @@ namespace Sketchpop
                 t_r_bitmap.Dispose();
 
             }
+        }
+
+        /// <summary>
+        /// Resizes the Bitmap to fit the target PictureBox by calculating the ratios
+        /// between the SKBitmap and SKSizeI and applies the smaller ratio to the new
+        /// size of the bitmap. The smaller size is chosen so that the bitmap does not 
+        /// resize to be larger than the SKSizeI.
+        /// 
+        /// Code Source: https://stackoverflow.com/questions/1940581/c-sharp-image-resizing-to-different-size-while-preserving-aspect-ratio
+        /// </summary>
+        /// <param name="t_bitmap">original bitmap</param>
+        /// <param name="targetSize">target size of PictureBox</param>
+        /// <returns>resized bitmap</returns>
+        private SKBitmap Resize_Canvas_To_Preview(SKBitmap t_bitmap, SKSizeI targetSize)
+        {
+            float ratioX = targetSize.Width / (float)t_bitmap.Width;
+            float ratioY = targetSize.Height / (float)t_bitmap.Height;
+
+            float ratio = Math.Min(ratioX, ratioY);
+
+            int newWidth = (int)(t_bitmap.Width * ratio);
+            int newHeight = (int)(t_bitmap.Height * ratio);
+
+            return t_bitmap.Resize(new SKImageInfo(newWidth, newHeight), SKFilterQuality.High);
         }
 
         public void Draw_Path_Points(object state)
