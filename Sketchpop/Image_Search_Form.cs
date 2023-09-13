@@ -72,6 +72,10 @@ namespace Sketchpop
                 _uploaded_showing = false;
                 Add_Images_To_Panel(_cached_images, _cts);
             }
+            else
+            {
+                MessageBox.Show("Search Criteria Returned 0 Results.");
+            }
         }
 
         /// <summary>
@@ -276,8 +280,9 @@ namespace Sketchpop
         private void search_button_Click(object sender, EventArgs e)
         {
             // check to make sure a valid number of images to search for has been chosen.
-            if (num_images_textbox.Text.Equals("0")) { MessageBox.Show("Value must be greater than 0."); }
-            else if (int.Parse(num_images_textbox.Text) > 30) { MessageBox.Show("Max number of returned images cannot exceed 30."); }
+            if (num_images_textbox.Text.Equals("0")) { MessageBox.Show("Number of returned images must be greater than 0."); }
+            else if (string.IsNullOrEmpty(num_images_textbox.Text)) { MessageBox.Show("Number of returned images cannot be empty."); }
+            else if (int.Parse(num_images_textbox.Text) > 30) { MessageBox.Show("Max number of returned images cannot exceed 30."); }            
             else
             {
                 // enable/disable unnecessary buttons
@@ -373,9 +378,26 @@ namespace Sketchpop
             openFileDialog.Multiselect = false;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
+                // if images are being uploaded, cancel the process and display these instead
+                _cts.Cancel();
+                _cts = new CancellationTokenSource();
+
                 string fileName = openFileDialog.SafeFileName; // Gets the file name
                 string filePath = openFileDialog.FileName; // Gets the full file path
                 _dbm.Execute_Local_Picture_Upload_Query(fileName, filePath);
+
+                // display necessary ui
+                select_button.Enabled = true;
+                remove_fav_button.Visible = true;
+                add_fav_button.Visible = true;
+
+                _uploaded_showing = true;
+                _favs_showing = false;
+                _search_results_showing = false;
+
+                _uploaded_images = _dbm.Get_User_Images();
+                images_panel.Controls.Clear();
+                Add_Images_To_Panel(_uploaded_images, _cts);
             }
         }
 
@@ -606,6 +628,11 @@ namespace Sketchpop
             }
         }
 
+        private void search_textbox_DoubleClick(object sender, EventArgs e)
+        {
+            search_textbox.SelectAll();
+        }
+
         /*
          *  END  -- Button Click Logic
          */
@@ -644,6 +671,6 @@ namespace Sketchpop
             public string Name => _author_name;
             public string Link => _author_link;
 
-        }
+        }        
     }
 }
