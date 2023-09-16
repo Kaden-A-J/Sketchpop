@@ -5,32 +5,38 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Xml;
 
 namespace Sketchpop
 {
     public class File_Manager
     {
-
         public void Save_as_EXC(string path, Layer_Manager layers) {
-            Console.WriteLine(path);
-            using (FileStream fs = File.Create(path))
-            using (BinaryWriter writer = new BinaryWriter(fs))
+            XmlWriterSettings settings = new XmlWriterSettings
             {
-                // write header   
-                writer.Write("EXC");  
-                Console.WriteLine("layers count = "+layers.count);
-                writer.Write(layers.count);
-                Console.WriteLine("selected layer = "+layers.selected_layer);
-                writer.Write(layers.selected_layer);
-                for (int i = 1; i < layers.count; i++)
+                Indent = true,
+                IndentChars = "  ",  
+                NewLineChars = "\n",
+                NewLineHandling = NewLineHandling.Replace
+            };
+            using (FileStream fs = File.Create(path))
+            using (XmlWriter writer = XmlWriter.Create(fs))
+            {
+                writer.WriteStartDocument();
+                writer.WriteStartElement("EXC");
+                writer.WriteAttributeString("layer_count", layers.count.ToString());
+                writer.WriteAttributeString("selected_layer", layers.selected_layer.ToString());
+                for(int i = 0; i < layers.count; i++)
                 {
-                    Console.WriteLine("saving layer " + i);
-                    // save each layer as a separate image
-                    SKData encodedData = layers.get_image(i).EncodedData;
-                    writer.Write(encodedData.ToArray().Length);
-                    writer.Write(encodedData.ToArray());
-                    writer.Write(layers.get_layer_opacity(i));
+                    writer.WriteStartElement("layer");
+                    writer.WriteAttributeString("img_size", layers.get_image(i).Encode().Size.ToString());
+                    writer.WriteAttributeString("img_data", Convert.ToBase64String(layers.get_image(i).Encode().ToArray()));
+                    writer.WriteAttributeString("opacity", layers.get_layer_opacity(i).ToString());
+                    writer.WriteEndElement();
                 }
+                writer.WriteEndElement();
+                writer.WriteEndDocument();
             }
      
         }
@@ -43,27 +49,37 @@ namespace Sketchpop
         public void Load_as_EXC(string path, Layer_Manager layers ) {
             // rebuild canvas
             layers.reset();
-            using (FileStream fs = File.OpenRead(path))
-            using(BinaryReader reader = new BinaryReader(fs))
+            XmlReaderSettings settings = new XmlReaderSettings
             {
-                  // read header
-                String header = new String(reader.ReadChars(3));
-                if (header != "EXC")
+                IgnoreComments = true,
+                IgnoreWhitespace = true
+            };
+            using (FileStream fs = File.OpenRead(path))
+            using (XmlReader reader = XmlReader.Create(fs))
+            {
+                while (reader.Read())
                 {
-                    throw new Exception("Invalid file format");
-                }
-                int layer_count = reader.ReadInt32();
-                int selected_layer = reader.ReadInt32();
-                for (int i = 0; i < layer_count; i++)
-                {
-                    int img_size = reader.ReadInt32();
-                    byte[] img_data = reader.ReadBytes(img_size);
-                    float opacity = reader.ReadSingle();
-                    SKImage image = SKImage.FromEncodedData(img_data);
-                    layers.add_layer(image, opacity);
+                    if (reader.NodeType == XmlNodeType.Element)
+                    {
+                        switch (reader.Name)
+                        {
+                            case "EXC": 
+                                int selectedLayer = int.Parse(reader.GetAttribute("selected_layer"));
+                                layers.selected_layer = selectedLayer;
+                                break;
+
+                            case "layer":
+                                int imgSize = int.Parse(reader.GetAttribute("img_size"));
+                                byte[] imgData = Convert.FromBase64String(reader.GetAttribute("img_data"));
+                                SKImage image = SKImage.FromEncodedData(imgData);
+                                float opacity = float.Parse(reader.GetAttribute("opacity"));
+                                layers.add_layer(image, opacity);
+                                break;
+                        }
+                    }
                 }
             }
-            
+
         }
 
         public void Load_as_PNG(string path, Layer_Manager layers)
