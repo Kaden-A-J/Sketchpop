@@ -71,7 +71,9 @@ namespace Sketchpop
                             case "layer":
                                 int imgSize = int.Parse(reader.GetAttribute("img_size"));
                                 byte[] imgData = Convert.FromBase64String(reader.GetAttribute("img_data"));
-                                SKImage image = SKImage.FromEncodedData(imgData);
+                                SKImage temp_image = SKImage.FromEncodedData(imgData);
+                                SKBitmap bitmap = SKBitmap.FromImage(temp_image);
+                                SKImage image = SKImage.FromBitmap(bitmap);
                                 float opacity = float.Parse(reader.GetAttribute("opacity"));
                                 layers.add_layer(image, opacity);
                                 break;
