@@ -25,7 +25,7 @@ namespace Sketchpop
 
             picture_box = canvas_frame;
             canvas_info = new SKImageInfo(767, 625);
-
+         
 
             Reset_Canvas_State();
         }        
@@ -46,7 +46,7 @@ namespace Sketchpop
         {
 
         }
-        
+
         public void Update_Color(byte red, byte green, byte blue, byte alpha)
         {
             brush_manager.Get_Current_Brush().Set_Color(new SKColor(red, green, blue, alpha));
@@ -89,7 +89,7 @@ namespace Sketchpop
 
 
                 SKSizeI target_size = new SKSizeI(target.Width, target.Height);
-                SKBitmap t_r_bitmap = t_bitmap.Resize(target_size, SKFilterQuality.High);
+                SKBitmap t_r_bitmap = Resize_Canvas_To_Preview(t_bitmap, target_size);//t_bitmap.Resize(target_size, SKFilterQuality.High);
 
                 target.Image = t_r_bitmap.ToBitmap();
                 t_image.Dispose();
@@ -97,6 +97,30 @@ namespace Sketchpop
                 t_r_bitmap.Dispose();
 
             }
+        }
+
+        /// <summary>
+        /// Resizes the Bitmap to fit the target PictureBox by calculating the ratios
+        /// between the SKBitmap and SKSizeI and applies the smaller ratio to the new
+        /// size of the bitmap. The smaller size is chosen so that the bitmap does not 
+        /// resize to be larger than the SKSizeI.
+        /// 
+        /// Code Source: https://stackoverflow.com/questions/1940581/c-sharp-image-resizing-to-different-size-while-preserving-aspect-ratio
+        /// </summary>
+        /// <param name="t_bitmap">original bitmap</param>
+        /// <param name="targetSize">target size of PictureBox</param>
+        /// <returns>resized bitmap</returns>
+        private SKBitmap Resize_Canvas_To_Preview(SKBitmap t_bitmap, SKSizeI targetSize)
+        {
+            float ratioX = targetSize.Width / (float)t_bitmap.Width;
+            float ratioY = targetSize.Height / (float)t_bitmap.Height;
+
+            float ratio = Math.Min(ratioX, ratioY);
+
+            int newWidth = (int)(t_bitmap.Width * ratio);
+            int newHeight = (int)(t_bitmap.Height * ratio);
+
+            return t_bitmap.Resize(new SKImageInfo(newWidth, newHeight), SKFilterQuality.High);
         }
 
         public void Draw_Path_Points(object state)
@@ -127,7 +151,7 @@ namespace Sketchpop
         }
 
 
-        
+
         /// <summary>
         /// Resets the entire canvas back to its starting state; 1 empty layer
         /// </summary>
@@ -209,15 +233,15 @@ namespace Sketchpop
         /// <param name="image_data">the bytes of the image to be drawn</param>
         /// <param name="pb">the picturebox of the original image</param>
         /// <param name="opacity">the opacity to set the image to</param>
-        public void DrawImageWithOpacity(byte[] image_data, PictureBox pb, float opacity)
+        public void DrawImageWithOpacity(byte[] image_data, PictureBox pb, int layer_idx)
         {
             using (SKImage image = SKImage.FromEncodedData(image_data))
             {
-                using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels()))
+                using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_idx).PeekPixels()))
                 {
                     using (SKPaint paint = new SKPaint())
                     {
-                        paint.Color = new SKColor(paint.Color.Red, paint.Color.Green, paint.Color.Blue, (byte)(255 * opacity)); // Set the opacity
+                        paint.Color = new SKColor(paint.Color.Red, paint.Color.Green, paint.Color.Blue); // Set the opacity
 
                         // center the image
                         float x = (pb.Width - canvas_info.Width) / 2;

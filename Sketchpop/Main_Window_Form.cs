@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
+using static Sketchpop.Image_Layer_Options_Form;
 using static Sketchpop.Image_Search_Form;
 
 namespace Sketchpop
@@ -273,8 +275,9 @@ namespace Sketchpop
 
         private Rectangle top_right { get { return new Rectangle(this.ClientSize.Width - _grip_size, 0, _grip_size, _grip_size); } }
 
-        
-        private Rectangle bottom_left { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }
+
+        private Rectangle bottom_left { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }        
+
         private Rectangle bottom_right { get { return new Rectangle(this.ClientSize.Width - _grip_size, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }
 
 
@@ -357,7 +360,7 @@ namespace Sketchpop
                 else if (right.Contains(cursor)) message.Result = (IntPtr)HTRIGHT;
                 else if (bottom.Contains(cursor)) message.Result = (IntPtr)HTBOTTOM;
             }
-        }
+        }        
 
         /*
          *  Start of -- Image Selection and Database Related Code
@@ -420,6 +423,9 @@ namespace Sketchpop
             ToolTip unsp_tt = new ToolTip();
             unsp_tt.SetToolTip(unsplash_link, "https://www.unsplash.com/?utm_source=Sketchpop&utm_medium=referral");
             unsp_tt.AutoPopDelay = 5000;
+
+            // enable options for image
+            ref_img_options.Visible = true;
         }
 
         /// <summary>
@@ -442,31 +448,65 @@ namespace Sketchpop
             System.Diagnostics.Process.Start(_author_link);
         }
 
-        /// <summary>
-        /// TODO: figure out UI for placing an image onto canvas.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void test_button_Click(object sender, EventArgs e)
+        private void addImageToLayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Program.canvas_manager.DrawImageWithOpacity(_ref_image_data, canvas_frame, (float)0.5);
+            var tmp = new Image_Layer_Options_Form(_ref_image_data, layers_ui.Count);//Program.canvas_manager.DrawImageWithOpacity(_ref_image_data, canvas_frame, (float)0.5);
+            tmp.saved += Add_Image_To_Layer;
+            tmp.add_layer += layer_add_button_Click;
+            //tmp.delete_layer += layer_delete_button_Click;
+            tmp.StartPosition = FormStartPosition.CenterParent;
+            tmp.ShowDialog();
+
+            ref_img_menustrip.Visible = false;
         }
 
-        /// <summary>
-        /// User can click the thumbnail reference image photo to get a fullscreen
-        /// view of the image they have selected. The fullscreen is a separate form
-        /// that displays the image in fullscreen.
-        /// </summary>
-        /// <param name="sender">user clicks the PictureBox</param>
-        /// <param name="e">n/a</param>
-        private void reference_img_Click(object sender, EventArgs e)
+        private void Add_Image_To_Layer(object sender, Save_Data e)
         {
-            if (reference_img.Image != null)
+            // get the modified image and layer index
+            byte[] modified_img = e.Image_Data;
+            int layer_index = e.Layer;
+
+            // add the image to the layer
+            Program.canvas_manager.DrawImageWithOpacity(modified_img, canvas_frame, layer_index);
+
+            ref_img_menustrip.Visible = false;
+        }
+
+        private void ref_img_options_Click(object sender, EventArgs e)
+        {
+            ref_img_menustrip.Visible = !ref_img_menustrip.Visible;
+        }
+
+        // Image Option Menu Logic
+        private void viewImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var tmp = new Fullscreen_Image_Form(_ref_image_data);
+            tmp.StartPosition = FormStartPosition.CenterParent;
+            tmp.ShowDialog();
+
+            ref_img_menustrip.Visible = false;
+        }
+
+        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Image Files (*.png;*.jpg;*.jpeg;*.bmp)|*.png;*.jpg;*.jpeg;*.bmp|All Files (*.*)|*.*";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                var tmp = new Fullscreen_Image_Form(_ref_image_data);
-                tmp.StartPosition = FormStartPosition.CenterParent;
-                tmp.ShowDialog();
+                string filePath = saveFileDialog.FileName;
+                try
+                {
+                    File.WriteAllBytes(filePath, _ref_image_data);
+                    MessageBox.Show("Image saved successfully.");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error saving the image: {ex.Message}");
+                }
             }
+
+            ref_img_menustrip.Visible = false;
         }
 
         /* 
