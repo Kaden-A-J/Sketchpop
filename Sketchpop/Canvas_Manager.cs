@@ -127,6 +127,10 @@ namespace Sketchpop
         {
             if (current_path != null)
             {
+                Console.WriteLine("selected layer: " + layer_manager.selected_layer);
+                Console.WriteLine("binary code length: " + layer_manager.get_image(layer_manager.selected_layer).Encode().ToArray().Length
+                    );
+                Console.WriteLine(layer_manager.get_image(layer_manager.selected_layer).PeekPixels());
                 using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels()))
                 {
                     if (pointsToDraw.TryDequeue(out Point_Operation po))
