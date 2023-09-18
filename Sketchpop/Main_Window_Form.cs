@@ -280,53 +280,6 @@ namespace Sketchpop
 
         private Rectangle bottom_right { get { return new Rectangle(this.ClientSize.Width - _grip_size, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }
 
-
-        private void saveAsExcToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (SaveFileDialog save_file_window = new SaveFileDialog())
-            {
-                save_file_window.InitialDirectory = ".\\";
-                save_file_window.Filter = "exc files (*.exc)|*.exc|All files (*.*)|*.*";
-                save_file_window.FilterIndex = 1;
-                save_file_window.RestoreDirectory = true;
-                if (save_file_window.ShowDialog() == DialogResult.OK)
-                {
-                    new File_Manager().Save_as_EXC(save_file_window.FileName, Program.canvas_manager.layer_manager);
-                }
-            }
-        }
-
-        private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-           
-            int layer_count = 0;
-            String path = "";
-            using(OpenFileDialog open_file_window = new OpenFileDialog())
-            {
-                open_file_window.InitialDirectory = ".\\";
-                open_file_window.Filter = "exc files (*.exc)|*.exc|png files (*.png)|*.png";
-                open_file_window.FilterIndex = 1;
-                open_file_window.RestoreDirectory = true;
-                if (open_file_window.ShowDialog() == DialogResult.OK)
-                {
-                    path = open_file_window.FileName;
-                }
-            }
-            if (path.EndsWith(".exc"))
-            {
-                clear_canvas_button_Click(null, null);
-                layer_count = new File_Manager().Load_as_EXC(path, Program.canvas_manager.layer_manager);
-                for (int i = 0; i < layer_count; i++)
-                {
-                    layer_add_button_Click(null, null);
-                }
-            }
-            else if (path.EndsWith(".png"))
-            {
-                //
-            }
-            
-        }
         // From https://stackoverflow.com/q/2575216
         // To allow dragging and resizing the window without the default Window's form border
         protected override void WndProc(ref Message message)
@@ -512,7 +465,5 @@ namespace Sketchpop
         /* 
          *  End of -- Image Selection and Database Related Code
          */
-  
-      
     }
 }
