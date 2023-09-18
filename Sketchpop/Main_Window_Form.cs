@@ -295,6 +295,8 @@ namespace Sketchpop
 
         private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            clear_canvas_button_Click(null, null);
+            int layer_count = 0;
             String path = "";
             using(OpenFileDialog open_file_window = new OpenFileDialog())
             {
@@ -309,12 +311,17 @@ namespace Sketchpop
             }
             if (path.EndsWith(".exc"))
             {
-                new File_Manager().Load_as_EXC(path, Program.canvas_manager.layer_manager);
+                layer_count = new File_Manager().Load_as_EXC(path, Program.canvas_manager.layer_manager);
+                for (int i = 0; i < layer_count; i++)
+                {
+                    layer_add_button_Click(null, null);
+                }
             }
             else if (path.EndsWith(".png"))
             {
                 //
             }
+            
         }
         // From https://stackoverflow.com/q/2575216
         // To allow dragging and resizing the window without the default Window's form border

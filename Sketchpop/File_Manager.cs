@@ -46,8 +46,9 @@ namespace Sketchpop
 
         }
 
-        public void Load_as_EXC(string path, Layer_Manager layers ) {
+        public int Load_as_EXC(string path, Layer_Manager layers ) {
             // rebuild canvas
+            int ret = 0;
             layers.reset();
             XmlReaderSettings settings = new XmlReaderSettings
             {
@@ -81,6 +82,8 @@ namespace Sketchpop
                     }
                 }
             }
+            ret = layers.count;
+            return ret;
 
         }
 
