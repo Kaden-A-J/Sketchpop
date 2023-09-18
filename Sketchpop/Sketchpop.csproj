@@ -139,6 +139,7 @@
     <Compile Include="Canvas_Manager.cs" />
     <Compile Include="Brush.cs" />
     <Compile Include="Database_Manager.cs" />
+    <Compile Include="File_Manager.cs" />
     <Compile Include="Fullscreen_Image_Form.cs">
       <SubType>Form</SubType>
     </Compile>

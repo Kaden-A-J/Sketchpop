@@ -52,6 +52,14 @@ namespace Sketchpop
             selected_layer = (selected_layer == -1) ? 0 : selected_layer;
         }
 
+        public void add_layer(SKImage img, float opacity)
+        {
+            Layer t_layer = new Layer(_layers.Count, img, opacity);
+            _layers.Add(t_layer);
+
+            // if no layer -> auto select it
+            selected_layer = (selected_layer == -1) ? 0 : selected_layer;
+        }
         /// <summary>
         /// Clears any drawings on the selected layer
         /// </summary>
