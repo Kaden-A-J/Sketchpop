@@ -64,6 +64,7 @@ namespace Sketchpop
             this.exercisesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.muscleMemoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.repeatedCirclesPracticeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.randomPromptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -465,7 +466,8 @@ namespace Sketchpop
             // exercisesToolStripMenuItem
             // 
             this.exercisesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.muscleMemoryToolStripMenuItem});
+            this.muscleMemoryToolStripMenuItem,
+            this.randomPromptToolStripMenuItem});
             this.exercisesToolStripMenuItem.Name = "exercisesToolStripMenuItem";
             this.exercisesToolStripMenuItem.Size = new System.Drawing.Size(102, 28);
             this.exercisesToolStripMenuItem.Text = "Exercises";
@@ -484,6 +486,13 @@ namespace Sketchpop
             this.repeatedCirclesPracticeToolStripMenuItem.Size = new System.Drawing.Size(327, 34);
             this.repeatedCirclesPracticeToolStripMenuItem.Text = "Repeated Circles Practice";
             this.repeatedCirclesPracticeToolStripMenuItem.Click += new System.EventHandler(this.repeatedCirclesPracticeToolStripMenuItem_Click);
+            // 
+            // randomPromptToolStripMenuItem
+            // 
+            this.randomPromptToolStripMenuItem.Name = "randomPromptToolStripMenuItem";
+            this.randomPromptToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.randomPromptToolStripMenuItem.Text = "Red Lining ";
+            this.randomPromptToolStripMenuItem.Click += new System.EventHandler(this.redLiningToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -796,6 +805,7 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem viewImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addImageToLayerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveImageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem randomPromptToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsEXCToolStripMenuItem;

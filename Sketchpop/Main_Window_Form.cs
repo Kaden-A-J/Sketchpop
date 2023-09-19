@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Net.Http;
+using System.Security.Policy;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Sketchpop.Image_Layer_Options_Form;
 using static Sketchpop.Image_Search_Form;
@@ -17,6 +20,7 @@ namespace Sketchpop
         // reference image variables
         private string _author_link;
         private byte[] _ref_image_data;
+        private Unsplash_Manager _um;
 
         public void draw_timer_method(Object my_object, EventArgs my_event_args)
         {
@@ -47,6 +51,7 @@ namespace Sketchpop
             Program.canvas_manager = new Canvas_Manager(ref canvas_frame);
 
             layers_ui = new List<Panel>();
+            _um = new Unsplash_Manager();
 
             // TODO make it so stuff works with no layers, right now it breaks so i'm restricting it to always have atleast one
             layer_add_button_Click(null, null);
@@ -276,7 +281,7 @@ namespace Sketchpop
         private Rectangle top_right { get { return new Rectangle(this.ClientSize.Width - _grip_size, 0, _grip_size, _grip_size); } }
 
 
-        private Rectangle bottom_left { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }        
+        private Rectangle bottom_left { get { return new Rectangle(0, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }
 
         private Rectangle bottom_right { get { return new Rectangle(this.ClientSize.Width - _grip_size, this.ClientSize.Height - _grip_size, _grip_size, _grip_size); } }
 
@@ -313,7 +318,7 @@ namespace Sketchpop
                 else if (right.Contains(cursor)) message.Result = (IntPtr)HTRIGHT;
                 else if (bottom.Contains(cursor)) message.Result = (IntPtr)HTBOTTOM;
             }
-        }        
+        }
 
         /*
          *  Start of -- Image Selection and Database Related Code
@@ -401,6 +406,12 @@ namespace Sketchpop
             System.Diagnostics.Process.Start(_author_link);
         }
 
+        /// <summary>
+        /// Menustrip item for adding an image to a layer. Opens an ImageLayerOptions Form and sets its
+        /// event handlers to be notified by the actions done by the user in the form.
+        /// </summary>
+        /// <param name="sender">menustrip item</param>
+        /// <param name="e">n/a</param>
         private void addImageToLayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var tmp = new Image_Layer_Options_Form(_ref_image_data, layers_ui.Count);//Program.canvas_manager.DrawImageWithOpacity(_ref_image_data, canvas_frame, (float)0.5);
@@ -413,6 +424,13 @@ namespace Sketchpop
             ref_img_menustrip.Visible = false;
         }
 
+        /// <summary>
+        /// Event Handler for adding an image to a layer. When this method is invoked it
+        /// obtains the Save_Data, which contains the changes made by the user in the form,
+        /// and applys them to the image when drawing the image to the canvas.
+        /// </summary>
+        /// <param name="sender">user triggers event</param>
+        /// <param name="e">user changes</param>
         private void Add_Image_To_Layer(object sender, Save_Data e)
         {
             // get the modified image and layer index
@@ -425,8 +443,15 @@ namespace Sketchpop
             ref_img_menustrip.Visible = false;
         }
 
+        /// <summary>
+        /// Event Handler for when the user presses the button on the selected image in the 
+        /// ref_img_thumbnail. When pressed, the menustrip becomes visible.
+        /// </summary>
+        /// <param name="sender">user presses button</param>
+        /// <param name="e">n/a</param>
         private void ref_img_options_Click(object sender, EventArgs e)
         {
+            ref_img_menustrip.Location = new Point(canvas_frame.Location.X, canvas_frame.Location.Y);
             ref_img_menustrip.Visible = !ref_img_menustrip.Visible;
         }
 
@@ -485,6 +510,11 @@ namespace Sketchpop
             }
 
         }
+        /// <summary>
+        /// Displays a dialog box that prompts the user to save the selected reference image locally.
+        /// </summary>
+        /// <param name="sender">menustrip item</param>
+        /// <param name="e">n/a</param>
         private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -505,6 +535,45 @@ namespace Sketchpop
             }
 
             ref_img_menustrip.Visible = false;
+        }
+
+        /// <summary>
+        /// This method is an exercise option for the user. This exercise is  
+        /// 'Red-Lining', and the canvas is automatically set up for the user
+        /// to begin drawing. A random reference image is chosen and placed on 
+        /// the canvas with opacity reduced, a new layer is selected for drawing,
+        /// and a red pen selected. TODO: add a hint/tip/directions for the practice.
+        /// </summary>
+        /// <param name="sender">menu strip item</param>
+        /// <param name="e">n/a</param>
+        private void redLiningToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // get a random image for the line drawing
+            UnsplashImage img = _um.GetRandomImage();
+
+            // clear canvas, add ref image to layer, add new layer for drawing
+            clear_canvas_button_Click(null, null);
+            Program.canvas_manager.DrawImageWithOpacity(img.Get_Image_Data(), canvas_frame, 0);
+            layer_add_button_Click(null, null);
+
+            // change pen settings
+            red_input_box.Value = 255;
+            green_input_box.Value = 0;
+            blue_input_box.Value = 0;
+
+
+            // change layer opacity settings
+            temp_transparency_num_up_down.Value = (decimal)0.5;
+            Program.canvas_manager.layer_manager.set_layer_opacity((float)temp_transparency_num_up_down.Value);
+
+            // select the new layer
+            foreach (Control c in layers_ui[layers_ui.Count - 1].Controls)
+            {
+                if (c is RadioButton r)
+                {
+                    layer_visible_button_clicked(r, new EventArgs());
+                }
+            }
         }
 
         /* 

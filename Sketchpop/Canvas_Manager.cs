@@ -25,10 +25,10 @@ namespace Sketchpop
 
             picture_box = canvas_frame;
             canvas_info = new SKImageInfo(767, 625);
-         
+
 
             Reset_Canvas_State();
-        }        
+        }
 
         public void Add_Point_To_Draw(Point point)
         {
@@ -228,7 +228,7 @@ namespace Sketchpop
         /// </summary>
         /// <param name="image_data">the bytes of the image to be drawn</param>
         /// <param name="pb">the picturebox of the original image</param>
-        /// <param name="opacity">the opacity to set the image to</param>
+        /// <param name="opacity">the opacity to set the image to</param>       
         public void DrawImageWithOpacity(byte[] image_data, PictureBox pb, int layer_idx)
         {
             using (SKImage image = SKImage.FromEncodedData(image_data))
@@ -236,20 +236,22 @@ namespace Sketchpop
                 using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_idx).PeekPixels()))
                 {
                     using (SKPaint paint = new SKPaint())
-                    {
-                        paint.Color = new SKColor(paint.Color.Red, paint.Color.Green, paint.Color.Blue); // Set the opacity
-
-                        // center the image
-                        float x = (pb.Width - canvas_info.Width) / 2;
-                        float y = (pb.Height - canvas_info.Height) / 2;
-
-                        // fit the image into the picturebox
+                    {                        
+                        // choose the min scaling factor
                         float scaleX = pb.Width / (float)image.Width;
                         float scaleY = pb.Height / (float)image.Height;
                         float scale = Math.Min(scaleX, scaleY);
 
-                        // create the rectangle that fits the image to draw on
-                        SKRect skR = new SKRect(x, y, x + image.Width * scale, y + image.Height * scale);
+                        // calculate new width and height using scale
+                        float newWidth = image.Width * scale;
+                        float newHeight = image.Height * scale;
+
+                        // center the image
+                        float x = (pb.Width - newWidth) / 2;
+                        float y = (pb.Height - newHeight) / 2;
+
+                        // create a rect with new dimensions to place the image in
+                        SKRect skR = new SKRect(x, y, x + newWidth, y + newHeight);
 
                         surface.Canvas.DrawImage(image, skR, paint);
                     }
