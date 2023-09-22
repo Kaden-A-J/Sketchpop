@@ -85,6 +85,7 @@ namespace Sketchpop
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.select_button = new System.Windows.Forms.Button();
             this.title_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).BeginInit();
@@ -539,6 +540,7 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
+            this.canvas_panel.Controls.Add(this.select_button);
             this.canvas_panel.Controls.Add(this.ref_img_menustrip);
             this.canvas_panel.Controls.Add(this.clear_canvas_button);
             this.canvas_panel.Controls.Add(this.pen_button);
@@ -633,7 +635,6 @@ namespace Sketchpop
             this.canvas_frame.TabIndex = 0;
             this.canvas_frame.TabStop = false;
             this.canvas_frame.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
-            this.canvas_frame.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseMove);
             this.canvas_frame.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
             // 
             // right_settings_panel
@@ -693,7 +694,6 @@ namespace Sketchpop
             this.main_preview_picturebox.TabIndex = 0;
             this.main_preview_picturebox.TabStop = false;
             this.main_preview_picturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
-            this.main_preview_picturebox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseMove);
             this.main_preview_picturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
             // 
             // contextMenuStrip1
@@ -701,6 +701,16 @@ namespace Sketchpop
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // select_button
+            // 
+            this.select_button.Location = new System.Drawing.Point(445, 3);
+            this.select_button.Name = "select_button";
+            this.select_button.Size = new System.Drawing.Size(75, 23);
+            this.select_button.TabIndex = 18;
+            this.select_button.Text = "Select";
+            this.select_button.UseVisualStyleBackColor = true;
+            this.select_button.Click += new System.EventHandler(this.select_button_Click);
             // 
             // main_window
             // 
@@ -810,6 +820,7 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsEXCToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
+        private System.Windows.Forms.Button select_button;
     }
 }
 

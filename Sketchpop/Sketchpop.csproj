@@ -181,6 +181,7 @@
     <Compile Include="Repeated_Circles_Options_Form.Designer.cs">
       <DependentUpon>Repeated_Circles_Options_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="Selection_Manager.cs" />
     <Compile Include="Unsplash_Image.cs" />
     <Compile Include="Unsplash_Manager.cs" />
     <EmbeddedResource Include="Fullscreen_Image_Form.resx">
