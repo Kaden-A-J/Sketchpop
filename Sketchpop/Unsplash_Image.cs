@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-
-namespace Sketchpop
+﻿namespace Sketchpop
 {
     /// <summary>
     /// Class for the necessary data required to represent an Unsplash Image. These
@@ -55,7 +48,7 @@ namespace Sketchpop
         public string Get_Unsplash_URL() { return _unsplash_url; }
         public byte[] Get_Image_Data() { return _img_data; }
 
-        // setter for setting an image's data (only necessary for user uploaded images)
+        // setter for setting an image's data ( necessary for unsplash images that are only stored as urls)
         public void Set_Image(byte[] img) { _img_data = img; }
     }
 }
