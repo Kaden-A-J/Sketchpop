@@ -55,6 +55,9 @@ namespace Sketchpop
             layer_add_button_Click(null, null);
             bg_layer_added = true;
 
+            // add layer to make debugging easier
+            layer_add_button_Click(null, null);
+
 
             // TODO make it so stuff works with no layers, right now it breaks so i'm restricting it to always have atleast one
             //layer_add_button_Click(null, null);
