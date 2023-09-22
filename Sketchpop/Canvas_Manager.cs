@@ -23,7 +23,7 @@ namespace Sketchpop
             layer_manager = new Layer_Manager();
             selection_manager = new Selection_Manager();
 
-            picture_box = canvas_frame;
+            //picture_box = canvas_frame;
             canvas_info = new SKImageInfo(500, 500);
          
 
