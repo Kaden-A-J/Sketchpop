@@ -30,7 +30,7 @@ namespace Sketchpop
             if (mouse_down)
             {
                 var click_pos = canvas_frame.PointToClient(MousePosition);
-                Program.canvas_manager.Add_Point_To_Draw(click_pos);
+                Program.canvas_manager.Mouse_Is_Still_Down_Handler(click_pos);
             }
 
             Program.canvas_manager.Draw_Path_Points(new object());
@@ -51,7 +51,7 @@ namespace Sketchpop
         public main_window()
         {
             InitializeComponent();
-            Program.canvas_manager = new Canvas_Manager(ref canvas_frame);
+            Program.canvas_manager = new Canvas_Manager();
 
             layers_ui = new List<Panel>();
             _um = new Unsplash_Manager();
@@ -111,7 +111,7 @@ namespace Sketchpop
                 {
                     mouse_down = true;
                     var click_pos = canvas_frame.PointToClient(MousePosition);
-                    Program.canvas_manager.Begin_Draw_Path(click_pos);
+                    Program.canvas_manager.Mouse_Down_Handler(click_pos);
                 }
             }
         }
@@ -121,22 +121,9 @@ namespace Sketchpop
             if (e.Button == MouseButtons.Left)
             {
                 mouse_down = false;
-                Program.canvas_manager.End_Draw_Path();
+                var click_pos = canvas_frame.PointToClient(MousePosition);
+                Program.canvas_manager.Mouse_Up_Handler(click_pos);
             }
-
-
-        }
-
-        private void canvas_frame_MouseMove(object sender, MouseEventArgs e)
-        {
-            //Program.canvas_manager.Draw_Path_Points(new object());
-            //Program.canvas_manager.Draw_Bitmap(new object());
-            // slower than timer
-            //if (mouse_down)
-            //{
-            //    var click_pos = canvas_frame.PointToClient(MousePosition);
-            //    Program.canvas_manager.AddPointToDraw(click_pos);
-            //}
         }
 
         private void red_input_box_ValueChanged(object sender, EventArgs e)
@@ -177,12 +164,19 @@ namespace Sketchpop
 
         private void eraser_button_Click(object sender, EventArgs e)
         {
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
             Program.canvas_manager.Change_Brush("eraser", stroke_size_input_box);
         }
 
         private void pen_button_Click(object sender, EventArgs e)
         {
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
             Program.canvas_manager.Change_Brush("basic", stroke_size_input_box);
+        }
+
+        private void select_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.selector;
         }
 
         private void repeatedCirclesPracticeToolStripMenuItem_Click(object sender, EventArgs e)

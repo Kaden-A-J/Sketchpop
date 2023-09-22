@@ -4,30 +4,42 @@ using SkiaSharp;
 using System.Collections.Concurrent;
 using System.Windows.Forms;
 using SkiaSharp.Views.Desktop;
-using SkiaSharp.Views.WPF;
 
 namespace Sketchpop
 {
     public class Canvas_Manager
     {
+        public SketchPopTool current_tool { private get; set; } = SketchPopTool.brush;
+        public SKImageInfo canvas_info;
+        public Layer_Manager layer_manager;
+        private Brush_Manager brush_manager;
+        private Selection_Manager selection_manager;
         private ConcurrentQueue<Point_Operation> pointsToDraw = new ConcurrentQueue<Point_Operation>();
         private SKPath current_path;
-        private PictureBox picture_box;
-        public SKImageInfo canvas_info;
-        private Brush_Manager brush_manager;
 
-        public Layer_Manager layer_manager;
-
-        public Canvas_Manager(ref PictureBox canvas_frame)
+        public Canvas_Manager()
         {
             brush_manager = new Brush_Manager();
             layer_manager = new Layer_Manager();
+            selection_manager = new Selection_Manager();
 
             picture_box = canvas_frame;
             canvas_info = new SKImageInfo(500, 500);
          
 
             Reset_Canvas_State();
+        }
+
+        public void Mouse_Is_Still_Down_Handler(Point point)
+        {
+            if (current_tool == SketchPopTool.brush)
+            {
+                Add_Point_To_Draw(point);
+            }
+            else if (current_tool == SketchPopTool.selector)
+            {
+                selection_manager.Continue_Selection(point);
+            }
         }
 
         public void Add_Point_To_Draw(Point point)
@@ -38,16 +50,31 @@ namespace Sketchpop
             pointsToDraw.Enqueue(new Point_Operation(point, Point_Operation.OperationType.line_to));
         }
 
+        public void Mouse_Down_Handler(Point click_position)
+        {
+            if (current_tool == SketchPopTool.brush)
+            {
+                Begin_Draw_Path(click_position);
+            }    
+            else if (current_tool == SketchPopTool.selector)
+            {
+                selection_manager.Begin_Selection(click_position);
+            }
+        }
+
+        internal void Mouse_Up_Handler(Point click_position)
+        {
+            if (current_tool == SketchPopTool.selector)
+            {
+                selection_manager.End_Selection();
+            }
+        }
+
         public void Begin_Draw_Path(Point click_position)
         {
             current_path = new SKPath();
             current_path.FillType = SKPathFillType.EvenOdd;
             pointsToDraw.Enqueue(new Point_Operation(click_position, Point_Operation.OperationType.jump));
-        }
-
-        public void End_Draw_Path()
-        {
-
         }
 
         public void Update_Color(byte red, byte green, byte blue, byte alpha)
@@ -85,6 +112,20 @@ namespace Sketchpop
                     SKImage c_image = layer_manager.get_image(layer);
                     paint.Color = paint.Color.WithAlpha((byte)(0xFF * layer_manager.get_layer_opacity(layer)));
                     surface.Canvas.DrawImage(c_image, c_image.Info.Rect, paint);
+                }
+
+                if (selection_manager.active)
+                {
+                    // white part of outline
+                    SKRect selection = selection_manager.CalculateSelectionRect();
+                    paint.Style = SKPaintStyle.Stroke;
+                    paint.Color = Color.White.ToSKColor().WithAlpha(0xAA);
+                    surface.Canvas.DrawRect(selection, paint);
+
+                    // black part of outline
+                    paint.Color = Color.Black.ToSKColor().WithAlpha(0xAA);
+                    paint.PathEffect = SKPathEffect.CreateDash(new float[] {4f, 6f}, selection_manager.selection_animation_offset);
+                    surface.Canvas.DrawRect(selection_manager.CalculateSelectionRect(), paint);
                 }
 
                 if (target.Image != null)
@@ -147,13 +188,12 @@ namespace Sketchpop
                         if (po.operationType == Point_Operation.OperationType.line_to)
                         {
                             current_path.LineTo(po.point.X, po.point.Y);
-                            surface.Canvas.DrawPath(current_path, brush_manager.Get_Current_Brush().Paint());
                         }
                         else if (po.operationType == Point_Operation.OperationType.jump)
                         {
                             current_path.MoveTo(po.point.X, po.point.Y);
-                            surface.Canvas.DrawPath(current_path, brush_manager.Get_Current_Brush().Paint());
                         }
+                        surface.Canvas.DrawPath(current_path, brush_manager.Get_Current_Brush().Paint());
                     }
                 }
             }
@@ -170,6 +210,7 @@ namespace Sketchpop
             {
                 surface.Canvas.Clear();
                 layer_manager.reset();
+                selection_manager.Reset_Selection();
 
                 // remove when everything works with no layers
                 //layer_manager.add_layer(canvas_info);
@@ -270,6 +311,13 @@ namespace Sketchpop
                     }
                 }
             }
+        }
+
+        public enum SketchPopTool
+        {
+            brush, // this one is actually brush and eraser, currently
+            selector,
+            fill
         }
     }
 }
