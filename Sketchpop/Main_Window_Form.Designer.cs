@@ -35,7 +35,6 @@ namespace Sketchpop
             this.exit_button = new System.Windows.Forms.Button();
             this.title_bar = new System.Windows.Forms.Panel();
             this.title_label = new System.Windows.Forms.Label();
-            this.minimize_button = new System.Windows.Forms.Button();
             this.fullscreen_button = new System.Windows.Forms.Button();
             this.tool_bar = new System.Windows.Forms.Panel();
             this.left_settings_panel = new System.Windows.Forms.Panel();
@@ -80,7 +79,10 @@ namespace Sketchpop
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.brush_button = new System.Windows.Forms.Button();
+            this.hand_button = new System.Windows.Forms.Button();
             this.title_bar.SuspendLayout();
+            this.tool_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blue_input_box)).BeginInit();
@@ -144,18 +146,6 @@ namespace Sketchpop
             this.title_label.Text = "Sketchpop";
             this.title_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // minimize_button
-            // 
-            this.minimize_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.minimize_button.Location = new System.Drawing.Point(1220, 0);
-            this.minimize_button.MaximumSize = new System.Drawing.Size(20, 20);
-            this.minimize_button.MinimumSize = new System.Drawing.Size(20, 20);
-            this.minimize_button.Name = "minimize_button";
-            this.minimize_button.Size = new System.Drawing.Size(20, 20);
-            this.minimize_button.TabIndex = 1;
-            this.minimize_button.UseVisualStyleBackColor = true;
-            this.minimize_button.Click += new System.EventHandler(this.minimize_button_Click);
-            // 
             // fullscreen_button
             // 
             this.fullscreen_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -173,6 +163,8 @@ namespace Sketchpop
             this.tool_bar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.tool_bar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
+            this.tool_bar.Controls.Add(this.hand_button);
+            this.tool_bar.Controls.Add(this.brush_button);
             this.tool_bar.Location = new System.Drawing.Point(2, 26);
             this.tool_bar.Name = "tool_bar";
             this.tool_bar.Size = new System.Drawing.Size(25, 687);
@@ -635,9 +627,7 @@ namespace Sketchpop
             // 
             // main_preview_picturebox
             // 
-            this.main_preview_picturebox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.main_preview_picturebox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.main_preview_picturebox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(167)))), ((int)(((byte)(167)))));
             this.main_preview_picturebox.Location = new System.Drawing.Point(7, 3);
             this.main_preview_picturebox.Name = "main_preview_picturebox";
@@ -654,6 +644,28 @@ namespace Sketchpop
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // brush_button
+            // 
+            this.brush_button.Location = new System.Drawing.Point(0, 0);
+            this.brush_button.MaximumSize = new System.Drawing.Size(25, 25);
+            this.brush_button.MinimumSize = new System.Drawing.Size(25, 25);
+            this.brush_button.Name = "brush_button";
+            this.brush_button.Size = new System.Drawing.Size(25, 25);
+            this.brush_button.TabIndex = 12;
+            this.brush_button.UseVisualStyleBackColor = true;
+            this.brush_button.Click += new System.EventHandler(this.brush_button_Click);
+            // 
+            // hand_button
+            // 
+            this.hand_button.Location = new System.Drawing.Point(0, 25);
+            this.hand_button.MaximumSize = new System.Drawing.Size(25, 25);
+            this.hand_button.MinimumSize = new System.Drawing.Size(25, 25);
+            this.hand_button.Name = "hand_button";
+            this.hand_button.Size = new System.Drawing.Size(25, 25);
+            this.hand_button.TabIndex = 12;
+            this.hand_button.UseVisualStyleBackColor = true;
+            this.hand_button.Click += new System.EventHandler(this.hand_button_Click);
+            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -668,7 +680,6 @@ namespace Sketchpop
             this.Controls.Add(this.tool_bar);
             this.Controls.Add(this.exit_button);
             this.Controls.Add(this.fullscreen_button);
-            this.Controls.Add(this.minimize_button);
             this.Controls.Add(this.title_bar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MainMenuStrip = this.menuStrip1;
@@ -678,6 +689,7 @@ namespace Sketchpop
             this.Text = "Sketchpop";
             this.title_bar.ResumeLayout(false);
             this.title_bar.PerformLayout();
+            this.tool_bar.ResumeLayout(false);
             this.left_settings_panel.ResumeLayout(false);
             this.left_settings_panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).EndInit();
@@ -707,7 +719,6 @@ namespace Sketchpop
         private System.Windows.Forms.Button exit_button;
         private System.Windows.Forms.Panel title_bar;
         private System.Windows.Forms.Button fullscreen_button;
-        private System.Windows.Forms.Button minimize_button;
         private System.Windows.Forms.Panel tool_bar;
         private System.Windows.Forms.Label title_label;
         private System.Windows.Forms.Panel left_settings_panel;
@@ -757,6 +768,8 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem viewImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addImageToLayerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveImageToolStripMenuItem;
+        private System.Windows.Forms.Button brush_button;
+        private System.Windows.Forms.Button hand_button;
     }
 }
 

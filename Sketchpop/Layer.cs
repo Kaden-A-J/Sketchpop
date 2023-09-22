@@ -10,8 +10,9 @@ namespace Sketchpop
 {
     public class Layer
     {
-        int idx = -1;
+        public int idx = -1;
         public SKImage Img { get; set; }
+        public bool locked { get; set; }
         private float _opacity;
         /// <summary>
         /// value between 0 and 1; 0 being fully transparent, 1 being fully opaque

@@ -43,13 +43,30 @@ namespace Sketchpop
             return _layers[idx].Opacity;
         }
 
+        public bool get_layer_locked(int idx)
+        {
+            return _layers[idx].locked;
+        }
+
         public void add_layer(SKImageInfo canvas_info)
         {
             Layer t_layer = new Layer(_layers.Count, SKImage.Create(canvas_info), 1);
             _layers.Add(t_layer);
 
             // if no layer -> auto select it
+            selected_layer = (selected_layer < 1) ? 1 : selected_layer;
+        }
+
+        public void add_permalocked_layer(SKImageInfo canvas_info)
+        {
+            Layer t_layer = new Layer(_layers.Count, SKImage.Create(canvas_info), 1);
+            _layers.Add(t_layer);
+
             selected_layer = (selected_layer == -1) ? 0 : selected_layer;
+            t_layer.locked = true;
+
+            SKSurface sks = SKSurface.Create(t_layer.Img.PeekPixels());
+            sks.Canvas.DrawColor(SKColors.White);
         }
 
         /// <summary>
@@ -66,6 +83,9 @@ namespace Sketchpop
 
         public void delete_layer(int idx)
         {
+            //if (_layers[idx].locked == true)
+            //    return;
+
             _layers.RemoveAt(idx);
 
             // decrement selection if deleting current selection
@@ -75,7 +95,7 @@ namespace Sketchpop
         public SKImage get_image(int idx)
         {
 
-            return (idx == -1) ? null : _layers[idx].Img;
+            return (idx == -1 || idx > _layers.Count-1) ? null : _layers[idx].Img;
         }
 
         /// <summary>

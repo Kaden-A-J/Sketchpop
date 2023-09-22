@@ -24,7 +24,7 @@ namespace Sketchpop
             layer_manager = new Layer_Manager();
 
             picture_box = canvas_frame;
-            canvas_info = new SKImageInfo(767, 625);
+            canvas_info = new SKImageInfo(500, 500);
          
 
             Reset_Canvas_State();
@@ -32,6 +32,9 @@ namespace Sketchpop
 
         public void Add_Point_To_Draw(Point point)
         {
+            if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
+                return;
+
             pointsToDraw.Enqueue(new Point_Operation(point, Point_Operation.OperationType.line_to));
         }
 
@@ -62,8 +65,11 @@ namespace Sketchpop
         /// </summary>
         /// <param name = "surface" ></ param >
         /// < returns ></ returns >
-        public void Draw_Bitmap(PictureBox target, int layer = -1)
+        public void Draw_Bitmap(PictureBox target, int layer = -1, bool resize = false)
         {
+            if (layer_manager.count == 0)
+                return;
+
             using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).Info))
             using (SKPaint paint = new SKPaint())
             {
@@ -85,16 +91,20 @@ namespace Sketchpop
                     target.Image.Dispose();
                 SKImage t_image = surface.Snapshot();
 
+
                 SKBitmap t_bitmap = SKBitmap.FromImage(t_image);
 
+                if (resize)
+                {
+                    SKSizeI target_size = new SKSizeI(target.Width, target.Height);
+                    SKBitmap c_bitmap = Resize_Canvas_To_Preview(t_bitmap, target_size);//t_bitmap.Resize(target_size, SKFilterQuality.High);
+                    t_bitmap.Dispose();
+                    t_bitmap = c_bitmap;
+                }
 
-                SKSizeI target_size = new SKSizeI(target.Width, target.Height);
-                SKBitmap t_r_bitmap = Resize_Canvas_To_Preview(t_bitmap, target_size);//t_bitmap.Resize(target_size, SKFilterQuality.High);
-
-                target.Image = t_r_bitmap.ToBitmap();
+                target.Image = t_bitmap.ToBitmap();
                 t_image.Dispose();
                 t_bitmap.Dispose();
-                t_r_bitmap.Dispose();
 
             }
         }
@@ -125,6 +135,9 @@ namespace Sketchpop
 
         public void Draw_Path_Points(object state)
         {
+            if (layer_manager.count == 0)
+                return;
+
             if (current_path != null)
             {
                 using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels()))
@@ -159,7 +172,7 @@ namespace Sketchpop
                 layer_manager.reset();
 
                 // remove when everything works with no layers
-                layer_manager.add_layer(canvas_info);
+                //layer_manager.add_layer(canvas_info);
             }
         }
 

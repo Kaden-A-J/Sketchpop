@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Crypto.Engines;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -18,6 +19,8 @@ namespace Sketchpop
         private string _author_link;
         private byte[] _ref_image_data;
 
+        private bool bg_layer_added = false;
+
         public void draw_timer_method(Object my_object, EventArgs my_event_args)
         {
             if (mouse_down)
@@ -27,8 +30,8 @@ namespace Sketchpop
             }
 
             Program.canvas_manager.Draw_Path_Points(new object());
-            Program.canvas_manager.Draw_Bitmap(canvas_frame, -1);
-            Program.canvas_manager.Draw_Bitmap(main_preview_picturebox, -1);
+            Program.canvas_manager.Draw_Bitmap(canvas_frame, -1, false);
+            Program.canvas_manager.Draw_Bitmap(main_preview_picturebox, -1, true);
         }
 
         public void render_layer_previews(Object my_object, EventArgs my_event_args)
@@ -37,7 +40,7 @@ namespace Sketchpop
                 foreach (Control c in layers_ui[idx].Controls)
                     if (c.Name == "preview_panel")
                     {
-                        Program.canvas_manager.Draw_Bitmap((PictureBox)c, idx);
+                        Program.canvas_manager.Draw_Bitmap((PictureBox)c, idx, true);
                     }
         }
 
@@ -48,8 +51,13 @@ namespace Sketchpop
 
             layers_ui = new List<Panel>();
 
-            // TODO make it so stuff works with no layers, right now it breaks so i'm restricting it to always have atleast one
+            // add BG layer
             layer_add_button_Click(null, null);
+            bg_layer_added = true;
+
+
+            // TODO make it so stuff works with no layers, right now it breaks so i'm restricting it to always have atleast one
+            //layer_add_button_Click(null, null);
 
             draw_timer.Tick += new EventHandler(draw_timer_method);
             draw_timer.Tick += new EventHandler(render_layer_previews);
@@ -151,10 +159,12 @@ namespace Sketchpop
             layers_ui.Clear();
             layer_panel.Controls.Clear();
 
-            // TODO make it so stuff works with no layers, right now it breaks so i'm restricting it to always have atleast one
-            layer_add_button_Click(null, null);
-
             Program.canvas_manager.Reset_Canvas_State();
+
+            // adds base layer
+            bg_layer_added = false;
+            layer_add_button_Click(null, null);
+            bg_layer_added = true;
         }
 
         private void eraser_button_Click(object sender, EventArgs e)
@@ -201,20 +211,40 @@ namespace Sketchpop
             Program.canvas_manager.layer_manager.selected_layer = c_idx;
         }
 
+        public void shift_layers_down()
+        {
+            foreach (Panel c_panel in layers_ui)
+                c_panel.Location = new Point(c_panel.Location.X, c_panel.Location.Y + c_panel.Height);
+        }
+
+        public void shift_layers_up()
+        {
+            foreach (Panel c_panel in layers_ui)
+                c_panel.Location = new Point(c_panel.Location.X, c_panel.Location.Y - c_panel.Height);
+        }
+
+
         public void layer_add_button_Click(object sender, EventArgs e)
         {
+            shift_layers_down();
+
             int buffer = 4;
             Panel t_panel = new Panel();
             // panel name is its layer's index to help with layer selection
             t_panel.Name = layers_ui.Count.ToString();
             t_panel.BackColor = Color.FromArgb(255, 157, 157, 157);
             t_panel.Size = new Size(this.layer_panel.Width - buffer - 20, 60);
-            t_panel.Location = new Point(4, (t_panel.Height + buffer) * layers_ui.Count);
+            //t_panel.Location = new Point(4, (t_panel.Height + buffer) * layers_ui.Count);
+            t_panel.Location = new Point(4, buffer);
+
 
             RadioButton t_visible_button = new RadioButton();
             t_visible_button.Size = new Size(20, 20);
             t_visible_button.Location = new Point(buffer, t_panel.Height / 2 - t_visible_button.Height / 2);
-            t_panel.Controls.Add(t_visible_button);
+            if (bg_layer_added)
+            {
+                t_panel.Controls.Add(t_visible_button);
+            }
 
             PictureBox t_preview_panel = new PictureBox();
             t_preview_panel.BackColor = Color.FromArgb(255, 167, 167, 167);
@@ -233,19 +263,28 @@ namespace Sketchpop
             layers_ui.Add(t_panel);
             this.layer_panel.Controls.Add(t_panel);
 
-            Program.canvas_manager.layer_manager.add_layer(Program.canvas_manager.canvas_info);
+            if (bg_layer_added)
+            {
+                Program.canvas_manager.layer_manager.add_layer(Program.canvas_manager.canvas_info);
 
-            // autocheck the first layer
-            if (layers_ui.Count == 1)
-                t_visible_button.Checked = true;
+                // autocheck the first layer
+                if (layers_ui.Count == 2)
+                    t_visible_button.Checked = true;
 
-            t_visible_button.Click += new EventHandler(layer_visible_button_clicked);
+                t_visible_button.Click += new EventHandler(layer_visible_button_clicked);
+            }
+            else
+            {
+                Program.canvas_manager.layer_manager.add_permalocked_layer(Program.canvas_manager.canvas_info);
+            }
         }
 
         // temp just delete the last layer, eventually change to delete a selection
         private void layer_delete_button_Click(object sender, EventArgs e)
         {
             if (layers_ui.Count < 2) { return; }
+
+            shift_layers_up();
 
             int last_idx = layers_ui.Count - 1;
 
@@ -313,7 +352,17 @@ namespace Sketchpop
                 else if (right.Contains(cursor)) message.Result = (IntPtr)HTRIGHT;
                 else if (bottom.Contains(cursor)) message.Result = (IntPtr)HTBOTTOM;
             }
-        }        
+        }
+
+        private void brush_button_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("brush button");
+        }
+
+        private void hand_button_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine("hand button");
+        }
 
         /*
          *  Start of -- Image Selection and Database Related Code
