@@ -37,6 +37,8 @@ namespace Sketchpop
             this.title_label = new System.Windows.Forms.Label();
             this.fullscreen_button = new System.Windows.Forms.Button();
             this.tool_bar = new System.Windows.Forms.Panel();
+            this.hand_button = new System.Windows.Forms.Button();
+            this.brush_button = new System.Windows.Forms.Button();
             this.left_settings_panel = new System.Windows.Forms.Panel();
             this.ref_img_options = new System.Windows.Forms.Button();
             this.green_input_box = new System.Windows.Forms.NumericUpDown();
@@ -70,6 +72,7 @@ namespace Sketchpop
             this.saveAsEXCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.canvas_panel = new System.Windows.Forms.Panel();
+            this.select_button = new System.Windows.Forms.Button();
             this.ref_img_menustrip = new System.Windows.Forms.MenuStrip();
             this.viewImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addImageToLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,9 +87,8 @@ namespace Sketchpop
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.select_button = new System.Windows.Forms.Button();
-            this.brush_button = new System.Windows.Forms.Button();
-            this.hand_button = new System.Windows.Forms.Button();
+            this.drawing_picture_box = new System.Windows.Forms.PictureBox();
+            this.top_canvas_strip = new System.Windows.Forms.Panel();
             this.title_bar.SuspendLayout();
             this.tool_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
@@ -103,12 +105,13 @@ namespace Sketchpop
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).BeginInit();
             this.right_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.main_preview_picturebox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.drawing_picture_box)).BeginInit();
             this.SuspendLayout();
             // 
             // RegisterToolStripMenuItem
             // 
             this.RegisterToolStripMenuItem.Name = "RegisterToolStripMenuItem";
-            this.RegisterToolStripMenuItem.Size = new System.Drawing.Size(237, 34);
+            this.RegisterToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.RegisterToolStripMenuItem.Text = "Sign up/ Login";
             this.RegisterToolStripMenuItem.Click += new System.EventHandler(this.RegisterToolStripMenuItem_Click);
             // 
@@ -147,7 +150,7 @@ namespace Sketchpop
             this.title_label.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.title_label.Location = new System.Drawing.Point(610, 4);
             this.title_label.Name = "title_label";
-            this.title_label.Size = new System.Drawing.Size(86, 20);
+            this.title_label.Size = new System.Drawing.Size(59, 13);
             this.title_label.TabIndex = 4;
             this.title_label.Text = "Sketchpop";
             this.title_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -175,6 +178,28 @@ namespace Sketchpop
             this.tool_bar.Name = "tool_bar";
             this.tool_bar.Size = new System.Drawing.Size(25, 687);
             this.tool_bar.TabIndex = 3;
+            // 
+            // hand_button
+            // 
+            this.hand_button.Location = new System.Drawing.Point(0, 25);
+            this.hand_button.MaximumSize = new System.Drawing.Size(25, 25);
+            this.hand_button.MinimumSize = new System.Drawing.Size(25, 25);
+            this.hand_button.Name = "hand_button";
+            this.hand_button.Size = new System.Drawing.Size(25, 25);
+            this.hand_button.TabIndex = 12;
+            this.hand_button.UseVisualStyleBackColor = true;
+            this.hand_button.Click += new System.EventHandler(this.hand_button_Click);
+            // 
+            // brush_button
+            // 
+            this.brush_button.Location = new System.Drawing.Point(0, 0);
+            this.brush_button.MaximumSize = new System.Drawing.Size(25, 25);
+            this.brush_button.MinimumSize = new System.Drawing.Size(25, 25);
+            this.brush_button.Name = "brush_button";
+            this.brush_button.Size = new System.Drawing.Size(25, 25);
+            this.brush_button.TabIndex = 12;
+            this.brush_button.UseVisualStyleBackColor = true;
+            this.brush_button.Click += new System.EventHandler(this.brush_button_Click);
             // 
             // left_settings_panel
             // 
@@ -227,7 +252,7 @@ namespace Sketchpop
             0,
             0});
             this.green_input_box.Name = "green_input_box";
-            this.green_input_box.Size = new System.Drawing.Size(45, 26);
+            this.green_input_box.Size = new System.Drawing.Size(45, 20);
             this.green_input_box.TabIndex = 8;
             this.green_input_box.ValueChanged += new System.EventHandler(this.green_input_box_ValueChanged);
             // 
@@ -240,7 +265,7 @@ namespace Sketchpop
             0,
             0});
             this.blue_input_box.Name = "blue_input_box";
-            this.blue_input_box.Size = new System.Drawing.Size(45, 26);
+            this.blue_input_box.Size = new System.Drawing.Size(45, 20);
             this.blue_input_box.TabIndex = 8;
             this.blue_input_box.ValueChanged += new System.EventHandler(this.blue_input_box_ValueChanged);
             // 
@@ -253,7 +278,7 @@ namespace Sketchpop
             0,
             0});
             this.red_input_box.Name = "red_input_box";
-            this.red_input_box.Size = new System.Drawing.Size(45, 26);
+            this.red_input_box.Size = new System.Drawing.Size(45, 20);
             this.red_input_box.TabIndex = 8;
             this.red_input_box.ValueChanged += new System.EventHandler(this.red_input_box_ValueChanged);
             // 
@@ -261,7 +286,7 @@ namespace Sketchpop
             // 
             this.stroke_size_input_box.Location = new System.Drawing.Point(3, 335);
             this.stroke_size_input_box.Name = "stroke_size_input_box";
-            this.stroke_size_input_box.Size = new System.Drawing.Size(45, 26);
+            this.stroke_size_input_box.Size = new System.Drawing.Size(45, 20);
             this.stroke_size_input_box.TabIndex = 9;
             this.stroke_size_input_box.Value = new decimal(new int[] {
             2,
@@ -276,7 +301,7 @@ namespace Sketchpop
             this.unsplash_link.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.unsplash_link.Location = new System.Drawing.Point(110, 124);
             this.unsplash_link.Name = "unsplash_link";
-            this.unsplash_link.Size = new System.Drawing.Size(67, 17);
+            this.unsplash_link.Size = new System.Drawing.Size(44, 12);
             this.unsplash_link.TabIndex = 15;
             this.unsplash_link.TabStop = true;
             this.unsplash_link.Text = "Unsplash";
@@ -289,7 +314,7 @@ namespace Sketchpop
             this.on_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.on_label.Location = new System.Drawing.Point(95, 124);
             this.on_label.Name = "on_label";
-            this.on_label.Size = new System.Drawing.Size(24, 17);
+            this.on_label.Size = new System.Drawing.Size(15, 12);
             this.on_label.TabIndex = 15;
             this.on_label.Text = "on";
             this.on_label.Visible = false;
@@ -300,7 +325,7 @@ namespace Sketchpop
             this.author_link_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.author_link_label.Location = new System.Drawing.Point(49, 124);
             this.author_link_label.Name = "author_link_label";
-            this.author_link_label.Size = new System.Drawing.Size(72, 17);
+            this.author_link_label.Size = new System.Drawing.Size(45, 12);
             this.author_link_label.TabIndex = 15;
             this.author_link_label.TabStop = true;
             this.author_link_label.Text = "12345678";
@@ -313,7 +338,7 @@ namespace Sketchpop
             this.pb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pb_label.Location = new System.Drawing.Point(7, 124);
             this.pb_label.Name = "pb_label";
-            this.pb_label.Size = new System.Drawing.Size(64, 17);
+            this.pb_label.Size = new System.Drawing.Size(41, 12);
             this.pb_label.TabIndex = 15;
             this.pb_label.Text = "Photo by";
             this.pb_label.Visible = false;
@@ -333,7 +358,7 @@ namespace Sketchpop
             0,
             0});
             this.temp_transparency_num_up_down.Name = "temp_transparency_num_up_down";
-            this.temp_transparency_num_up_down.Size = new System.Drawing.Size(120, 26);
+            this.temp_transparency_num_up_down.Size = new System.Drawing.Size(120, 20);
             this.temp_transparency_num_up_down.TabIndex = 5;
             this.temp_transparency_num_up_down.ValueChanged += new System.EventHandler(this.temp_transparency_num_up_down_ValueChanged);
             // 
@@ -365,7 +390,7 @@ namespace Sketchpop
             this.db_status_label.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.db_status_label.Location = new System.Drawing.Point(7, 165);
             this.db_status_label.Name = "db_status_label";
-            this.db_status_label.Size = new System.Drawing.Size(157, 19);
+            this.db_status_label.Size = new System.Drawing.Size(157, 13);
             this.db_status_label.TabIndex = 0;
             this.db_status_label.Visible = false;
             // 
@@ -382,7 +407,7 @@ namespace Sketchpop
             this.blue_label.AutoSize = true;
             this.blue_label.Location = new System.Drawing.Point(109, 247);
             this.blue_label.Name = "blue_label";
-            this.blue_label.Size = new System.Drawing.Size(39, 20);
+            this.blue_label.Size = new System.Drawing.Size(27, 13);
             this.blue_label.TabIndex = 0;
             this.blue_label.Text = "blue";
             // 
@@ -391,7 +416,7 @@ namespace Sketchpop
             this.search_picture_label.AutoSize = true;
             this.search_picture_label.Location = new System.Drawing.Point(3, 146);
             this.search_picture_label.Name = "search_picture_label";
-            this.search_picture_label.Size = new System.Drawing.Size(144, 20);
+            this.search_picture_label.Size = new System.Drawing.Size(96, 13);
             this.search_picture_label.TabIndex = 0;
             this.search_picture_label.Text = "Search for Images:";
             // 
@@ -400,7 +425,7 @@ namespace Sketchpop
             this.green_label.AutoSize = true;
             this.green_label.Location = new System.Drawing.Point(54, 247);
             this.green_label.Name = "green_label";
-            this.green_label.Size = new System.Drawing.Size(50, 20);
+            this.green_label.Size = new System.Drawing.Size(34, 13);
             this.green_label.TabIndex = 0;
             this.green_label.Text = "green";
             // 
@@ -409,7 +434,7 @@ namespace Sketchpop
             this.red_label.AutoSize = true;
             this.red_label.Location = new System.Drawing.Point(6, 247);
             this.red_label.Name = "red_label";
-            this.red_label.Size = new System.Drawing.Size(32, 20);
+            this.red_label.Size = new System.Drawing.Size(22, 13);
             this.red_label.TabIndex = 0;
             this.red_label.Text = "red";
             // 
@@ -418,7 +443,7 @@ namespace Sketchpop
             this.stroke_label.AutoSize = true;
             this.stroke_label.Location = new System.Drawing.Point(3, 306);
             this.stroke_label.Name = "stroke_label";
-            this.stroke_label.Size = new System.Drawing.Size(95, 20);
+            this.stroke_label.Size = new System.Drawing.Size(64, 13);
             this.stroke_label.TabIndex = 0;
             this.stroke_label.Text = "Stroke Size:";
             // 
@@ -427,7 +452,7 @@ namespace Sketchpop
             this.color_label.AutoSize = true;
             this.color_label.Location = new System.Drawing.Point(3, 234);
             this.color_label.Name = "color_label";
-            this.color_label.Size = new System.Drawing.Size(50, 20);
+            this.color_label.Size = new System.Drawing.Size(34, 13);
             this.color_label.TabIndex = 0;
             this.color_label.Text = "Color:";
             // 
@@ -444,7 +469,6 @@ namespace Sketchpop
             // 
             // menuStrip1
             // 
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exercisesToolStripMenuItem,
@@ -452,7 +476,7 @@ namespace Sketchpop
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(767, 32);
+            this.menuStrip1.Size = new System.Drawing.Size(767, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -462,7 +486,7 @@ namespace Sketchpop
             this.muscleMemoryToolStripMenuItem,
             this.randomPromptToolStripMenuItem});
             this.exercisesToolStripMenuItem.Name = "exercisesToolStripMenuItem";
-            this.exercisesToolStripMenuItem.Size = new System.Drawing.Size(102, 28);
+            this.exercisesToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
             this.exercisesToolStripMenuItem.Text = "Exercises";
             // 
             // muscleMemoryToolStripMenuItem
@@ -470,13 +494,13 @@ namespace Sketchpop
             this.muscleMemoryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.repeatedCirclesPracticeToolStripMenuItem});
             this.muscleMemoryToolStripMenuItem.Name = "muscleMemoryToolStripMenuItem";
-            this.muscleMemoryToolStripMenuItem.Size = new System.Drawing.Size(249, 34);
+            this.muscleMemoryToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.muscleMemoryToolStripMenuItem.Text = "Muscle Memory";
             // 
             // repeatedCirclesPracticeToolStripMenuItem
             // 
             this.repeatedCirclesPracticeToolStripMenuItem.Name = "repeatedCirclesPracticeToolStripMenuItem";
-            this.repeatedCirclesPracticeToolStripMenuItem.Size = new System.Drawing.Size(327, 34);
+            this.repeatedCirclesPracticeToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.repeatedCirclesPracticeToolStripMenuItem.Text = "Repeated Circles Practice";
             this.repeatedCirclesPracticeToolStripMenuItem.Click += new System.EventHandler(this.repeatedCirclesPracticeToolStripMenuItem_Click);
             // 
@@ -492,7 +516,7 @@ namespace Sketchpop
             this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.RegisterToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(80, 28);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // fileToolStripMenuItem
@@ -501,7 +525,7 @@ namespace Sketchpop
             this.saveToolStripMenuItem,
             this.loadToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(56, 28);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // saveToolStripMenuItem
@@ -509,20 +533,20 @@ namespace Sketchpop
             this.saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveAsEXCToolStripMenuItem});
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.saveToolStripMenuItem.Text = "Save";
             // 
             // saveAsEXCToolStripMenuItem
             // 
             this.saveAsEXCToolStripMenuItem.Name = "saveAsEXCToolStripMenuItem";
-            this.saveAsEXCToolStripMenuItem.Size = new System.Drawing.Size(211, 34);
+            this.saveAsEXCToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.saveAsEXCToolStripMenuItem.Text = "Save as EXC";
             this.saveAsEXCToolStripMenuItem.Click += new System.EventHandler(this.saveAsExcToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.LoadToolStripMenuItem_Click);
             // 
@@ -537,17 +561,28 @@ namespace Sketchpop
             this.canvas_panel.Controls.Add(this.clear_canvas_button);
             this.canvas_panel.Controls.Add(this.pen_button);
             this.canvas_panel.Controls.Add(this.eraser_button);
+            this.canvas_panel.Controls.Add(this.top_canvas_strip);
+            this.canvas_panel.Controls.Add(this.drawing_picture_box);
             this.canvas_panel.Controls.Add(this.canvas_frame);
             this.canvas_panel.Location = new System.Drawing.Point(210, 63);
             this.canvas_panel.Name = "canvas_panel";
             this.canvas_panel.Size = new System.Drawing.Size(767, 653);
             this.canvas_panel.TabIndex = 6;
             // 
+            // select_button
+            // 
+            this.select_button.Location = new System.Drawing.Point(445, 3);
+            this.select_button.Name = "select_button";
+            this.select_button.Size = new System.Drawing.Size(75, 23);
+            this.select_button.TabIndex = 18;
+            this.select_button.Text = "Select";
+            this.select_button.UseVisualStyleBackColor = true;
+            this.select_button.Click += new System.EventHandler(this.select_button_Click);
+            // 
             // ref_img_menustrip
             // 
             this.ref_img_menustrip.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.ref_img_menustrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.ref_img_menustrip.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.ref_img_menustrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.ref_img_menustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewImageToolStripMenuItem,
@@ -556,7 +591,7 @@ namespace Sketchpop
             this.ref_img_menustrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.ref_img_menustrip.Location = new System.Drawing.Point(0, 71);
             this.ref_img_menustrip.Name = "ref_img_menustrip";
-            this.ref_img_menustrip.Size = new System.Drawing.Size(202, 88);
+            this.ref_img_menustrip.Size = new System.Drawing.Size(128, 61);
             this.ref_img_menustrip.TabIndex = 11;
             this.ref_img_menustrip.Text = "menuStrip2";
             this.ref_img_menustrip.Visible = false;
@@ -564,21 +599,21 @@ namespace Sketchpop
             // viewImageToolStripMenuItem
             // 
             this.viewImageToolStripMenuItem.Name = "viewImageToolStripMenuItem";
-            this.viewImageToolStripMenuItem.Size = new System.Drawing.Size(126, 28);
+            this.viewImageToolStripMenuItem.Size = new System.Drawing.Size(80, 19);
             this.viewImageToolStripMenuItem.Text = "View Image";
             this.viewImageToolStripMenuItem.Click += new System.EventHandler(this.viewImageToolStripMenuItem_Click);
             // 
             // addImageToLayerToolStripMenuItem
             // 
             this.addImageToLayerToolStripMenuItem.Name = "addImageToLayerToolStripMenuItem";
-            this.addImageToLayerToolStripMenuItem.Size = new System.Drawing.Size(196, 28);
+            this.addImageToLayerToolStripMenuItem.Size = new System.Drawing.Size(122, 19);
             this.addImageToLayerToolStripMenuItem.Text = "Add Image to Layer";
             this.addImageToLayerToolStripMenuItem.Click += new System.EventHandler(this.addImageToLayerToolStripMenuItem_Click);
             // 
             // saveImageToolStripMenuItem
             // 
             this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
-            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(124, 28);
+            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(79, 19);
             this.saveImageToolStripMenuItem.Text = "Save Image";
             this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
             // 
@@ -692,37 +727,22 @@ namespace Sketchpop
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // select_button
+            // drawing_picture_box
             // 
-            this.select_button.Location = new System.Drawing.Point(445, 3);
-            this.select_button.Name = "select_button";
-            this.select_button.Size = new System.Drawing.Size(75, 23);
-            this.select_button.TabIndex = 18;
-            this.select_button.Text = "Select";
-            this.select_button.UseVisualStyleBackColor = true;
-            this.select_button.Click += new System.EventHandler(this.select_button_Click);
+            this.drawing_picture_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(167)))), ((int)(((byte)(167)))));
+            this.drawing_picture_box.Enabled = false;
+            this.drawing_picture_box.Location = new System.Drawing.Point(0, 28);
+            this.drawing_picture_box.Name = "drawing_picture_box";
+            this.drawing_picture_box.Size = new System.Drawing.Size(767, 625);
+            this.drawing_picture_box.TabIndex = 19;
+            this.drawing_picture_box.TabStop = false;
             // 
-            // brush_button
+            // top_canvas_strip
             // 
-            this.brush_button.Location = new System.Drawing.Point(0, 0);
-            this.brush_button.MaximumSize = new System.Drawing.Size(25, 25);
-            this.brush_button.MinimumSize = new System.Drawing.Size(25, 25);
-            this.brush_button.Name = "brush_button";
-            this.brush_button.Size = new System.Drawing.Size(25, 25);
-            this.brush_button.TabIndex = 12;
-            this.brush_button.UseVisualStyleBackColor = true;
-            this.brush_button.Click += new System.EventHandler(this.brush_button_Click);
-            // 
-            // hand_button
-            // 
-            this.hand_button.Location = new System.Drawing.Point(0, 25);
-            this.hand_button.MaximumSize = new System.Drawing.Size(25, 25);
-            this.hand_button.MinimumSize = new System.Drawing.Size(25, 25);
-            this.hand_button.Name = "hand_button";
-            this.hand_button.Size = new System.Drawing.Size(25, 25);
-            this.hand_button.TabIndex = 12;
-            this.hand_button.UseVisualStyleBackColor = true;
-            this.hand_button.Click += new System.EventHandler(this.hand_button_Click);
+            this.top_canvas_strip.Location = new System.Drawing.Point(0, 0);
+            this.top_canvas_strip.Name = "top_canvas_strip";
+            this.top_canvas_strip.Size = new System.Drawing.Size(767, 28);
+            this.top_canvas_strip.TabIndex = 20;
             // 
             // main_window
             // 
@@ -767,6 +787,7 @@ namespace Sketchpop
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).EndInit();
             this.right_settings_panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.main_preview_picturebox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.drawing_picture_box)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -834,6 +855,8 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem saveAsEXCToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.Button select_button;
+        private System.Windows.Forms.PictureBox drawing_picture_box;
+        private System.Windows.Forms.Panel top_canvas_strip;
     }
 }
 

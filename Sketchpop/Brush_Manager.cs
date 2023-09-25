@@ -26,6 +26,8 @@ namespace Sketchpop
             // add basic brush and eraser
             _brushes.Add(_current_brush.Name(), _current_brush);
             _brushes.Add("eraser", new Brush("eraser", 50, SKColor.Empty, SKBlendMode.Clear));
+
+            _brushes.Add("hand", new Brush("hand", 0, SKColor.Empty, SKBlendMode.Clear));
         }
 
         /// <summary>

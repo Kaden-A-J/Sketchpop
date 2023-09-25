@@ -14,6 +14,7 @@ namespace Sketchpop
 {
     public partial class main_window : Form
     {
+        public Point middle_drawing_start = new Point(0, 0);
         public Timer draw_timer = new Timer();
         bool mouse_down = false;
         List<Panel> layers_ui;
@@ -22,6 +23,8 @@ namespace Sketchpop
         private string _author_link;
         private byte[] _ref_image_data;
         private Unsplash_Manager _um;
+        private Canvas_Manager.SketchPopTool stored_brush = Canvas_Manager.SketchPopTool.brush;
+        
 
         private bool bg_layer_added = false;
 
@@ -34,8 +37,11 @@ namespace Sketchpop
             }
 
             Program.canvas_manager.Draw_Path_Points(new object());
-            Program.canvas_manager.Draw_Bitmap(canvas_frame, -1, false);
+            Program.canvas_manager.Draw_Bitmap(drawing_picture_box, -1, false);
             Program.canvas_manager.Draw_Bitmap(main_preview_picturebox, -1, true);
+            drawing_picture_box.Location = new Point(
+                Program.canvas_manager.hand_difference.X + middle_drawing_start.X,
+                Program.canvas_manager.hand_difference.Y + middle_drawing_start.Y);
         }
 
         public void render_layer_previews(Object my_object, EventArgs my_event_args)
@@ -62,6 +68,12 @@ namespace Sketchpop
 
             // add layer to make debugging easier
             layer_add_button_Click(null, null);
+
+            middle_drawing_start = new Point(
+                canvas_panel.Width / 2 - Program.canvas_manager.canvas_info.Width / 2,
+                canvas_panel.Height / 2 - Program.canvas_manager.canvas_info.Height / 2 - 28);
+
+            Program.canvas_manager.middle_drawing_start = middle_drawing_start;
 
 
             // TODO make it so stuff works with no layers, right now it breaks so i'm restricting it to always have atleast one
@@ -114,12 +126,34 @@ namespace Sketchpop
                     Program.canvas_manager.Mouse_Down_Handler(click_pos);
                 }
             }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                //Console.WriteLine("middle down");
+                stored_brush = Program.canvas_manager.current_tool; // this technically shouldn't be done here, but whatever
+                Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.hand;
+
+                if (!mouse_down)
+                {
+                    mouse_down = true;
+                    var click_pos = canvas_frame.PointToClient(MousePosition);
+                    Program.canvas_manager.Mouse_Down_Handler(click_pos);
+                }
+            }
         }
 
         private void canvas_frame_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
+                mouse_down = false;
+                var click_pos = canvas_frame.PointToClient(MousePosition);
+                Program.canvas_manager.Mouse_Up_Handler(click_pos);
+            }
+            else if (e.Button == MouseButtons.Middle)
+            {
+                //Console.WriteLine("middle up");
+                Program.canvas_manager.current_tool = stored_brush;
+
                 mouse_down = false;
                 var click_pos = canvas_frame.PointToClient(MousePosition);
                 Program.canvas_manager.Mouse_Up_Handler(click_pos);
@@ -358,12 +392,12 @@ namespace Sketchpop
 
         private void brush_button_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("brush button");
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
         }
 
         private void hand_button_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("hand button");
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.hand;
         }
 
         /*

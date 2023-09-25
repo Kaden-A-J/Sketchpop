@@ -9,13 +9,16 @@ namespace Sketchpop
 {
     public class Canvas_Manager
     {
-        public SketchPopTool current_tool { private get; set; } = SketchPopTool.brush;
+        public SketchPopTool current_tool { get; set; } = SketchPopTool.brush;
         public SKImageInfo canvas_info;
         public Layer_Manager layer_manager;
+        public Point hand_difference = new Point(0, 28);
+        public Point middle_drawing_start = new Point(0, 0);
         private Brush_Manager brush_manager;
         private Selection_Manager selection_manager;
         private ConcurrentQueue<Point_Operation> pointsToDraw = new ConcurrentQueue<Point_Operation>();
         private SKPath current_path;
+        private Point hand_start = new Point(-1, -1);
 
         public Canvas_Manager()
         {
@@ -40,12 +43,28 @@ namespace Sketchpop
             {
                 selection_manager.Continue_Selection(point);
             }
+            else if (current_tool == SketchPopTool.hand)
+            {
+                hand_difference = new Point(hand_difference.X - (hand_start.X - point.X), hand_difference.Y - (hand_start.Y - point.Y));
+                hand_start = point;
+                //Console.WriteLine(hand_difference);
+            }
+        }
+
+        public Point Adjust_Point_To_Hand(Point point)
+        {
+            return new Point(
+                point.X - hand_difference.X - middle_drawing_start.X,
+                point.Y - (hand_difference.Y - 28) - middle_drawing_start.Y
+                ); // 28 is the size of the topstrip maybe should fix this later
         }
 
         public void Add_Point_To_Draw(Point point)
         {
             if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
                 return;
+
+            point = Adjust_Point_To_Hand(point);
 
             pointsToDraw.Enqueue(new Point_Operation(point, Point_Operation.OperationType.line_to));
         }
@@ -59,6 +78,11 @@ namespace Sketchpop
             else if (current_tool == SketchPopTool.selector)
             {
                 selection_manager.Begin_Selection(click_position);
+            }
+            else if (current_tool == SketchPopTool.hand)
+            {
+                hand_start = click_position;
+                //hand_difference = new Point(0, 0);
             }
         }
 
@@ -74,6 +98,9 @@ namespace Sketchpop
         {
             current_path = new SKPath();
             current_path.FillType = SKPathFillType.EvenOdd;
+
+            click_position = Adjust_Point_To_Hand(click_position);
+
             pointsToDraw.Enqueue(new Point_Operation(click_position, Point_Operation.OperationType.jump));
         }
 
@@ -217,6 +244,11 @@ namespace Sketchpop
             }
         }
 
+        public void Change_Brush(string brush_name)
+        {
+            brush_manager.Set_Brush(brush_name);
+        }
+
         public void Change_Brush(string brush_name, NumericUpDown stroke_input_box)
         {
             brush_manager.Set_Brush(brush_name);
@@ -317,7 +349,8 @@ namespace Sketchpop
         {
             brush, // this one is actually brush and eraser, currently
             selector,
-            fill
+            fill,
+            hand
         }
     }
 }
