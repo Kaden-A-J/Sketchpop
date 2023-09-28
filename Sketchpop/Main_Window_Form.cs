@@ -194,6 +194,9 @@ namespace Sketchpop
             bg_layer_added = false;
             layer_add_button_Click(null, null);
             bg_layer_added = true;
+
+            // add drawable layer
+            layer_add_button_Click(null, null);
         }
 
         private void eraser_button_Click(object sender, EventArgs e)
@@ -518,7 +521,7 @@ namespace Sketchpop
             int layer_index = e.Layer;
 
             // add the image to the layer
-            Program.canvas_manager.DrawImageWithOpacity(modified_img, canvas_frame, layer_index);
+            Program.canvas_manager.DrawImageWithOpacity(modified_img, layer_index);
 
             ref_img_menustrip.Visible = false;
         }
@@ -633,27 +636,28 @@ namespace Sketchpop
 
             // clear canvas, add ref image to layer, add new layer for drawing
             clear_canvas_button_Click(null, null);
-            Program.canvas_manager.DrawImageWithOpacity(img.Get_Image_Data(), canvas_frame, 0);
-            layer_add_button_Click(null, null);
+            Program.canvas_manager.DrawImageWithOpacity(img.Get_Image_Data(), 1);
+            temp_transparency_num_up_down.Value = (decimal)0.5;
+
+            layer_add_button_Click(null, null);            
+           
+            Program.canvas_manager.layer_manager.set_layer_opacity((float)temp_transparency_num_up_down.Value);
+
+      
+                // select the new layer
+                foreach (Control c in layers_ui[layers_ui.Count-1].Controls)
+                {
+                    if (c is RadioButton r)
+                    {
+                        layer_visible_button_clicked(r, new EventArgs());                            
+                    }
+                }
+            
 
             // change pen settings
             red_input_box.Value = 255;
             green_input_box.Value = 0;
             blue_input_box.Value = 0;
-
-
-            // change layer opacity settings
-            temp_transparency_num_up_down.Value = (decimal)0.5;
-            Program.canvas_manager.layer_manager.set_layer_opacity((float)temp_transparency_num_up_down.Value);
-
-            // select the new layer
-            foreach (Control c in layers_ui[layers_ui.Count - 1].Controls)
-            {
-                if (c is RadioButton r)
-                {
-                    layer_visible_button_clicked(r, new EventArgs());
-                }
-            }
         }
 
         /* 

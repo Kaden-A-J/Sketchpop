@@ -315,7 +315,7 @@ namespace Sketchpop
         /// <param name="image_data">the bytes of the image to be drawn</param>
         /// <param name="pb">the picturebox of the original image</param>
         /// <param name="opacity">the opacity to set the image to</param>       
-        public void DrawImageWithOpacity(byte[] image_data, PictureBox pb, int layer_idx)
+        public void DrawImageWithOpacity(byte[] image_data,int layer_idx)
         {
             using (SKImage image = SKImage.FromEncodedData(image_data))
             {
@@ -324,8 +324,8 @@ namespace Sketchpop
                     using (SKPaint paint = new SKPaint())
                     {                        
                         // choose the min scaling factor
-                        float scaleX = pb.Width / (float)image.Width;
-                        float scaleY = pb.Height / (float)image.Height;
+                        float scaleX = canvas_info.Width / (float)image.Width;
+                        float scaleY = canvas_info.Height / (float)image.Height;
                         float scale = Math.Min(scaleX, scaleY);
 
                         // calculate new width and height using scale
@@ -333,8 +333,8 @@ namespace Sketchpop
                         float newHeight = image.Height * scale;
 
                         // center the image
-                        float x = (pb.Width - newWidth) / 2;
-                        float y = (pb.Height - newHeight) / 2;
+                        float x = (canvas_info.Width - newWidth) / 2;
+                        float y = (canvas_info.Height - newHeight) / 2;
 
                         // create a rect with new dimensions to place the image in
                         SKRect skR = new SKRect(x, y, x + newWidth, y + newHeight);
