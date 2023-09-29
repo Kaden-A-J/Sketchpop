@@ -252,7 +252,7 @@ namespace Sketchpop
             Panel c_panel = (Panel)(c_trackbar).Parent;
             int c_idx = Int32.Parse(c_panel.Name);
 
-            Console.WriteLine((float)c_trackbar.Value);
+            //Console.WriteLine((float)c_trackbar.Value);
             Program.canvas_manager.layer_manager.set_layer_opacity(c_idx, (float)c_trackbar.Value/100);
         }
         
