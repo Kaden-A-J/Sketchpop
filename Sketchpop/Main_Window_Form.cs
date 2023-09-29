@@ -70,8 +70,8 @@ namespace Sketchpop
             layer_add_button_Click(null, null);
 
             middle_drawing_start = new Point(
-                canvas_panel.Width / 2 - Program.canvas_manager.canvas_info.Width / 2,
-                canvas_panel.Height / 2 - Program.canvas_manager.canvas_info.Height / 2 - 28);
+                (canvas_panel.Width / 2) - (Program.canvas_manager.canvas_info.Width / 2),
+                (canvas_panel.Height / 2) - (Program.canvas_manager.canvas_info.Height / 2) - 28);
 
             Program.canvas_manager.middle_drawing_start = middle_drawing_start;
 
@@ -229,11 +229,6 @@ namespace Sketchpop
             login.Show();
         }
 
-        private void temp_transparency_num_up_down_ValueChanged(object sender, EventArgs e)
-        {
-            Program.canvas_manager.layer_manager.set_layer_opacity((float)temp_transparency_num_up_down.Value);
-        }
-
         public void layer_visible_button_clicked(Object my_object, EventArgs my_event_args)
         {
             RadioButton c_button = (RadioButton)(my_object);
@@ -250,6 +245,16 @@ namespace Sketchpop
             Program.canvas_manager.layer_manager.selected_layer = c_idx;
         }
 
+        public void layer_trackbar_scrolled(Object my_object, EventArgs my_event_args)
+        {
+            TrackBar c_trackbar = (TrackBar)(my_object);
+            Panel c_panel = (Panel)(c_trackbar).Parent;
+            int c_idx = Int32.Parse(c_panel.Name);
+
+            Console.WriteLine((float)c_trackbar.Value);
+            Program.canvas_manager.layer_manager.set_layer_opacity(c_idx, (float)c_trackbar.Value/100);
+        }
+        
         public void shift_layers_down()
         {
             foreach (Panel c_panel in layers_ui)
@@ -296,11 +301,23 @@ namespace Sketchpop
             //t_name_label.Font = new Font("Microsoft Sans Serif", 6);
             t_name_label.Location = new Point(t_preview_panel.Location.X + t_preview_panel.Width + buffer, t_panel.Height / 4);
             t_name_label.Text = "layer (" + layers_ui.Count.ToString() + ")";
+            t_name_label.Size = new Size(t_panel.Width - t_name_label.Location.X, t_name_label.Height);
             t_panel.Controls.Add(t_name_label);
+
+            TrackBar t_trackbar = new TrackBar();
+            t_trackbar.Location = new Point(t_name_label.Location.X + buffer, t_panel.Height - ((t_panel.Height - buffer * 2) / 2) - buffer-1);
+            t_trackbar.Size = new Size((t_panel.Width - t_trackbar.Location.X - buffer), (t_panel.Height - buffer * 2) / 2);
+            t_trackbar.Minimum = 0;
+            t_trackbar.Maximum = 100;
+            t_trackbar.Value = 100;
+            t_trackbar.TickStyle = TickStyle.Both;
+            t_panel.Controls.Add(t_trackbar);
 
 
             layers_ui.Add(t_panel);
             this.layer_panel.Controls.Add(t_panel);
+
+            t_trackbar.ValueChanged += new EventHandler(layer_trackbar_scrolled);
 
             if (bg_layer_added)
             {
@@ -637,11 +654,10 @@ namespace Sketchpop
             // clear canvas, add ref image to layer, add new layer for drawing
             clear_canvas_button_Click(null, null);
             Program.canvas_manager.DrawImageWithOpacity(img.Get_Image_Data(), 1);
-            temp_transparency_num_up_down.Value = (decimal)0.5;
 
             layer_add_button_Click(null, null);            
            
-            Program.canvas_manager.layer_manager.set_layer_opacity((float)temp_transparency_num_up_down.Value);
+            Program.canvas_manager.layer_manager.set_layer_opacity(0.5f);
 
       
                 // select the new layer
