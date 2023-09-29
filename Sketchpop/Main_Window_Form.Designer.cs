@@ -43,7 +43,6 @@ namespace Sketchpop
             this.ref_img_options = new System.Windows.Forms.Button();
             this.green_input_box = new System.Windows.Forms.NumericUpDown();
             this.blue_input_box = new System.Windows.Forms.NumericUpDown();
-            this.red_input_box = new System.Windows.Forms.NumericUpDown();
             this.stroke_size_input_box = new System.Windows.Forms.NumericUpDown();
             this.unsplash_link = new System.Windows.Forms.LinkLabel();
             this.on_label = new System.Windows.Forms.Label();
@@ -58,7 +57,6 @@ namespace Sketchpop
             this.green_label = new System.Windows.Forms.Label();
             this.red_label = new System.Windows.Forms.Label();
             this.stroke_label = new System.Windows.Forms.Label();
-            this.color_label = new System.Windows.Forms.Label();
             this.quick_launch_bar = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.exercisesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,12 +86,14 @@ namespace Sketchpop
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.set_color_button = new System.Windows.Forms.Button();
+            this.red_input_box = new System.Windows.Forms.NumericUpDown();
+            this.stroke_track_bar = new System.Windows.Forms.TrackBar();
             this.title_bar.SuspendLayout();
             this.tool_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.blue_input_box)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.red_input_box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stroke_size_input_box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.reference_img)).BeginInit();
             this.quick_launch_bar.SuspendLayout();
@@ -104,6 +104,8 @@ namespace Sketchpop
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).BeginInit();
             this.right_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.main_preview_picturebox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.red_input_box)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stroke_track_bar)).BeginInit();
             this.SuspendLayout();
             // 
             // RegisterToolStripMenuItem
@@ -204,6 +206,8 @@ namespace Sketchpop
             this.left_settings_panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.left_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
+            this.left_settings_panel.Controls.Add(this.stroke_track_bar);
+            this.left_settings_panel.Controls.Add(this.set_color_button);
             this.left_settings_panel.Controls.Add(this.ref_img_options);
             this.left_settings_panel.Controls.Add(this.green_input_box);
             this.left_settings_panel.Controls.Add(this.blue_input_box);
@@ -222,7 +226,6 @@ namespace Sketchpop
             this.left_settings_panel.Controls.Add(this.green_label);
             this.left_settings_panel.Controls.Add(this.red_label);
             this.left_settings_panel.Controls.Add(this.stroke_label);
-            this.left_settings_panel.Controls.Add(this.color_label);
             this.left_settings_panel.Location = new System.Drawing.Point(32, 26);
             this.left_settings_panel.Name = "left_settings_panel";
             this.left_settings_panel.Size = new System.Drawing.Size(172, 690);
@@ -242,7 +245,7 @@ namespace Sketchpop
             // 
             // green_input_box
             // 
-            this.green_input_box.Location = new System.Drawing.Point(57, 263);
+            this.green_input_box.Location = new System.Drawing.Point(57, 197);
             this.green_input_box.Maximum = new decimal(new int[] {
             255,
             0,
@@ -255,7 +258,7 @@ namespace Sketchpop
             // 
             // blue_input_box
             // 
-            this.blue_input_box.Location = new System.Drawing.Point(112, 263);
+            this.blue_input_box.Location = new System.Drawing.Point(108, 197);
             this.blue_input_box.Maximum = new decimal(new int[] {
             255,
             0,
@@ -266,22 +269,9 @@ namespace Sketchpop
             this.blue_input_box.TabIndex = 8;
             this.blue_input_box.ValueChanged += new System.EventHandler(this.blue_input_box_ValueChanged);
             // 
-            // red_input_box
-            // 
-            this.red_input_box.Location = new System.Drawing.Point(6, 263);
-            this.red_input_box.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.red_input_box.Name = "red_input_box";
-            this.red_input_box.Size = new System.Drawing.Size(45, 20);
-            this.red_input_box.TabIndex = 8;
-            this.red_input_box.ValueChanged += new System.EventHandler(this.red_input_box_ValueChanged);
-            // 
             // stroke_size_input_box
             // 
-            this.stroke_size_input_box.Location = new System.Drawing.Point(3, 335);
+            this.stroke_size_input_box.Location = new System.Drawing.Point(119, 275);
             this.stroke_size_input_box.Name = "stroke_size_input_box";
             this.stroke_size_input_box.Size = new System.Drawing.Size(45, 20);
             this.stroke_size_input_box.TabIndex = 9;
@@ -375,7 +365,7 @@ namespace Sketchpop
             // color_display_box
             // 
             this.color_display_box.BackColor = System.Drawing.Color.Black;
-            this.color_display_box.Location = new System.Drawing.Point(131, 289);
+            this.color_display_box.Location = new System.Drawing.Point(133, 223);
             this.color_display_box.Name = "color_display_box";
             this.color_display_box.Size = new System.Drawing.Size(31, 19);
             this.color_display_box.TabIndex = 1;
@@ -383,7 +373,7 @@ namespace Sketchpop
             // blue_label
             // 
             this.blue_label.AutoSize = true;
-            this.blue_label.Location = new System.Drawing.Point(109, 247);
+            this.blue_label.Location = new System.Drawing.Point(109, 181);
             this.blue_label.Name = "blue_label";
             this.blue_label.Size = new System.Drawing.Size(27, 13);
             this.blue_label.TabIndex = 0;
@@ -401,7 +391,7 @@ namespace Sketchpop
             // green_label
             // 
             this.green_label.AutoSize = true;
-            this.green_label.Location = new System.Drawing.Point(54, 247);
+            this.green_label.Location = new System.Drawing.Point(60, 181);
             this.green_label.Name = "green_label";
             this.green_label.Size = new System.Drawing.Size(34, 13);
             this.green_label.TabIndex = 0;
@@ -410,7 +400,7 @@ namespace Sketchpop
             // red_label
             // 
             this.red_label.AutoSize = true;
-            this.red_label.Location = new System.Drawing.Point(6, 247);
+            this.red_label.Location = new System.Drawing.Point(6, 181);
             this.red_label.Name = "red_label";
             this.red_label.Size = new System.Drawing.Size(22, 13);
             this.red_label.TabIndex = 0;
@@ -419,20 +409,11 @@ namespace Sketchpop
             // stroke_label
             // 
             this.stroke_label.AutoSize = true;
-            this.stroke_label.Location = new System.Drawing.Point(3, 306);
+            this.stroke_label.Location = new System.Drawing.Point(4, 258);
             this.stroke_label.Name = "stroke_label";
             this.stroke_label.Size = new System.Drawing.Size(64, 13);
             this.stroke_label.TabIndex = 0;
             this.stroke_label.Text = "Stroke Size:";
-            // 
-            // color_label
-            // 
-            this.color_label.AutoSize = true;
-            this.color_label.Location = new System.Drawing.Point(3, 234);
-            this.color_label.Name = "color_label";
-            this.color_label.Size = new System.Drawing.Size(34, 13);
-            this.color_label.TabIndex = 0;
-            this.color_label.Text = "Color:";
             // 
             // quick_launch_bar
             // 
@@ -722,6 +703,41 @@ namespace Sketchpop
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // set_color_button
+            // 
+            this.set_color_button.Location = new System.Drawing.Point(51, 223);
+            this.set_color_button.Name = "set_color_button";
+            this.set_color_button.Size = new System.Drawing.Size(76, 19);
+            this.set_color_button.TabIndex = 18;
+            this.set_color_button.Text = "set color";
+            this.set_color_button.UseVisualStyleBackColor = true;
+            this.set_color_button.Click += new System.EventHandler(this.set_color_button_Click);
+            // 
+            // red_input_box
+            // 
+            this.red_input_box.Location = new System.Drawing.Point(6, 197);
+            this.red_input_box.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.red_input_box.Name = "red_input_box";
+            this.red_input_box.Size = new System.Drawing.Size(45, 20);
+            this.red_input_box.TabIndex = 8;
+            this.red_input_box.ValueChanged += new System.EventHandler(this.red_input_box_ValueChanged);
+            // 
+            // stroke_track_bar
+            // 
+            this.stroke_track_bar.Location = new System.Drawing.Point(6, 274);
+            this.stroke_track_bar.Maximum = 50;
+            this.stroke_track_bar.Minimum = 1;
+            this.stroke_track_bar.Name = "stroke_track_bar";
+            this.stroke_track_bar.Size = new System.Drawing.Size(107, 45);
+            this.stroke_track_bar.TabIndex = 19;
+            this.stroke_track_bar.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.stroke_track_bar.Value = 2;
+            this.stroke_track_bar.ValueChanged += new System.EventHandler(this.stroke_track_bar_ValueChanged);
+            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -750,7 +766,6 @@ namespace Sketchpop
             this.left_settings_panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.blue_input_box)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.red_input_box)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stroke_size_input_box)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reference_img)).EndInit();
             this.quick_launch_bar.ResumeLayout(false);
@@ -765,6 +780,8 @@ namespace Sketchpop
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).EndInit();
             this.right_settings_panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.main_preview_picturebox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.red_input_box)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stroke_track_bar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -789,8 +806,6 @@ namespace Sketchpop
         private System.Windows.Forms.Label blue_label;
         private System.Windows.Forms.Label green_label;
         private System.Windows.Forms.Label red_label;
-        private System.Windows.Forms.Label color_label;
-        private System.Windows.Forms.NumericUpDown red_input_box;
         private System.Windows.Forms.NumericUpDown green_input_box;
         private System.Windows.Forms.NumericUpDown blue_input_box;
         private System.Windows.Forms.Label stroke_label;
@@ -833,6 +848,9 @@ namespace Sketchpop
         private System.Windows.Forms.Button select_button;
         private System.Windows.Forms.PictureBox drawing_picture_box;
         private System.Windows.Forms.Panel top_canvas_strip;
+        private System.Windows.Forms.Button set_color_button;
+        private System.Windows.Forms.NumericUpDown red_input_box;
+        private System.Windows.Forms.TrackBar stroke_track_bar;
     }
 }
 

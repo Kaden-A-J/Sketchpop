@@ -24,6 +24,7 @@ namespace Sketchpop
         private byte[] _ref_image_data;
         private Unsplash_Manager _um;
         private Canvas_Manager.SketchPopTool stored_brush = Canvas_Manager.SketchPopTool.brush;
+        private ColorDialog _colorDialog = new ColorDialog();
         
 
         private bool bg_layer_added = false;
@@ -494,6 +495,22 @@ namespace Sketchpop
         private void unsplash_link_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start("https://www.unsplash.com/?utm_source=Sketchpop&utm_medium=referral");
+        }
+
+        private void set_color_button_Click(object sender, EventArgs e)
+        {
+            if (_colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                red_input_box.Value = _colorDialog.Color.R;
+                green_input_box.Value = _colorDialog.Color.G;
+                blue_input_box.Value = _colorDialog.Color.B;
+            }
+        }
+
+        private void stroke_track_bar_ValueChanged(object sender, EventArgs e)
+        {
+            TrackBar track_bar = (sender as TrackBar);
+            stroke_size_input_box.Value = track_bar.Value;
         }
 
         /// <summary>
