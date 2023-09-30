@@ -33,15 +33,40 @@ namespace Sketchpop
             Reset_Canvas_State();
         }
 
-        public void Mouse_Is_Still_Down_Handler(Point point)
+        public void Mouse_Down_Handler(Point click_position)
         {
+            Point adjusted = Adjust_Point_To_Hand(click_position);
+
             if (current_tool == SketchPopTool.brush)
             {
-                Add_Point_To_Draw(point);
+                Begin_Draw_Path(adjusted);
             }
-            else if (current_tool == SketchPopTool.selector)
+            else if (current_tool == SketchPopTool.selector_rect)
             {
-                selection_manager.Continue_Selection(point);
+                selection_manager.Begin_Selection(adjusted, Selection_Manager.Selection_Tools.Rectangle);
+            }
+            else if (current_tool == SketchPopTool.selector_lasso)
+            {
+                selection_manager.Begin_Selection(adjusted, Selection_Manager.Selection_Tools.Lasso);
+            }
+            else if (current_tool == SketchPopTool.hand)
+            {
+                hand_start = click_position;
+                //hand_difference = new Point(0, 0);
+            }
+        }
+
+        public void Mouse_Is_Still_Down_Handler(Point point)
+        {
+            Point adjusted = Adjust_Point_To_Hand(point);
+
+            if (current_tool == SketchPopTool.brush)
+            {
+                Add_Point_To_Draw(adjusted);
+            }
+            else if (current_tool == SketchPopTool.selector_rect || current_tool == SketchPopTool.selector_lasso)
+            {
+                selection_manager.Continue_Selection(adjusted);
             }
             else if (current_tool == SketchPopTool.hand)
             {
@@ -59,49 +84,28 @@ namespace Sketchpop
                 ); // 28 is the size of the topstrip maybe should fix this later
         }
 
-        public void Add_Point_To_Draw(Point point)
-        {
-            if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
-                return;
-
-            point = Adjust_Point_To_Hand(point);
-
-            pointsToDraw.Enqueue(new Point_Operation(point, Point_Operation.OperationType.line_to));
-        }
-
-        public void Mouse_Down_Handler(Point click_position)
-        {
-            if (current_tool == SketchPopTool.brush)
-            {
-                Begin_Draw_Path(click_position);
-            }    
-            else if (current_tool == SketchPopTool.selector)
-            {
-                selection_manager.Begin_Selection(click_position);
-            }
-            else if (current_tool == SketchPopTool.hand)
-            {
-                hand_start = click_position;
-                //hand_difference = new Point(0, 0);
-            }
-        }
-
         internal void Mouse_Up_Handler(Point click_position)
         {
-            if (current_tool == SketchPopTool.selector)
+            if (current_tool == SketchPopTool.selector_rect || current_tool == SketchPopTool.selector_lasso)
             {
                 selection_manager.End_Selection();
             }
         }
 
-        public void Begin_Draw_Path(Point click_position)
+        public void Begin_Draw_Path(Point point)
         {
             current_path = new SKPath();
             current_path.FillType = SKPathFillType.EvenOdd;
 
-            click_position = Adjust_Point_To_Hand(click_position);
+            pointsToDraw.Enqueue(new Point_Operation(point, Point_Operation.OperationType.jump));
+        }
 
-            pointsToDraw.Enqueue(new Point_Operation(click_position, Point_Operation.OperationType.jump));
+        public void Add_Point_To_Draw(Point point)
+        {
+            if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
+                return;
+
+            pointsToDraw.Enqueue(new Point_Operation(point, Point_Operation.OperationType.line_to));
         }
 
         public void Update_Color(byte red, byte green, byte blue, byte alpha)
@@ -141,18 +145,9 @@ namespace Sketchpop
                     surface.Canvas.DrawImage(c_image, c_image.Info.Rect, paint);
                 }
 
-                if (selection_manager.active)
+                if (selection_manager.active_select_tool != Selection_Manager.Selection_Tools.None)
                 {
-                    // white part of outline
-                    SKRect selection = selection_manager.CalculateSelectionRect();
-                    paint.Style = SKPaintStyle.Stroke;
-                    paint.Color = Color.White.ToSKColor().WithAlpha(0xAA);
-                    surface.Canvas.DrawRect(selection, paint);
-
-                    // black part of outline
-                    paint.Color = Color.Black.ToSKColor().WithAlpha(0xAA);
-                    paint.PathEffect = SKPathEffect.CreateDash(new float[] {4f, 6f}, selection_manager.selection_animation_offset);
-                    surface.Canvas.DrawRect(selection_manager.CalculateSelectionRect(), paint);
+                    selection_manager.Draw_Outline(surface, paint);
                 }
 
                 if (target.Image != null)
@@ -214,7 +209,11 @@ namespace Sketchpop
                     {
                         if (po.operationType == Point_Operation.OperationType.line_to)
                         {
-                            current_path.LineTo(po.point.X, po.point.Y);
+                            current_path.LineTo(po.point.X, po.point.Y); 
+                            if (selection_manager.active_select_tool != Selection_Manager.Selection_Tools.None)
+                            {
+                                surface.Canvas.ClipRegion(new SKRegion(selection_manager.selected_area));
+                            }
                         }
                         else if (po.operationType == Point_Operation.OperationType.jump)
                         {
@@ -348,7 +347,8 @@ namespace Sketchpop
         public enum SketchPopTool
         {
             brush, // this one is actually brush and eraser, currently
-            selector,
+            selector_rect,
+            selector_lasso,
             fill,
             hand
         }

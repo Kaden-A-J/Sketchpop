@@ -69,7 +69,6 @@ namespace Sketchpop
             this.saveAsEXCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.canvas_panel = new System.Windows.Forms.Panel();
-            this.select_button = new System.Windows.Forms.Button();
             this.ref_img_menustrip = new System.Windows.Forms.MenuStrip();
             this.viewImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addImageToLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,6 +77,8 @@ namespace Sketchpop
             this.pen_button = new System.Windows.Forms.Button();
             this.eraser_button = new System.Windows.Forms.Button();
             this.top_canvas_strip = new System.Windows.Forms.Panel();
+            this.select_lasso_button = new System.Windows.Forms.Button();
+            this.select_rect_button = new System.Windows.Forms.Button();
             this.drawing_picture_box = new System.Windows.Forms.PictureBox();
             this.canvas_frame = new System.Windows.Forms.PictureBox();
             this.right_settings_panel = new System.Windows.Forms.Panel();
@@ -515,7 +516,6 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
-            this.canvas_panel.Controls.Add(this.select_button);
             this.canvas_panel.Controls.Add(this.ref_img_menustrip);
             this.canvas_panel.Controls.Add(this.clear_canvas_button);
             this.canvas_panel.Controls.Add(this.pen_button);
@@ -527,16 +527,6 @@ namespace Sketchpop
             this.canvas_panel.Name = "canvas_panel";
             this.canvas_panel.Size = new System.Drawing.Size(767, 653);
             this.canvas_panel.TabIndex = 6;
-            // 
-            // select_button
-            // 
-            this.select_button.Location = new System.Drawing.Point(445, 3);
-            this.select_button.Name = "select_button";
-            this.select_button.Size = new System.Drawing.Size(75, 23);
-            this.select_button.TabIndex = 18;
-            this.select_button.Text = "Select";
-            this.select_button.UseVisualStyleBackColor = true;
-            this.select_button.Click += new System.EventHandler(this.select_button_Click);
             // 
             // ref_img_menustrip
             // 
@@ -611,10 +601,32 @@ namespace Sketchpop
             // 
             // top_canvas_strip
             // 
+            this.top_canvas_strip.Controls.Add(this.select_lasso_button);
+            this.top_canvas_strip.Controls.Add(this.select_rect_button);
             this.top_canvas_strip.Location = new System.Drawing.Point(0, 0);
             this.top_canvas_strip.Name = "top_canvas_strip";
             this.top_canvas_strip.Size = new System.Drawing.Size(767, 28);
             this.top_canvas_strip.TabIndex = 20;
+            // 
+            // select_lasso_button
+            // 
+            this.select_lasso_button.Location = new System.Drawing.Point(432, 3);
+            this.select_lasso_button.Name = "select_lasso_button";
+            this.select_lasso_button.Size = new System.Drawing.Size(88, 23);
+            this.select_lasso_button.TabIndex = 19;
+            this.select_lasso_button.Text = "Lasso Select";
+            this.select_lasso_button.UseVisualStyleBackColor = true;
+            this.select_lasso_button.Click += new System.EventHandler(this.select_lasso_button_Click);
+            // 
+            // select_rect_button
+            // 
+            this.select_rect_button.Location = new System.Drawing.Point(351, 3);
+            this.select_rect_button.Name = "select_rect_button";
+            this.select_rect_button.Size = new System.Drawing.Size(75, 23);
+            this.select_rect_button.TabIndex = 18;
+            this.select_rect_button.Text = "Rect Select";
+            this.select_rect_button.UseVisualStyleBackColor = true;
+            this.select_rect_button.Click += new System.EventHandler(this.select_rect_button_Click);
             // 
             // drawing_picture_box
             // 
@@ -845,12 +857,13 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsEXCToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
-        private System.Windows.Forms.Button select_button;
+        private System.Windows.Forms.Button select_rect_button;
         private System.Windows.Forms.PictureBox drawing_picture_box;
         private System.Windows.Forms.Panel top_canvas_strip;
         private System.Windows.Forms.Button set_color_button;
         private System.Windows.Forms.NumericUpDown red_input_box;
         private System.Windows.Forms.TrackBar stroke_track_bar;
+        private System.Windows.Forms.Button select_lasso_button;
     }
 }
 
