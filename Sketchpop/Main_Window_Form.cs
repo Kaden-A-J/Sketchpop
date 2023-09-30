@@ -212,9 +212,14 @@ namespace Sketchpop
             Program.canvas_manager.Change_Brush("basic", stroke_size_input_box);
         }
 
-        private void select_button_Click(object sender, EventArgs e)
+        private void select_rect_button_Click(object sender, EventArgs e)
         {
-            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.selector;
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.selector_rect;
+        }
+
+        private void select_lasso_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.selector_lasso;
         }
 
         private void repeatedCirclesPracticeToolStripMenuItem_Click(object sender, EventArgs e)
