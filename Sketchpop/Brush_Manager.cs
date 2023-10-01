@@ -1,5 +1,8 @@
 ﻿using SkiaSharp;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Sketchpop
@@ -26,8 +29,61 @@ namespace Sketchpop
             // add basic brush and eraser
             _brushes.Add(_current_brush.Name(), _current_brush);
             _brushes.Add("eraser", new Brush("eraser", 50, SKColor.Empty, SKBlendMode.Clear));
-
             _brushes.Add("hand", new Brush("hand", 0, SKColor.Empty, SKBlendMode.Clear));
+
+            // load textures
+            Load_Textures();
+        }
+
+        private void Load_Textures()
+        {
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var folderDirectory = Path.Combine(baseDirectory, "..\\..\\Textures");
+
+            List<string> pngFiles = Directory.GetFiles(folderDirectory, "*.png").ToList();
+            Dictionary<string, SKBitmap> txtrs = new Dictionary<string, SKBitmap>();
+            Dictionary<string, string> flpths = new Dictionary<string, string>();
+
+            foreach (string png in pngFiles)
+            {
+                string textureName = Path.GetFileNameWithoutExtension(png); // extract the file name without extension
+                var texture = Resize_Texture(png,_current_brush.Stroke(), _current_brush.Stroke());
+                var t_Bitmap = SKBitmap.FromImage(texture);
+
+                txtrs.Add(textureName, t_Bitmap);
+                flpths.Add(textureName, png);
+            }
+
+            _brushes.Add("paint", new Brush("paint", 2, new SKColor(0, 0, 0, 255), txtrs));
+            _brushes["paint"].Set_Texture(txtrs.First().Value);
+            _brushes["paint"].Set_Filepaths(flpths);
+        }
+
+        public SKImage Resize_Texture(string imagePath, int width, int height)
+        {
+            using (SKBitmap originalBitmap = SKBitmap.Decode(imagePath))
+            {
+                // calculate the new size while preserving the aspect ratio
+                int newWidth, newHeight;
+                if (originalBitmap.Width > originalBitmap.Height)
+                {
+                    newWidth = width;
+                    newHeight = (int)((float)originalBitmap.Height / originalBitmap.Width * width);
+                }
+                else
+                {
+                    newHeight = height;
+                    newWidth = (int)((float)originalBitmap.Width / originalBitmap.Height * height);
+                }
+
+                // resize the original bitmap
+                SKBitmap resizedBitmap = originalBitmap.Resize(new SKImageInfo(newWidth, newHeight), SKFilterQuality.High);
+
+                // create an SKImage from the resized bitmap
+                SKImage resizedImage = SKImage.FromBitmap(resizedBitmap);
+
+                return resizedImage;
+            }
         }
 
         /// <summary>

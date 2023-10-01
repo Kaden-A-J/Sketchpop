@@ -228,6 +228,7 @@
   <ItemGroup>
     <Content Include="Images\butterfly.jpg" />
     <Content Include="Images\cat.jpg" />
+    <Content Include="Textures\brush.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
