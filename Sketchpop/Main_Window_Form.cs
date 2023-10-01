@@ -22,10 +22,13 @@ namespace Sketchpop
         // reference image variables
         private string _author_link;
         private byte[] _ref_image_data;
+
+        private int[] paint_brush_values = { 30, 50, 80, 100 };
+
         private Unsplash_Manager _um;
         private Canvas_Manager.SketchPopTool stored_brush = Canvas_Manager.SketchPopTool.brush;
         private ColorDialog _colorDialog = new ColorDialog();
-        
+
 
         private bool bg_layer_added = false;
 
@@ -37,7 +40,10 @@ namespace Sketchpop
                 Program.canvas_manager.Mouse_Is_Still_Down_Handler(click_pos);
             }
 
-            Program.canvas_manager.Draw_Path_Points(new object());
+            if (pen_button.Text.Equals("Pen"))
+                Program.canvas_manager.Draw_Path_Points(new object());
+            else
+                Program.canvas_manager.Draw_With_Brush(canvas_frame.PointToClient(MousePosition));
             Program.canvas_manager.Draw_Bitmap(drawing_picture_box, -1, false);
             Program.canvas_manager.Draw_Bitmap(main_preview_picturebox, -1, true);
             drawing_picture_box.Location = new Point(
@@ -118,6 +124,10 @@ namespace Sketchpop
 
         private void canvas_frame_MouseDown(object sender, MouseEventArgs e)
         {
+            // close menus that are open
+            if (brush_menustrip.Visible) { brush_menustrip.Visible = false; }
+            if (ref_img_menustrip.Visible) { ref_img_menustrip.Visible = false; }
+
             if (e.Button == MouseButtons.Left)
             {
                 if (!mouse_down)
@@ -258,9 +268,9 @@ namespace Sketchpop
             int c_idx = Int32.Parse(c_panel.Name);
 
             //Console.WriteLine((float)c_trackbar.Value);
-            Program.canvas_manager.layer_manager.set_layer_opacity(c_idx, (float)c_trackbar.Value/100);
+            Program.canvas_manager.layer_manager.set_layer_opacity(c_idx, (float)c_trackbar.Value / 100);
         }
-        
+
         public void shift_layers_down()
         {
             foreach (Panel c_panel in layers_ui)
@@ -311,7 +321,7 @@ namespace Sketchpop
             t_panel.Controls.Add(t_name_label);
 
             TrackBar t_trackbar = new TrackBar();
-            t_trackbar.Location = new Point(t_name_label.Location.X + buffer, t_panel.Height - ((t_panel.Height - buffer * 2) / 2) - buffer-1);
+            t_trackbar.Location = new Point(t_name_label.Location.X + buffer, t_panel.Height - ((t_panel.Height - buffer * 2) / 2) - buffer - 1);
             t_trackbar.Size = new Size((t_panel.Width - t_trackbar.Location.X - buffer), (t_panel.Height - buffer * 2) / 2);
             t_trackbar.Minimum = 0;
             t_trackbar.Maximum = 100;
@@ -518,6 +528,48 @@ namespace Sketchpop
             stroke_size_input_box.Value = track_bar.Value;
         }
 
+        private void brush_selector_button_Click(object sender, EventArgs e)
+        {
+            brush_menustrip.Visible = !brush_menustrip.Visible;
+        }
+
+        private void penToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            pen_button.Text = "Pen";
+            Program.canvas_manager.Change_Brush("basic");
+            brush_menustrip.Visible = false;
+            stroke_track_bar.Visible = true;
+            paintbrush_trackbar.Visible = false;
+            stroke_size_input_box.Visible = true;
+            //stroke_size_input_box.Value = 
+        }
+
+        private void painBrushStripMenuItem_Click(object sender, EventArgs e)
+        {
+            pen_button.Text = "Paint Brush";
+            Program.canvas_manager.Change_Brush("paint");
+            brush_menustrip.Visible = false;
+            stroke_track_bar.Visible = false;
+            paintbrush_trackbar.Visible = true;
+            stroke_size_input_box.Value = paint_brush_values[0];
+            stroke_size_input_box.Visible = false;            
+        }
+
+        private void paintbrush_trackbar_ValueChanged(object sender, EventArgs e)
+        {
+            int index = paintbrush_trackbar.Value;
+            int selectedValue = paint_brush_values[index];
+
+            stroke_size_input_box.Value = selectedValue;
+
+            //Program.canvas_manager.Update_Stroke_Size(selectedValue);
+        }
+
+        private void pen_button_Click_1(object sender, EventArgs e)
+        {
+            // can add logic for switching between tools here if needed
+        }
+
         /// <summary>
         /// The user clicks the LinkLabel associated with the photographer of the Image selected.
         /// </summary>
@@ -536,7 +588,7 @@ namespace Sketchpop
         /// <param name="e">n/a</param>
         private void addImageToLayerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var tmp = new Image_Layer_Options_Form(_ref_image_data, layers_ui.Count);//Program.canvas_manager.DrawImageWithOpacity(_ref_image_data, canvas_frame, (float)0.5);
+            var tmp = new Image_Layer_Options_Form(_ref_image_data, layers_ui.Count);//Program.canvas_manager.Draw_Image_With_Opacity(_ref_image_data, canvas_frame, (float)0.5);
             tmp.saved += Add_Image_To_Layer;
             tmp.add_layer += layer_add_button_Click;
             //tmp.delete_layer += layer_delete_button_Click;
@@ -560,7 +612,7 @@ namespace Sketchpop
             int layer_index = e.Layer;
 
             // add the image to the layer
-            Program.canvas_manager.DrawImageWithOpacity(modified_img, layer_index);
+            Program.canvas_manager.Draw_Image_With_Opacity(modified_img, layer_index);
 
             ref_img_menustrip.Visible = false;
         }
@@ -675,22 +727,22 @@ namespace Sketchpop
 
             // clear canvas, add ref image to layer, add new layer for drawing
             clear_canvas_button_Click(null, null);
-            Program.canvas_manager.DrawImageWithOpacity(img.Get_Image_Data(), 1);
+            Program.canvas_manager.Draw_Image_With_Opacity(img.Get_Image_Data(), 1);
 
-            layer_add_button_Click(null, null);            
-           
+            layer_add_button_Click(null, null);
+
             Program.canvas_manager.layer_manager.set_layer_opacity(0.5f);
 
-      
-                // select the new layer
-                foreach (Control c in layers_ui[layers_ui.Count-1].Controls)
+
+            // select the new layer
+            foreach (Control c in layers_ui[layers_ui.Count - 1].Controls)
+            {
+                if (c is RadioButton r)
                 {
-                    if (c is RadioButton r)
-                    {
-                        layer_visible_button_clicked(r, new EventArgs());                            
-                    }
+                    layer_visible_button_clicked(r, new EventArgs());
                 }
-            
+            }
+
 
             // change pen settings
             red_input_box.Value = 255;

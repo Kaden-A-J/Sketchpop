@@ -19,7 +19,7 @@ namespace Sketchpop
         private ConcurrentQueue<Point_Operation> pointsToDraw = new ConcurrentQueue<Point_Operation>();
         private SKPath current_path;
         private Point hand_start = new Point(-1, -1);
-
+        private Point prevMousePosition = new Point(0, 0);
         public Canvas_Manager()
         {
             brush_manager = new Brush_Manager();
@@ -28,7 +28,7 @@ namespace Sketchpop
 
             //picture_box = canvas_frame;
             canvas_info = new SKImageInfo(500, 500);
-         
+
 
             Reset_Canvas_State();
         }
@@ -209,7 +209,7 @@ namespace Sketchpop
                     {
                         if (po.operationType == Point_Operation.OperationType.line_to)
                         {
-                            current_path.LineTo(po.point.X, po.point.Y); 
+                            current_path.LineTo(po.point.X, po.point.Y);
                             if (selection_manager.active_select_tool != Selection_Manager.Selection_Tools.None)
                             {
                                 surface.Canvas.ClipRegion(new SKRegion(selection_manager.selected_area));
@@ -314,14 +314,14 @@ namespace Sketchpop
         /// <param name="image_data">the bytes of the image to be drawn</param>
         /// <param name="pb">the picturebox of the original image</param>
         /// <param name="opacity">the opacity to set the image to</param>       
-        public void DrawImageWithOpacity(byte[] image_data,int layer_idx)
+        public void Draw_Image_With_Opacity(byte[] image_data, int layer_idx)
         {
             using (SKImage image = SKImage.FromEncodedData(image_data))
             {
                 using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_idx).PeekPixels()))
                 {
                     using (SKPaint paint = new SKPaint())
-                    {                        
+                    {
                         // choose the min scaling factor
                         float scaleX = canvas_info.Width / (float)image.Width;
                         float scaleY = canvas_info.Height / (float)image.Height;
@@ -342,6 +342,96 @@ namespace Sketchpop
                     }
                 }
             }
+        }
+
+        public void Draw_With_Brush(Point currentMousePosition)
+        {
+            if (current_path != null)
+            {
+                using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels()))
+                {
+                    using (SKCanvas pathCanvas = surface.Canvas)
+                    {
+                        using (SKPaint paint = new SKPaint())
+                        {
+                            paint.ColorFilter = SKColorFilter.CreateBlendMode(brush_manager.Get_Current_Brush().Color(), SKBlendMode.SrcIn);
+                            paint.BlendMode = SKBlendMode.SrcOver;
+
+                            if (pointsToDraw.TryDequeue(out Point_Operation po))
+                            {
+                                if (po.operationType == Point_Operation.OperationType.line_to)
+                                {
+                                    // calculate the angle and distance
+                                    float deltaX = currentMousePosition.X - prevMousePosition.X;
+                                    float deltaY = currentMousePosition.Y - prevMousePosition.Y;
+                                    float distance = (float)Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+
+                                    // calculate the rotation angle to determine the user's mouse movement direction
+                                    float angle = (float)Math.Atan2(deltaY, deltaX);
+                                    float rotationAngle = (float)(angle * (180.0f / Math.PI));
+                                                                     
+                                    float step = Get_Step_Size(brush_manager.Get_Current_Brush().Stroke()); // step size for interpolation
+
+                                    int steps = (int)(distance / step);
+
+                                    for (int i = 0; i < steps; i++)
+                                    {
+                                        float t = (float)i / steps;
+                                        float x = po.point.X + t * deltaX;
+                                        float y = po.point.Y + t * deltaY;
+
+                                        // Set the pivot point to the current interpolated position
+                                        SKMatrix matrix = SKMatrix.CreateRotationDegrees(rotationAngle, x, y);
+
+                                        // Apply the matrix transformation
+                                        pathCanvas.SetMatrix(matrix);
+
+                                        // Draw the brush texture at the interpolated position
+                                        float left = x - brush_manager.Get_Current_Brush().Textures["brush"].Width / 2f;
+                                        float top = y - brush_manager.Get_Current_Brush().Textures["brush"].Height / 2f;
+                                        SKRect destRect = new SKRect(left, top, left + brush_manager.Get_Current_Brush().Textures["brush"].Width, top + brush_manager.Get_Current_Brush().Textures["brush"].Height);
+                                        pathCanvas.DrawBitmap(brush_manager.Get_Current_Brush().Textures["brush"], destRect, paint);
+
+                                        // Reset the matrix to the identity matrix for subsequent drawing
+                                        pathCanvas.ResetMatrix();
+                                    }
+                                }
+                                else if (po.operationType == Point_Operation.OperationType.jump)
+                                {
+                                    current_path.MoveTo(po.point.X, po.point.Y);
+                                    prevMousePosition = po.point;
+                                }
+                                // Update the previous mouse position.
+                                prevMousePosition = currentMousePosition;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private float Get_Step_Size(int stroke)
+        {
+            switch (stroke)
+            {
+                case 30:
+                    {
+                        return 2.25f;
+                    }
+                case 50:
+                    {
+                        return 3.5f;
+                    }
+                case 80:
+                    {
+                        return 4.25f;
+                    }
+                case 100:
+                    {
+                        return 5.0f;
+                    }
+            }
+            return -1;
         }
 
         public enum SketchPopTool
