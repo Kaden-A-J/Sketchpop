@@ -24,6 +24,7 @@ namespace Sketchpop
         private byte[] _ref_image_data;
 
         private int[] paint_brush_values = { 30, 50, 80, 100 };
+        private bool eraser_selected = false;
 
         private Unsplash_Manager _um;
         private Canvas_Manager.SketchPopTool stored_brush = Canvas_Manager.SketchPopTool.brush;
@@ -40,7 +41,7 @@ namespace Sketchpop
                 Program.canvas_manager.Mouse_Is_Still_Down_Handler(click_pos);
             }
 
-            if (pen_button.Text.Equals("Pen"))
+            if (pen_button.Text.Equals("Pen") || eraser_selected)
                 Program.canvas_manager.Draw_Path_Points(new object());
             else
                 Program.canvas_manager.Draw_With_Brush(canvas_frame.PointToClient(MousePosition));
@@ -214,6 +215,7 @@ namespace Sketchpop
         {
             Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
             Program.canvas_manager.Change_Brush("eraser", stroke_size_input_box);
+            eraser_selected = true;
         }
 
         private void pen_button_Click(object sender, EventArgs e)
@@ -541,7 +543,6 @@ namespace Sketchpop
             stroke_track_bar.Visible = true;
             paintbrush_trackbar.Visible = false;
             stroke_size_input_box.Visible = true;
-            //stroke_size_input_box.Value = 
         }
 
         private void painBrushStripMenuItem_Click(object sender, EventArgs e)
@@ -552,7 +553,8 @@ namespace Sketchpop
             stroke_track_bar.Visible = false;
             paintbrush_trackbar.Visible = true;
             stroke_size_input_box.Value = paint_brush_values[0];
-            stroke_size_input_box.Visible = false;            
+            stroke_size_input_box.Visible = false;
+            eraser_selected = false;
         }
 
         private void paintbrush_trackbar_ValueChanged(object sender, EventArgs e)
