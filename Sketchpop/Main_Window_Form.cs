@@ -221,7 +221,13 @@ namespace Sketchpop
         private void pen_button_Click(object sender, EventArgs e)
         {
             Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
-            Program.canvas_manager.Change_Brush("basic", stroke_size_input_box);
+
+            if (pen_button.Text.Equals("Paint Brush"))
+                Program.canvas_manager.Change_Brush("paint");
+            else if (pen_button.Text.Equals("Pen"))
+                Program.canvas_manager.Change_Brush("basic");
+
+            eraser_selected = false;
         }
 
         private void select_rect_button_Click(object sender, EventArgs e)
@@ -539,16 +545,19 @@ namespace Sketchpop
         {
             pen_button.Text = "Pen";
             Program.canvas_manager.Change_Brush("basic");
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
             brush_menustrip.Visible = false;
             stroke_track_bar.Visible = true;
             paintbrush_trackbar.Visible = false;
             stroke_size_input_box.Visible = true;
+            eraser_selected = false;
         }
 
         private void painBrushStripMenuItem_Click(object sender, EventArgs e)
         {
             pen_button.Text = "Paint Brush";
             Program.canvas_manager.Change_Brush("paint");
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
             brush_menustrip.Visible = false;
             stroke_track_bar.Visible = false;
             paintbrush_trackbar.Visible = true;
@@ -567,10 +576,14 @@ namespace Sketchpop
             //Program.canvas_manager.Update_Stroke_Size(selectedValue);
         }
 
-        private void pen_button_Click_1(object sender, EventArgs e)
-        {
-            // can add logic for switching between tools here if needed
-        }
+        //private void pen_button_Click_1(object sender, EventArgs e)
+        //{
+        //    // can add logic for switching between tools here if needed
+        //    if (Program.canvas_manager.current_tool != Canvas_Manager.SketchPopTool.brush)
+        //    {
+        //        Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
+        //    }
+        //}
 
         /// <summary>
         /// The user clicks the LinkLabel associated with the photographer of the Image selected.

@@ -645,7 +645,7 @@ namespace Sketchpop
             this.pen_button.TabIndex = 2;
             this.pen_button.Text = "Pen";
             this.pen_button.UseVisualStyleBackColor = true;
-            this.pen_button.Click += new System.EventHandler(this.pen_button_Click_1);
+            this.pen_button.Click += new System.EventHandler(this.pen_button_Click);
             // 
             // brush_menustrip
             // 

@@ -344,6 +344,74 @@ namespace Sketchpop
             }
         }
 
+        //public void Draw_With_Brush(Point currentMousePosition)
+        //{
+        //    if (current_path != null)
+        //    {
+        //        using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels()))
+        //        {
+        //            using (SKCanvas pathCanvas = surface.Canvas)
+        //            {
+        //                using (SKPaint paint = new SKPaint())
+        //                {
+        //                    paint.ColorFilter = SKColorFilter.CreateBlendMode(brush_manager.Get_Current_Brush().Color(), SKBlendMode.SrcIn);
+        //                    paint.BlendMode = SKBlendMode.SrcOver;
+
+        //                    if (pointsToDraw.TryDequeue(out Point_Operation po))
+        //                    {
+        //                        if (po.operationType == Point_Operation.OperationType.line_to)
+        //                        {
+        //                            // calculate the angle and distance
+        //                            float deltaX = currentMousePosition.X - prevMousePosition.X;
+        //                            float deltaY = currentMousePosition.Y - prevMousePosition.Y;
+        //                            float distance = (float)Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        //                            // calculate the rotation angle to determine the user's mouse movement direction
+        //                            float angle = (float)Math.Atan2(deltaY, deltaX);
+        //                            float rotationAngle = (float)(angle * (180.0f / Math.PI));
+
+        //                            float step = Get_Step_Size(brush_manager.Get_Current_Brush().Stroke()); // step size for interpolation
+
+        //                            int steps = (int)(distance / step);
+
+        //                            for (int i = 0; i < steps; i++)
+        //                            {
+        //                                float t = (float)i / steps;
+        //                                float x = po.point.X + t * deltaX;
+        //                                float y = po.point.Y + t * deltaY;
+
+        //                                // Set the pivot point to the current interpolated position
+        //                                SKMatrix matrix = SKMatrix.CreateRotationDegrees(rotationAngle, x, y);
+
+        //                                pathCanvas.ClipRegion(new SKRegion(selection_manager.selected_area));
+
+        //                                // Apply the matrix transformation
+        //                                pathCanvas.SetMatrix(matrix);
+
+        //                                // Draw the brush texture at the interpolated position
+        //                                float left = x - brush_manager.Get_Current_Brush().Textures["brush"].Width / 2f;
+        //                                float top = y - brush_manager.Get_Current_Brush().Textures["brush"].Height / 2f;
+        //                                SKRect destRect = new SKRect(left, top, left + brush_manager.Get_Current_Brush().Textures["brush"].Width, top + brush_manager.Get_Current_Brush().Textures["brush"].Height);
+        //                                pathCanvas.DrawBitmap(brush_manager.Get_Current_Brush().Textures["brush"], destRect, paint);
+
+        //                                // Reset the matrix to the identity matrix for subsequent drawing
+        //                                pathCanvas.ResetMatrix();
+        //                            }
+        //                        }
+        //                        else if (po.operationType == Point_Operation.OperationType.jump)
+        //                        {
+        //                            current_path.MoveTo(po.point.X, po.point.Y);
+        //                            prevMousePosition = po.point;
+        //                        }
+        //                        // Update the previous mouse position.
+        //                        prevMousePosition = currentMousePosition;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
         public void Draw_With_Brush(Point currentMousePosition)
         {
             if (current_path != null)
@@ -361,40 +429,56 @@ namespace Sketchpop
                             {
                                 if (po.operationType == Point_Operation.OperationType.line_to)
                                 {
-                                    // calculate the angle and distance
-                                    float deltaX = currentMousePosition.X - prevMousePosition.X;
-                                    float deltaY = currentMousePosition.Y - prevMousePosition.Y;
-                                    float distance = (float)Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
 
-                                    // calculate the rotation angle to determine the user's mouse movement direction
-                                    float angle = (float)Math.Atan2(deltaY, deltaX);
-                                    float rotationAngle = (float)(angle * (180.0f / Math.PI));
-                                                                     
-                                    float step = Get_Step_Size(brush_manager.Get_Current_Brush().Stroke()); // step size for interpolation
-
-                                    int steps = (int)(distance / step);
-
-                                    for (int i = 0; i < steps; i++)
+                                    // Check if there is a selected area
+                                    if (selection_manager.selected_area != null)
                                     {
-                                        float t = (float)i / steps;
-                                        float x = po.point.X + t * deltaX;
-                                        float y = po.point.Y + t * deltaY;
+                                        // Calculate the angle and distance
+                                        float deltaX = currentMousePosition.X - prevMousePosition.X;
+                                        float deltaY = currentMousePosition.Y - prevMousePosition.Y;
+                                        float distance = (float)Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
 
-                                        // Set the pivot point to the current interpolated position
-                                        SKMatrix matrix = SKMatrix.CreateRotationDegrees(rotationAngle, x, y);
+                                        // Calculate the rotation angle to determine the user's mouse movement direction
+                                        float angle = (float)Math.Atan2(deltaY, deltaX);
+                                        float rotationAngle = (float)(angle * (180.0f / Math.PI));
 
-                                        // Apply the matrix transformation
-                                        pathCanvas.SetMatrix(matrix);
+                                        float step = Get_Step_Size(brush_manager.Get_Current_Brush().Stroke()); // Step size for interpolation
 
-                                        // Draw the brush texture at the interpolated position
-                                        float left = x - brush_manager.Get_Current_Brush().Textures["brush"].Width / 2f;
-                                        float top = y - brush_manager.Get_Current_Brush().Textures["brush"].Height / 2f;
-                                        SKRect destRect = new SKRect(left, top, left + brush_manager.Get_Current_Brush().Textures["brush"].Width, top + brush_manager.Get_Current_Brush().Textures["brush"].Height);
-                                        pathCanvas.DrawBitmap(brush_manager.Get_Current_Brush().Textures["brush"], destRect, paint);
+                                        int steps = (int)(distance / step);
 
-                                        // Reset the matrix to the identity matrix for subsequent drawing
-                                        pathCanvas.ResetMatrix();
+                                        for (int i = 0; i < steps; i++)
+                                        {
+                                            float t = (float)i / steps;
+                                            float x = po.point.X + t * deltaX;
+                                            float y = po.point.Y + t * deltaY;
+
+                                            // Set the pivot point to the current interpolated position
+                                            SKMatrix matrix = SKMatrix.CreateRotationDegrees(rotationAngle, x, y);
+
+                                            // Apply the matrix transformation
+                                            pathCanvas.SetMatrix(matrix);
+
+                                            if (selection_manager.active_select_tool != Selection_Manager.Selection_Tools.None)
+
+                                                // Clip drawing within the selected area
+                                                pathCanvas.ClipRegion(new SKRegion(selection_manager.selected_area));
+
+                                            // Draw the brush texture at the interpolated position
+                                            float left = x - brush_manager.Get_Current_Brush().Textures["brush"].Width / 2f;
+                                            float top = y - brush_manager.Get_Current_Brush().Textures["brush"].Height / 2f;
+                                            SKRect destRect = new SKRect(left, top, left + brush_manager.Get_Current_Brush().Textures["brush"].Width, top + brush_manager.Get_Current_Brush().Textures["brush"].Height);
+                                            pathCanvas.DrawBitmap(brush_manager.Get_Current_Brush().Textures["brush"], destRect, paint);
+
+                                            // Reset the matrix and clip for subsequent drawing
+                                            pathCanvas.ResetMatrix();
+                                        }
                                     }
+                                    else
+                                    {
+                                        // No selected area, draw without clipping
+                                        pathCanvas.DrawBitmap(brush_manager.Get_Current_Brush().Textures["brush"], currentMousePosition.X, currentMousePosition.Y, paint);
+                                    }
+
                                 }
                                 else if (po.operationType == Point_Operation.OperationType.jump)
                                 {
@@ -409,6 +493,7 @@ namespace Sketchpop
                 }
             }
         }
+
 
         private float Get_Step_Size(int stroke)
         {
