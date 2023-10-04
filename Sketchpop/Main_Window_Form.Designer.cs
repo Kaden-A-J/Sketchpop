@@ -839,11 +839,13 @@ namespace Sketchpop
             this.Controls.Add(this.fullscreen_button);
             this.Controls.Add(this.title_bar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(128, 128);
             this.Name = "main_window";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sketchpop";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.main_window_KeyDown);
             this.title_bar.ResumeLayout(false);
             this.title_bar.PerformLayout();
             this.tool_bar.ResumeLayout(false);

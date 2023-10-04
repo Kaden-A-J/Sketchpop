@@ -578,6 +578,29 @@ namespace Sketchpop
             //Program.canvas_manager.Update_Stroke_Size(selectedValue);
         }
 
+        private void main_window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control)
+            {
+                if (e.KeyCode == Keys.C)
+                {
+                    Program.canvas_manager.Handle_Copy();
+                }
+                else if (e.KeyCode == Keys.X)
+                {
+                    Program.canvas_manager.Handle_Cut();
+                }
+                else if (e.KeyCode == Keys.V)
+                {
+                    Program.canvas_manager.Handle_Paste();
+                }
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                Program.canvas_manager.Esc_Handler();
+            }
+        }
+
         /// <summary>
         /// The user clicks the LinkLabel associated with the photographer of the Image selected.
         /// </summary>
