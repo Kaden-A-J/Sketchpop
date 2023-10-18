@@ -30,7 +30,6 @@ namespace Sketchpop
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.RegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exit_button = new System.Windows.Forms.Button();
             this.title_bar = new System.Windows.Forms.Panel();
@@ -68,6 +67,7 @@ namespace Sketchpop
             this.repeatedCirclesPracticeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.randomPromptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TipToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsEXCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,12 +77,12 @@ namespace Sketchpop
             this.viewImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addImageToLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clear_canvas_button = new System.Windows.Forms.Button();
-            this.pen_button = new System.Windows.Forms.Button();
             this.brush_menustrip = new System.Windows.Forms.MenuStrip();
             this.penToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.paintBrushToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.painBrushStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clear_canvas_button = new System.Windows.Forms.Button();
+            this.pen_button = new System.Windows.Forms.Button();
             this.eraser_button = new System.Windows.Forms.Button();
             this.top_canvas_strip = new System.Windows.Forms.Panel();
             this.brush_selector_button = new System.Windows.Forms.Button();
@@ -95,7 +95,6 @@ namespace Sketchpop
             this.layer_add_button = new System.Windows.Forms.Button();
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.title_bar.SuspendLayout();
             this.tool_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
@@ -184,7 +183,7 @@ namespace Sketchpop
             this.tool_bar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
             this.tool_bar.Controls.Add(this.hand_button);
             this.tool_bar.Controls.Add(this.brush_button);
-            this.tool_bar.Location = new System.Drawing.Point(2, 26);
+            this.tool_bar.Location = new System.Drawing.Point(0, 0);
             this.tool_bar.Name = "tool_bar";
             this.tool_bar.Size = new System.Drawing.Size(25, 687);
             this.tool_bar.TabIndex = 3;
@@ -398,6 +397,7 @@ namespace Sketchpop
             this.img_form_button.Text = "Browse";
             this.img_form_button.UseVisualStyleBackColor = true;
             this.img_form_button.Click += new System.EventHandler(this.img_form_buttonClick);
+            this.img_form_button.MouseHover += new System.EventHandler(this.img_form_button_MouseHover);
             // 
             // reference_img
             // 
@@ -532,10 +532,18 @@ namespace Sketchpop
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.RegisterToolStripMenuItem});
+            this.RegisterToolStripMenuItem,
+            this.TipToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
+            // 
+            // TipToolStripMenuItem
+            // 
+            this.TipToolStripMenuItem.Name = "TipToolStripMenuItem";
+            this.TipToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.TipToolStripMenuItem.Text = "Toggle Tips";
+            this.TipToolStripMenuItem.Click += new System.EventHandler(this.TipToolStripMenuItem_Click);
             // 
             // fileToolStripMenuItem
             // 
@@ -575,9 +583,9 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
             this.canvas_panel.Controls.Add(this.ref_img_menustrip);
+            this.canvas_panel.Controls.Add(this.brush_menustrip);
             this.canvas_panel.Controls.Add(this.clear_canvas_button);
             this.canvas_panel.Controls.Add(this.pen_button);
-            this.canvas_panel.Controls.Add(this.brush_menustrip);
             this.canvas_panel.Controls.Add(this.eraser_button);
             this.canvas_panel.Controls.Add(this.top_canvas_strip);
             this.canvas_panel.Controls.Add(this.drawing_picture_box);
@@ -625,28 +633,6 @@ namespace Sketchpop
             this.saveImageToolStripMenuItem.Text = "Save Image";
             this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
             // 
-            // clear_canvas_button
-            // 
-            this.clear_canvas_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.clear_canvas_button.Location = new System.Drawing.Point(689, 3);
-            this.clear_canvas_button.Name = "clear_canvas_button";
-            this.clear_canvas_button.Size = new System.Drawing.Size(75, 23);
-            this.clear_canvas_button.TabIndex = 10;
-            this.clear_canvas_button.Text = "Clear";
-            this.clear_canvas_button.UseVisualStyleBackColor = true;
-            this.clear_canvas_button.Click += new System.EventHandler(this.clear_canvas_button_Click);
-            // 
-            // pen_button
-            // 
-            this.pen_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pen_button.Location = new System.Drawing.Point(526, 3);
-            this.pen_button.Name = "pen_button";
-            this.pen_button.Size = new System.Drawing.Size(75, 23);
-            this.pen_button.TabIndex = 2;
-            this.pen_button.Text = "Pen";
-            this.pen_button.UseVisualStyleBackColor = true;
-            this.pen_button.Click += new System.EventHandler(this.pen_button_Click);
-            // 
             // brush_menustrip
             // 
             this.brush_menustrip.Dock = System.Windows.Forms.DockStyle.None;
@@ -654,7 +640,7 @@ namespace Sketchpop
             this.penToolStripMenuItem,
             this.painBrushStripMenuItem});
             this.brush_menustrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
-            this.brush_menustrip.Location = new System.Drawing.Point(508, 31);
+            this.brush_menustrip.Location = new System.Drawing.Point(510, 26);
             this.brush_menustrip.Name = "brush_menustrip";
             this.brush_menustrip.Size = new System.Drawing.Size(85, 42);
             this.brush_menustrip.TabIndex = 21;
@@ -681,6 +667,29 @@ namespace Sketchpop
             this.painBrushStripMenuItem.Size = new System.Drawing.Size(79, 19);
             this.painBrushStripMenuItem.Text = "Paint Brush";
             this.painBrushStripMenuItem.Click += new System.EventHandler(this.painBrushStripMenuItem_Click);
+            // 
+            // clear_canvas_button
+            // 
+            this.clear_canvas_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.clear_canvas_button.Location = new System.Drawing.Point(689, 3);
+            this.clear_canvas_button.Name = "clear_canvas_button";
+            this.clear_canvas_button.Size = new System.Drawing.Size(75, 23);
+            this.clear_canvas_button.TabIndex = 10;
+            this.clear_canvas_button.Text = "Clear";
+            this.clear_canvas_button.UseVisualStyleBackColor = true;
+            this.clear_canvas_button.Click += new System.EventHandler(this.clear_canvas_button_Click);
+            this.clear_canvas_button.MouseHover += new System.EventHandler(this.clear_canvas_button_MouseHover);
+            // 
+            // pen_button
+            // 
+            this.pen_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pen_button.Location = new System.Drawing.Point(526, 3);
+            this.pen_button.Name = "pen_button";
+            this.pen_button.Size = new System.Drawing.Size(75, 23);
+            this.pen_button.TabIndex = 2;
+            this.pen_button.Text = "Pen";
+            this.pen_button.UseVisualStyleBackColor = true;
+            this.pen_button.Click += new System.EventHandler(this.pen_button_Click);
             // 
             // eraser_button
             // 
@@ -814,12 +823,6 @@ namespace Sketchpop
             this.main_preview_picturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
             this.main_preview_picturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -904,7 +907,6 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem exercisesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem muscleMemoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem repeatedCirclesPracticeToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox db_status_label;
@@ -944,6 +946,7 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem paintBrushToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem painBrushStripMenuItem;
         private System.Windows.Forms.TrackBar paintbrush_trackbar;
+        private System.Windows.Forms.ToolStripMenuItem TipToolStripMenuItem;
     }
 }
 

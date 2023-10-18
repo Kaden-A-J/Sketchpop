@@ -1,11 +1,8 @@
-﻿using Org.BouncyCastle.Crypto.Engines;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Net.Http;
-using System.Security.Policy;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Sketchpop.Image_Layer_Options_Form;
 using static Sketchpop.Image_Search_Form;
@@ -30,6 +27,11 @@ namespace Sketchpop
         private Canvas_Manager.SketchPopTool stored_brush = Canvas_Manager.SketchPopTool.brush;
         private ColorDialog _colorDialog = new ColorDialog();
 
+        // Tip notification variables
+        private bool _tips_toggled = false;
+        private bool _tip_active = false;
+        private Tip _curr;
+        private int active = 0;
 
         private bool bg_layer_added = false;
 
@@ -538,7 +540,7 @@ namespace Sketchpop
 
         private void brush_selector_button_Click(object sender, EventArgs e)
         {
-            brush_menustrip.Visible = !brush_menustrip.Visible;
+            brush_menustrip.Visible = true;
         }
 
         private void penToolStripMenuItem_Click(object sender, EventArgs e)
@@ -576,15 +578,6 @@ namespace Sketchpop
             //Program.canvas_manager.Update_Stroke_Size(selectedValue);
         }
 
-        //private void pen_button_Click_1(object sender, EventArgs e)
-        //{
-        //    // can add logic for switching between tools here if needed
-        //    if (Program.canvas_manager.current_tool != Canvas_Manager.SketchPopTool.brush)
-        //    {
-        //        Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
-        //    }
-        //}
-
         /// <summary>
         /// The user clicks the LinkLabel associated with the photographer of the Image selected.
         /// </summary>
@@ -592,7 +585,7 @@ namespace Sketchpop
         /// <param name="e">n/a</param>
         private void author_link_label_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(_author_link);
+            Process.Start(_author_link);
         }
 
         /// <summary>
@@ -765,8 +758,57 @@ namespace Sketchpop
             blue_input_box.Value = 0;
         }
 
-        /* 
-         *  End of -- Image Selection and Database Related Code
+        public void Activate(object sender, Tip t)
+        {
+            _curr = t;
+            _curr.closed += Deactivate_Tip;
+            _curr.new_tip += Activate;
+        }
+
+        public void Deactivate_Tip(object sender, EventArgs e)
+        {
+            _curr = null;
+        }
+
+        private void TipToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _tips_toggled = !_tips_toggled;
+
+            if (_tips_toggled)
+                TipToolStripMenuItem.Text = "Toggle Tips [ON]";
+            else
+                TipToolStripMenuItem.Text = "Toggle Tips [OFF]";
+        }
+
+        /*
+         * Add Tip Logic Here
          */
+        private void clear_canvas_button_MouseHover(object sender, EventArgs e)
+        {
+            if (_tips_toggled && _curr == null)
+            //if (_tips_toggled && !_tip_active && _curr == null)
+            {
+                _tip_active = true;
+                var tmp = new Tip(this, canvas_panel, clear_canvas_button, "Click here to clear the canvas and all layers.", 0, true, "Repeated_Circles");//, false);
+                //tmp.Set_Content("Repeated_Circles");
+                tmp.closed += Deactivate_Tip;
+                tmp.new_tip += Activate;
+                tmp.Show();
+                _curr = tmp;
+            }
+        }
+
+        private void img_form_button_MouseHover(object sender, EventArgs e)
+        {
+            if (_tips_toggled && _curr == null)
+            //if (_tips_toggled && !_tip_active && _curr == null)
+            {
+                _tip_active = true;
+                var tmp = new Tip(this, left_settings_panel, img_form_button, "Click here to search for reference images to draw!", 0, false);//, false);
+                tmp.closed += Deactivate_Tip;
+                tmp.Show();
+                _curr = tmp;
+            }
+        }
     }
 }

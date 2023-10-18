@@ -182,6 +182,12 @@
       <DependentUpon>Repeated_Circles_Options_Form.cs</DependentUpon>
     </Compile>
     <Compile Include="Selection_Manager.cs" />
+    <Compile Include="Tip.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tip.Designer.cs">
+      <DependentUpon>Tip.cs</DependentUpon>
+    </Compile>
     <Compile Include="Unsplash_Image.cs" />
     <Compile Include="Unsplash_Manager.cs" />
     <EmbeddedResource Include="Fullscreen_Image_Form.resx">
@@ -209,6 +215,9 @@
     </Compile>
     <EmbeddedResource Include="Repeated_Circles_Options_Form.resx">
       <DependentUpon>Repeated_Circles_Options_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tip.resx">
+      <DependentUpon>Tip.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
@@ -241,6 +250,10 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tip_Descriptions\" />
+    <Folder Include="Tip_Images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
