@@ -17,11 +17,11 @@ namespace Sketchpop
     /// 
     /// The Color Code for the tips is as follows:
     /// 
-    /// 0:(blue) : ui element
+    /// 0:(blue) : ui folder_name
     /// 1:(pink) : exercise
     /// 2:(green): information
     /// 
-    /// A triangle is drawn to excentuate the element that the tip is describing.
+    /// A triangle is drawn to excentuate the folder_name that the tip is describing.
     /// </summary>
     public partial class Tip : Form
     {
@@ -37,7 +37,6 @@ namespace Sketchpop
         private bool _expanded = false;
         private Dictionary<Image, string> slides = new Dictionary<Image, string>();
         private int _curr_idx = 0;
-        private bool _active = false;
 
         private Timer _timer = new Timer();
 
@@ -49,46 +48,58 @@ namespace Sketchpop
         public event EventHandler closed;
         public event EventHandler<Tip> new_tip;
 
+        private Point _prev_location;
+
         /// <summary>
         /// Constructor. Takes the main_window form, the control that the tip is representing,
-        /// the container that holds the control, a string description and an int to represent
-        /// the type of tip (see above for types).
+        /// the container that holds the control, a string description, an int to represent
+        /// the type of tip (see above for types), a boolean that determines if the tip can
+        /// be expanded (display more information i.e. descriptions and images, and a folder
+        /// name that contains the images and descriptions for this tip being created.
         /// </summary>
         /// <param name="mw">main_window form</param>
-        /// <param name="c">container that holds the element that the tip is representing</param>
-        /// <param name="e">the element that the tip is representing</param>
+        /// <param name="c">container that holds the folder_name that the tip is representing</param>
+        /// <param name="e">the folder_name that the tip is representing</param>
         /// <param name="d">description for the tip</param>
         /// <param name="t">type of tip</param>
         /// <param name="expand">determines if this tip will have more information to display</param>
-        /// <param name="expanded">determines the current state of the tip</param>
-        public Tip(Form mw, Control c, Control e, string d, int t, bool expand, string folder)//, bool expanded)
+        /// <param name="folder">the name of the folder that contains the images and descriptions for this tip</param>
+        public Tip(Form mw, Control e, string d, int t, bool expand, string folder)
         {
             InitializeComponent();
 
-            Setup(mw, c, e, d, t, expand, folder);//, expanded); // set variables for the tip
+            Setup(mw, e, d, t, expand, folder);// set variables for the tip
 
             Generate_Tip(); // draws the tip 
 
-            this._active = true;
+            new_tip?.Invoke(this, this); // signal to main that a new tip is now active
 
-            new_tip?.Invoke(this, this);
-
-            this.TopMost = true;
+            this.TopMost = true; // keep folder_name in front
         }
 
-        public Tip(Form mw, Control c, Control e, string d, int t, bool expand)//, bool expanded)
+        /// <summary>
+        /// Constructor. Takes the main_window form, the control that the tip is representing,
+        /// the container that holds the control, a string description, an int to represent
+        /// the type of tip (see above for types), and a boolean that determines if the tip can
+        /// be expanded (display more information i.e. descriptions and images.       
+        /// </summary>
+        /// <param name="mw">main_window form</param>
+        /// <param name="c">container that holds the folder_name that the tip is representing</param>
+        /// <param name="e">the folder_name that the tip is representing</param>
+        /// <param name="d">description for the tip</param>
+        /// <param name="t">type of tip</param>
+        /// <param name="expand">determines if this tip will have more information to display</param>        
+        public Tip(Form mw, Control e, string d, int t, bool expand)
         {
             InitializeComponent();
 
-            Setup(mw, c, e, d, t, expand, "");//, expanded); // set variables for the tip
+            Setup(mw, e, d, t, expand, ""); // set variables for the tip
 
             Generate_Tip(); // draws the tip 
 
-            this._active = true;
+            new_tip?.Invoke(this, this); // signal to main that a new tip is now active
 
-            new_tip?.Invoke(this, this);
-
-            this.TopMost = true;
+            this.TopMost = true; // keep folder_name in front
         }
 
         /// <summary>
@@ -96,20 +107,20 @@ namespace Sketchpop
         /// position, choosing the color, and setting the description for the Tip.
         /// </summary>
         /// <param name="main_window">main Sketchpop window</param>
-        /// <param name="container">container that holds element</param>
-        /// <param name="element">element to add Tip for</param>
+        /// <param name="container">container that holds folder_name</param>
+        /// <param name="element">folder_name to add Tip for</param>
         /// <param name="desc">Tip description</param>
-        /// <param name="type">type of element</param>
-        private void Setup(Form main_window, Control container, Control element, string desc, int type, bool expand, string folder)//, bool expanded)
+        /// <param name="type">type of folder_name</param>
+        private void Setup(Form main_window, Control element, string desc, int type, bool expand, string folder)
         {
             this.StartPosition = FormStartPosition.Manual;
 
-            // use the element and its container to calculate the position for the tip
+            // use the folder_name and its container to calculate the position for the tip
             Point element_pos = element.Location;
-            Point container_pos = container.Location;
+            Point container_pos = element.Parent.Location;
 
             int tip_x = container_pos.X + element_pos.X + element.Width;
-            int tip_y = container_pos.Y + element_pos.Y - element.Height / 2; // pos the Tip in the middle of the element
+            int tip_y = container_pos.Y + element_pos.Y - element.Height / 2; // pos the Tip in the middle of the folder_name
 
             this._tip_position = new Point(tip_x, tip_y); // set this Tip's position
 
@@ -132,21 +143,23 @@ namespace Sketchpop
             this.description_label.Text = desc;
             this._main_window = main_window;
             this._element = element;
-            this._container = container;
             this._type = type;
             this._desc = desc;
             this._expand = expand;
             this._expanded = false;
             this._folder = folder;
 
+            // create a timer for closing the tip after 10 seconds
             this._timer.Interval = 10000;
-            this._timer.Tick += (s, e) => { Close(); };
+            this._timer.Tick += (s, e) =>
+            { close_link_label_LinkClicked(null, null); };
             this.Load += (sender, e) => { _timer.Start(); };
 
+            // save dimensions for redrawing
             this._original_width = this.Width;
             this._original_height = this.Height;
 
-            if (!this._expand) { this.more_link_label.Visible = false; }
+            if (!this._expand) { this.more_link_label.Visible = false; } // hide label if cannot be expanded
 
             // add an event listener for when the window is maximized/minimized
             this._main_window.LocationChanged += MainWindow_LocationChanged;
@@ -155,7 +168,7 @@ namespace Sketchpop
 
         /// <summary>
         /// Draws the Tip form. A triangle is drawn and added to the Form's path so that
-        /// the graphic better shows which element is being described. 
+        /// the graphic better shows which folder_name is being described. 
         /// </summary>
         private void Generate_Tip()
         {
@@ -229,21 +242,21 @@ namespace Sketchpop
                 // recalculate the form's position based on the new window size
                 this._tip_position = Calculate_Form_Position();
 
-                var new_tip = new Tip(this._main_window, this._container, this._element, this._desc, this._type, this._expand, this._folder);//, this._expanded);
+                // save the old information and create a new tip with that information
+                var new_tip = new Tip(this._main_window, this._element, this._desc, this._type, this._expand, this._folder);
                 new_tip._expanded = this._expanded;
-                new_tip._active = this._active;
                 new_tip.new_tip += this.new_tip;
                 new_tip.closed += this.closed;
                 new_tip._timer = this._timer;
                 new_tip.more_link_label.Text = this.more_link_label.Text;
 
-                // close current form
+                // close old form
                 Close();
 
                 // open a new tip form at the updated position                
                 if (new_tip._expanded)
                 {
-                    new_tip.Expand();                    
+                    new_tip.Expand();
                 }
 
                 new_tip.Show();
@@ -263,25 +276,25 @@ namespace Sketchpop
         /// <param name="e">n/a</param>
         private void close_link_label_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            this._active = false;
             this.closed?.Invoke(this, EventArgs.Empty);
-
             Close();
             this.Dispose();
             this._main_window.LocationChanged -= MainWindow_LocationChanged;
             this._main_window.Resize -= MainWindow_LocationChanged;
         }
 
-        public void Show_Tip()
-        {
-            this.Show();
-        }
-
+        /// <summary>
+        /// Displays the expanded view of this Tip when user clicks this label and the form
+        /// is not expanded, and resets the form back to its original state if the form is
+        /// currently expanded.
+        /// </summary>
+        /// <param name="sender">user clicks label</param>
+        /// <param name="e">n/a</param>
         private void more_link_label_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            this.Hide();
             if (!_expanded)
             {
-                //_timer.Stop();
                 Expand();
                 _expanded = true;
                 more_link_label.Text = "less info";
@@ -292,8 +305,13 @@ namespace Sketchpop
                 _expanded = false;
                 more_link_label.Text = "more info";
             }
+            this.Show();
         }
 
+        /// <summary>
+        /// Displays the extra information provided for the Tip by hiding certain Control
+        /// elements, and showing others.
+        /// </summary>
         private void Expand()
         {
             _timer.Stop();
@@ -311,7 +329,7 @@ namespace Sketchpop
             this.flowLayoutPanel2.Visible = true;
             this.flowLayoutPanel3.Controls.Add(more_link_label);
             this.flowLayoutPanel3.Controls.Add(close_link_label);
-            this.flowLayoutPanel3.Height = 20;            
+            this.flowLayoutPanel3.Height = 20;
             this.flowLayoutPanel3.Visible = true;
 
 
@@ -319,6 +337,8 @@ namespace Sketchpop
             {
                 // create the right rounded rectangle
                 Rectangle rect = new Rectangle(0, 0, this.Width - this._triangle_width, this.Height);
+
+                CheckBounds(); // move Tip within the bounds of the form
 
                 path.AddArc(rect.Left, rect.Top, _radius, _radius, 180, 90);
                 path.AddArc(rect.Right - _radius, rect.Top, _radius, _radius, 270, 90);
@@ -329,8 +349,15 @@ namespace Sketchpop
             }
         }
 
+        /// <summary>
+        /// Resets the expanded form back to its original state by hiding the expanded
+        /// Controls and making the original Controls visible.
+        /// </summary>
         private void Reset()
         {
+            if (this._prev_location != null)
+                this.Location = this._prev_location; // reset the location if it was changed
+
             this.link_Label_Layout_Panel.Controls.Add(more_link_label);
             this.link_Label_Layout_Panel.Controls.Add(close_link_label);
 
@@ -343,20 +370,45 @@ namespace Sketchpop
             this.Height = this._original_height;
             this.Width = this._original_width;
 
+            // reset shown image to first image
             this._curr_idx = 0;
             pb.Image = slides.ElementAt(_curr_idx).Key;
             label1.Text = slides.ElementAt(_curr_idx).Value;
 
-            Generate_Tip();
+            Generate_Tip(); // redraw the tip
         }
 
-        public void Set_Content(string element)
+        /// <summary>
+        /// The tip may be generated outside of the Main_Window's bounds, this ensures the tip is created inside of the Main_Window bounds
+        /// </summary>
+        private void CheckBounds()
+        {
+            if (this.Right > this._main_window.Right)
+            {
+                this._prev_location = this.Location;
+                this.Location = new Point(this.Location.X - (this.Right - this._main_window.Right), this.Location.Y);
+            }
+            if (this.Bottom > this._main_window.Bottom)
+            {
+                this._prev_location = this.Location;
+                this.Location = new Point(this.Location.X, this.Location.Y - (this.Bottom - this._main_window.Bottom));
+            }
+        }
+
+        /// <summary>
+        /// Finds the images and descriptions from the designated folders, and adds them to the controls
+        /// of this Tip. The Tip form is resized, controls are added, and the images and descriptions
+        /// are added to the new controls. *** IMPORTANT: the number of images must match the number of
+        /// descriptions for a specified Tip.
+        /// </summary>
+        /// <param name="folder_name">name of the folder to retrieve images and descriptions from</param>
+        public void Set_Content(string folder_name)
         {
             if (slides.Count == 0)
             {
                 var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-                var imageFolder = Path.Combine(baseDirectory, $"..\\..\\Tip_Images\\{element}");
-                var descrFolder = Path.Combine(baseDirectory, $"..\\..\\Tip_Descriptions\\{element}");
+                var imageFolder = Path.Combine(baseDirectory, $"..\\..\\Tip_Images\\{folder_name}");
+                var descrFolder = Path.Combine(baseDirectory, $"..\\..\\Tip_Descriptions\\{folder_name}");
 
                 var tmp_imgs = new List<Image>();
                 foreach (string png in Directory.GetFiles(imageFolder, "*.*"))
@@ -424,6 +476,12 @@ namespace Sketchpop
             flowLayoutPanel1.Visible = true;
         }
 
+        /// <summary>
+        /// The click handler for the left button on the expanded Tip form. When clicked,
+        /// shows the previous image if there is one.
+        /// </summary>
+        /// <param name="sender">user clicks this button</param>
+        /// <param name="e">n/a</param>
         private void Left_Click(object sender, EventArgs e)
         {
             if (_curr_idx != 0)
@@ -435,6 +493,12 @@ namespace Sketchpop
             }
         }
 
+        /// <summary>
+        /// The click handler for the right button on the expanded Tip form. When clicked,
+        /// shows the next image if there is one.
+        /// </summary>
+        /// <param name="sender">user clicks this button</param>
+        /// <param name="e">n/a</param>
         private void Right_Click(object sender, EventArgs e)
         {
             if (_curr_idx != slides.Count - 1)
@@ -445,8 +509,6 @@ namespace Sketchpop
                 label1.Text = slides.ElementAt(_curr_idx).Value;
             }
         }
-
-        //public class TipArgs
     }
 
 }

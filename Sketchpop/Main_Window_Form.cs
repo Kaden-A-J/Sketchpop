@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 using static Sketchpop.Image_Layer_Options_Form;
 using static Sketchpop.Image_Search_Form;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Sketchpop
 {
@@ -29,9 +30,7 @@ namespace Sketchpop
 
         // Tip notification variables
         private bool _tips_toggled = false;
-        private bool _tip_active = false;
         private Tip _curr;
-        private int active = 0;
 
         private bool bg_layer_added = false;
 
@@ -84,10 +83,6 @@ namespace Sketchpop
                 (canvas_panel.Height / 2) - (Program.canvas_manager.canvas_info.Height / 2) - 28);
 
             Program.canvas_manager.middle_drawing_start = middle_drawing_start;
-
-
-            // TODO make it so stuff works with no layers, right now it breaks so i'm restricting it to always have atleast one
-            //layer_add_button_Click(null, null);
 
             draw_timer.Tick += new EventHandler(draw_timer_method);
             draw_timer.Tick += new EventHandler(render_layer_previews);
@@ -646,6 +641,7 @@ namespace Sketchpop
 
             ref_img_menustrip.Visible = false;
         }
+
         private void saveAsExcToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog save_file_window = new SaveFileDialog())
@@ -758,6 +754,12 @@ namespace Sketchpop
             blue_input_box.Value = 0;
         }
 
+        /// <summary>
+        /// A new Tip has been created, the current Tip gets set so that no other Tips may
+        /// be created while the current one is visible.
+        /// </summary>
+        /// <param name="sender">a new Tip is created</param>
+        /// <param name="t">the Tip that was created</param>
         public void Activate(object sender, Tip t)
         {
             _curr = t;
@@ -765,32 +767,44 @@ namespace Sketchpop
             _curr.new_tip += Activate;
         }
 
+        /// <summary>
+        /// The Tip that is currently being shown has been closed, and the current Tip is 
+        /// set to null, signaling that other Tips may now be shown.
+        /// </summary>
+        /// <param name="sender">a Tip has been closed</param>
+        /// <param name="e">n/a</param>
         public void Deactivate_Tip(object sender, EventArgs e)
         {
             _curr = null;
         }
 
+        /// <summary>
+        /// When toggled, active Tips may be shown to the user.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TipToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _tips_toggled = !_tips_toggled;
 
             if (_tips_toggled)
+            {
                 TipToolStripMenuItem.Text = "Toggle Tips [ON]";
+            }
             else
-                TipToolStripMenuItem.Text = "Toggle Tips [OFF]";
+            {
+                TipToolStripMenuItem.Text = "Toggle Tips [OFF]";                
+            }
         }
 
         /*
-         * Add Tip Logic Here
+         * Add Tip Logic Here (add a mouse hover event to the element that you would like to add a Tip to).
          */
         private void clear_canvas_button_MouseHover(object sender, EventArgs e)
         {
             if (_tips_toggled && _curr == null)
-            //if (_tips_toggled && !_tip_active && _curr == null)
             {
-                _tip_active = true;
-                var tmp = new Tip(this, canvas_panel, clear_canvas_button, "Click here to clear the canvas and all layers.", 0, true, "Repeated_Circles");//, false);
-                //tmp.Set_Content("Repeated_Circles");
+                var tmp = new Tip(this, clear_canvas_button, "Click here to clear the canvas and all layers.", 0, true, "Repeated_Circles");
                 tmp.closed += Deactivate_Tip;
                 tmp.new_tip += Activate;
                 tmp.Show();
@@ -801,14 +815,13 @@ namespace Sketchpop
         private void img_form_button_MouseHover(object sender, EventArgs e)
         {
             if (_tips_toggled && _curr == null)
-            //if (_tips_toggled && !_tip_active && _curr == null)
             {
-                _tip_active = true;
-                var tmp = new Tip(this, left_settings_panel, img_form_button, "Click here to search for reference images to draw!", 0, false);//, false);
+                var tmp = new Tip(this, img_form_button, "Click here to search for reference images to draw!", 0, false);
                 tmp.closed += Deactivate_Tip;
+                tmp.new_tip += Activate;
                 tmp.Show();
                 _curr = tmp;
             }
-        }
+        }        
     }
 }
