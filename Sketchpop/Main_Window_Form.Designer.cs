@@ -85,6 +85,8 @@ namespace Sketchpop
             this.pen_button = new System.Windows.Forms.Button();
             this.eraser_button = new System.Windows.Forms.Button();
             this.top_canvas_strip = new System.Windows.Forms.Panel();
+            this.zoom_canvas_out_button = new System.Windows.Forms.Button();
+            this.zoom_canvas_in_button = new System.Windows.Forms.Button();
             this.brush_selector_button = new System.Windows.Forms.Button();
             this.select_lasso_button = new System.Windows.Forms.Button();
             this.select_rect_button = new System.Windows.Forms.Button();
@@ -704,6 +706,10 @@ namespace Sketchpop
             // 
             // top_canvas_strip
             // 
+            this.top_canvas_strip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.top_canvas_strip.Controls.Add(this.zoom_canvas_out_button);
+            this.top_canvas_strip.Controls.Add(this.zoom_canvas_in_button);
             this.top_canvas_strip.Controls.Add(this.brush_selector_button);
             this.top_canvas_strip.Controls.Add(this.select_lasso_button);
             this.top_canvas_strip.Controls.Add(this.select_rect_button);
@@ -711,6 +717,26 @@ namespace Sketchpop
             this.top_canvas_strip.Name = "top_canvas_strip";
             this.top_canvas_strip.Size = new System.Drawing.Size(767, 28);
             this.top_canvas_strip.TabIndex = 20;
+            // 
+            // zoom_canvas_out_button
+            // 
+            this.zoom_canvas_out_button.Location = new System.Drawing.Point(26, 3);
+            this.zoom_canvas_out_button.Name = "zoom_canvas_out_button";
+            this.zoom_canvas_out_button.Size = new System.Drawing.Size(23, 23);
+            this.zoom_canvas_out_button.TabIndex = 23;
+            this.zoom_canvas_out_button.Text = "-";
+            this.zoom_canvas_out_button.UseVisualStyleBackColor = true;
+            this.zoom_canvas_out_button.Click += new System.EventHandler(this.zoom_canvas_out_button_Click);
+            // 
+            // zoom_canvas_in_button
+            // 
+            this.zoom_canvas_in_button.Location = new System.Drawing.Point(3, 3);
+            this.zoom_canvas_in_button.Name = "zoom_canvas_in_button";
+            this.zoom_canvas_in_button.Size = new System.Drawing.Size(23, 23);
+            this.zoom_canvas_in_button.TabIndex = 22;
+            this.zoom_canvas_in_button.Text = "+";
+            this.zoom_canvas_in_button.UseVisualStyleBackColor = true;
+            this.zoom_canvas_in_button.Click += new System.EventHandler(this.zoom_canvas_in_button_Click);
             // 
             // brush_selector_button
             // 
@@ -947,6 +973,8 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem painBrushStripMenuItem;
         private System.Windows.Forms.TrackBar paintbrush_trackbar;
         private System.Windows.Forms.ToolStripMenuItem TipToolStripMenuItem;
+        private System.Windows.Forms.Button zoom_canvas_out_button;
+        private System.Windows.Forms.Button zoom_canvas_in_button;
     }
 }
 

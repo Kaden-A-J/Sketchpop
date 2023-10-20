@@ -14,6 +14,7 @@ namespace Sketchpop
         public Layer_Manager layer_manager;
         public Point hand_difference = new Point(0, 28);
         public Point middle_drawing_start = new Point(0, 0);
+        public float stored_scale = 1;
         private Brush_Manager brush_manager;
         private Selection_Manager selection_manager;
         private ConcurrentQueue<Point_Operation> pointsToDraw = new ConcurrentQueue<Point_Operation>();
@@ -79,8 +80,8 @@ namespace Sketchpop
         public Point Adjust_Point_To_Hand(Point point)
         {
             return new Point(
-                point.X - hand_difference.X - middle_drawing_start.X,
-                point.Y - (hand_difference.Y - 28) - middle_drawing_start.Y
+                (int)((point.X - hand_difference.X - middle_drawing_start.X) / stored_scale),
+                (int)((point.Y - (hand_difference.Y - 28) - middle_drawing_start.Y) / stored_scale)
                 ); // 28 is the size of the topstrip maybe should fix this later
         }
 
@@ -123,7 +124,7 @@ namespace Sketchpop
         /// </summary>
         /// <param name = "surface" ></ param >
         /// < returns ></ returns >
-        public void Draw_Bitmap(PictureBox target, int layer = -1, bool resize = false)
+        public void Draw_Bitmap(PictureBox target, int layer = -1, bool resize = false, bool scale_bool = false,  float scale = 1)
         {
             if (layer_manager.count == 0)
                 return;
@@ -164,6 +165,15 @@ namespace Sketchpop
                     t_bitmap.Dispose();
                     t_bitmap = c_bitmap;
                 }
+
+                if (scale_bool)
+                {
+                    //Console.WriteLine(scale);
+                    SKBitmap c_t_bitmap = t_bitmap.Resize(new SKImageInfo((int)(t_bitmap.Width * scale), (int)(t_bitmap.Height * scale)), SKFilterQuality.High);
+                    t_bitmap.Dispose();
+                    t_bitmap = c_t_bitmap;
+                }
+
 
                 target.Image = t_bitmap.ToBitmap();
                 t_image.Dispose();

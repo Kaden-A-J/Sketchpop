@@ -34,6 +34,7 @@ namespace Sketchpop
         private int active = 0;
 
         private bool bg_layer_added = false;
+        private float drawing_box_stored_width, drawing_box_stored_height;
 
         public void draw_timer_method(Object my_object, EventArgs my_event_args)
         {
@@ -47,7 +48,7 @@ namespace Sketchpop
                 Program.canvas_manager.Draw_Path_Points(new object());
             else
                 Program.canvas_manager.Draw_With_Brush(canvas_frame.PointToClient(MousePosition));
-            Program.canvas_manager.Draw_Bitmap(drawing_picture_box, -1, false);
+            Program.canvas_manager.Draw_Bitmap(drawing_picture_box, -1, false, true, Program.canvas_manager.stored_scale);
             Program.canvas_manager.Draw_Bitmap(main_preview_picturebox, -1, true);
             drawing_picture_box.Location = new Point(
                 Program.canvas_manager.hand_difference.X + middle_drawing_start.X,
@@ -71,6 +72,11 @@ namespace Sketchpop
 
             layers_ui = new List<Panel>();
             _um = new Unsplash_Manager();
+
+            canvas_frame.MouseWheel += mouse_scrolled;
+
+            drawing_box_stored_width = drawing_picture_box.Width;
+            drawing_box_stored_height = drawing_picture_box.Height;
 
             // add BG layer
             layer_add_button_Click(null, null);
@@ -646,6 +652,42 @@ namespace Sketchpop
 
             ref_img_menustrip.Visible = false;
         }
+
+        private void zoom_canvas_in_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.stored_scale += 0.2f;
+            if (Program.canvas_manager.stored_scale == 0)
+                Program.canvas_manager.stored_scale -= 0.2f;
+            resize_drawing_picture_box();
+        }
+
+        private void zoom_canvas_out_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.stored_scale -= 0.2f;
+            if (Program.canvas_manager.stored_scale == 0)
+                Program.canvas_manager.stored_scale += 0.2f;
+            resize_drawing_picture_box();
+        }
+
+        private void mouse_scrolled(object sender, MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                zoom_canvas_in_button_Click(null, null);
+            }
+            else
+            {
+                zoom_canvas_out_button_Click(null, null);
+            }
+        }
+
+        private void resize_drawing_picture_box()
+        {
+            float new_width = drawing_box_stored_width * Program.canvas_manager.stored_scale;
+            float new_height = drawing_box_stored_height * Program.canvas_manager.stored_scale;
+            drawing_picture_box.Size = new Size((int)new_width, (int)new_height);
+        }
+
         private void saveAsExcToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog save_file_window = new SaveFileDialog())
