@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using Org.BouncyCastle.Pkcs;
+using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using System;
 using System.Drawing;
@@ -8,10 +9,10 @@ namespace Sketchpop
     internal class Selection_Manager
     {
         /// <summary>
-        /// whether there's actually a selected area being used or selected right now
+        /// whether there's actually a selected area being used or selected right now, and what type of selection it is
         /// </summary>
         public Selection_Tools active_select_tool { get; set; } 
-        public float selection_animation_time_offset
+        private float selection_animation_time_offset
         {
             get
             {
@@ -27,8 +28,6 @@ namespace Sketchpop
         public SKRegion selected_area { get; private set; }
         private SKPath path { get; set; }
 
-        // todo: copy/paste clipboard: https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.clipboard.setimage?view=windowsdesktop-7.0
-
         public Selection_Manager()
         {
             Reset_Selection();
@@ -41,8 +40,6 @@ namespace Sketchpop
 
         public void Begin_Selection(Point click_position, Selection_Tools tool_type)
         {
-            Console.WriteLine("Selector tool: start: " + click_position);
-
             active_select_tool = tool_type;
             path = new SKPath();
             path.MoveTo(click_position.ToSKPoint());
@@ -52,26 +49,26 @@ namespace Sketchpop
         /// Finishes the selection by setting the selected_area based on points previously recorded. Can do rectangular or lasso select
         /// </summary>
         /// <param name="is_rect_select">true if rectangle select, false if lasso</param>
-        public void End_Selection()
+        public void End_Selection(int maxX, int maxY)
         {
-            SetSelectionArea();
+            SetSelectionArea(maxX, maxY);
 
             // clicking without moving will reset the selection
             if (selected_area.Bounds.Width * selected_area.Bounds.Height <= 10)
             {
-                Console.WriteLine("Selection Unselected/Reset");
                 Reset_Selection();
             }
         }
 
-        public void Continue_Selection(Point current_click_position)
+        public void Continue_Selection(Point current_click_position, int maxX, int maxY)
         {
-            path.LineTo(current_click_position.ToSKPoint());
+            Point normalized = normalize_point(current_click_position, maxX, maxY);
+            path.LineTo(normalized.ToSKPoint());
         }
 
         public void Draw_Outline(SKSurface surface, SKPaint paint)
         {
-            SetSelectionArea();
+            SetSelectionArea(surface.PeekPixels().Info.Width, surface.PeekPixels().Info.Height);
             
             // white part of outline
             paint.Style = SKPaintStyle.Stroke;
@@ -94,7 +91,7 @@ namespace Sketchpop
             return active_select_tool == Selection_Tools.None || selected_area.Contains(new SKPointI(point.X, point.Y));
         }
 
-        private void SetSelectionArea()
+        private void SetSelectionArea(int maxX, int maxY)
         {
             if (active_select_tool == Selection_Tools.Rectangle)
             {
@@ -124,6 +121,9 @@ namespace Sketchpop
                     bottom_right.Y = end.Y;
                 }
 
+
+                top_left = normalize_point(top_left, maxX, maxY);
+                bottom_right = normalize_point(bottom_right, maxX, maxY);
                 SKRectI rect = new SKRectI(top_left.X, top_left.Y, bottom_right.X, bottom_right.Y);
 
                 selected_area.SetRect(rect);
@@ -132,6 +132,19 @@ namespace Sketchpop
             {
                 selected_area.SetPath(path);
             }
+        }
+
+        private Point normalize_point(Point p, int maxX, int maxY)
+        {
+            if (p.X < 0)
+                p.X = 0;
+            if (p.X >= maxX)
+                p.X = maxX - 1;
+            if (p.Y < 0)
+                p.Y = 0;
+            if (p.Y >= maxY)
+                p.Y = maxY - 1;
+            return p;
         }
 
         public enum Selection_Tools

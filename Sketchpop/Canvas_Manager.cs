@@ -4,12 +4,30 @@ using SkiaSharp;
 using System.Collections.Concurrent;
 using System.Windows.Forms;
 using SkiaSharp.Views.Desktop;
+using System.IO;
 
 namespace Sketchpop
 {
     public class Canvas_Manager
     {
-        public SketchPopTool current_tool { get; set; } = SketchPopTool.brush;
+        private SketchPopTool _current_tool = SketchPopTool.brush;
+        private SketchPopTool previous_tool { get; set; } = SketchPopTool.brush; // used for getting off of hand tool or move_pasted tool
+        public SketchPopTool current_tool
+        {
+            get { return _current_tool; }
+            set
+            {
+                if (current_tool == SketchPopTool.move_pasted && paste_manager.pasting)
+                {
+                    paste_manager.Commit_Pasted(layer_manager);
+                }
+
+                if (current_tool != SketchPopTool.move_pasted && current_tool != SketchPopTool.hand)
+                    previous_tool = current_tool;
+
+                _current_tool = value;
+            }
+        }
         public SKImageInfo canvas_info;
         public Layer_Manager layer_manager;
         public Point hand_difference = new Point(0, 28);
@@ -21,11 +39,14 @@ namespace Sketchpop
         private SKPath current_path;
         private Point hand_start = new Point(-1, -1);
         private Point prevMousePosition = new Point(0, 0);
+        private Paste_Manager paste_manager;
+
         public Canvas_Manager()
         {
             brush_manager = new Brush_Manager();
             layer_manager = new Layer_Manager();
             selection_manager = new Selection_Manager();
+            paste_manager = new Paste_Manager();
 
             //picture_box = canvas_frame;
             canvas_info = new SKImageInfo(500, 500);
@@ -40,20 +61,33 @@ namespace Sketchpop
 
             if (current_tool == SketchPopTool.brush)
             {
+                if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
+                    return;
+
                 Begin_Draw_Path(adjusted);
             }
             else if (current_tool == SketchPopTool.selector_rect)
             {
+                if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
+                    return;
                 selection_manager.Begin_Selection(adjusted, Selection_Manager.Selection_Tools.Rectangle);
             }
             else if (current_tool == SketchPopTool.selector_lasso)
             {
+                if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
+                    return;
                 selection_manager.Begin_Selection(adjusted, Selection_Manager.Selection_Tools.Lasso);
             }
             else if (current_tool == SketchPopTool.hand)
             {
                 hand_start = click_position;
                 //hand_difference = new Point(0, 0);
+            }
+            else if (current_tool == SketchPopTool.move_pasted)
+            {
+                if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
+                    return;
+                paste_manager.start_moving(adjusted);
             }
         }
 
@@ -63,17 +97,30 @@ namespace Sketchpop
 
             if (current_tool == SketchPopTool.brush)
             {
+                if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
+                    return;
+
                 Add_Point_To_Draw(adjusted);
             }
             else if (current_tool == SketchPopTool.selector_rect || current_tool == SketchPopTool.selector_lasso)
             {
-                selection_manager.Continue_Selection(adjusted);
+                if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
+                    return;
+
+                SKImageInfo info = layer_manager.get_image(layer_manager.selected_layer).Info;
+                selection_manager.Continue_Selection(adjusted, info.Width, info.Height);
             }
             else if (current_tool == SketchPopTool.hand)
             {
                 hand_difference = new Point(hand_difference.X - (hand_start.X - point.X), hand_difference.Y - (hand_start.Y - point.Y));
                 hand_start = point;
                 //Console.WriteLine(hand_difference);
+            }
+            else if (current_tool == SketchPopTool.move_pasted)
+            {
+                if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
+                    return;
+                paste_manager.move(adjusted);
             }
         }
 
@@ -87,9 +134,35 @@ namespace Sketchpop
 
         internal void Mouse_Up_Handler(Point click_position)
         {
+            Point adjusted = Adjust_Point_To_Hand(click_position);
+
             if (current_tool == SketchPopTool.selector_rect || current_tool == SketchPopTool.selector_lasso)
             {
-                selection_manager.End_Selection();
+                SKImageInfo info = layer_manager.get_image(layer_manager.selected_layer).Info;
+                selection_manager.End_Selection(info.Width, info.Height);
+            }
+            else if (current_tool == SketchPopTool.move_pasted)
+            {
+                paste_manager.stop_moving(adjusted);
+            }
+        }
+
+        internal void Esc_Handler()
+        {
+            if (current_tool == SketchPopTool.hand || current_tool == SketchPopTool.move_pasted)
+            {
+                current_tool = previous_tool;
+            }
+            
+            if (selection_manager.active_select_tool != Selection_Manager.Selection_Tools.None)
+            {
+                selection_manager.Reset_Selection();
+            }
+
+            if (current_tool == SketchPopTool.move_pasted)
+            {
+                paste_manager.Commit_Pasted(layer_manager);
+                current_tool = previous_tool;
             }
         }
 
@@ -103,9 +176,6 @@ namespace Sketchpop
 
         public void Add_Point_To_Draw(Point point)
         {
-            if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
-                return;
-
             pointsToDraw.Enqueue(new Point_Operation(point, Point_Operation.OperationType.line_to));
         }
 
@@ -138,12 +208,22 @@ namespace Sketchpop
                         SKImage c_image = layer_manager.get_image(idx);
                         paint.Color = paint.Color.WithAlpha((byte)(0xFF * layer_manager.get_layer_opacity(idx)));
                         surface.Canvas.DrawImage(c_image, c_image.Info.Rect, paint);
+
+                        if (paste_manager.pasting && idx == layer_manager.selected_layer)
+                        {
+                            paste_manager.Draw_Pasted_Temporarily(surface, true, paint);
+                        }
                     }
                 else
                 {
                     SKImage c_image = layer_manager.get_image(layer);
                     paint.Color = paint.Color.WithAlpha((byte)(0xFF * layer_manager.get_layer_opacity(layer)));
                     surface.Canvas.DrawImage(c_image, c_image.Info.Rect, paint);
+
+                    if (paste_manager.pasting && layer == layer_manager.selected_layer)
+                    {
+                        paste_manager.Draw_Pasted_Temporarily(surface, true, paint);
+                    }
                 }
 
                 if (selection_manager.active_select_tool != Selection_Manager.Selection_Tools.None)
@@ -151,6 +231,7 @@ namespace Sketchpop
                     selection_manager.Draw_Outline(surface, paint);
                 }
 
+                
                 if (target.Image != null)
                     target.Image.Dispose();
                 SKImage t_image = surface.Snapshot();
@@ -222,7 +303,7 @@ namespace Sketchpop
                             current_path.LineTo(po.point.X, po.point.Y);
                             if (selection_manager.active_select_tool != Selection_Manager.Selection_Tools.None)
                             {
-                                surface.Canvas.ClipRegion(new SKRegion(selection_manager.selected_area));
+                                surface.Canvas.ClipRegion(selection_manager.selected_area);
                             }
                         }
                         else if (po.operationType == Point_Operation.OperationType.jump)
@@ -247,6 +328,7 @@ namespace Sketchpop
                 surface.Canvas.Clear();
                 layer_manager.reset();
                 selection_manager.Reset_Selection();
+                paste_manager.reset();
 
                 // remove when everything works with no layers
                 //layer_manager.add_layer(canvas_info);
@@ -402,7 +484,7 @@ namespace Sketchpop
 
                                             if (selection_manager.active_select_tool != Selection_Manager.Selection_Tools.None)
                                                 // Clip drawing within the selected area
-                                                pathCanvas.ClipRegion(new SKRegion(selection_manager.selected_area));
+                                                pathCanvas.ClipRegion(selection_manager.selected_area);
 
                                             // Draw the brush texture at the interpolated position
                                             float left = x - brush_manager.Get_Current_Brush().Textures["brush"].Width / 2f;
@@ -460,12 +542,86 @@ namespace Sketchpop
             return -1;
         }
 
+        internal void Handle_Copy()
+        {
+            if (selection_manager.active_select_tool != Selection_Manager.Selection_Tools.None)
+            {
+                SKRectI bounds = selection_manager.selected_area.Bounds;
+                SKImage c_image = layer_manager.get_image(layer_manager.selected_layer).Subset(bounds);
+
+                using (SKSurface surface = SKSurface.Create(c_image.Info)) 
+                using (MemoryStream pngMemStream = new MemoryStream())
+                {
+                    // only copy the selected area (complicated because of lasso)
+                    SKRegion pasteRegion = new SKRegion(selection_manager.selected_area);
+                    pasteRegion.Translate(-selection_manager.selected_area.Bounds.Left, -selection_manager.selected_area.Bounds.Top); 
+                    surface.Canvas.ClipRegion(pasteRegion);
+                    surface.Canvas.DrawImage(c_image, 0, 0); 
+                    surface.Canvas.Translate(selection_manager.selected_area.Bounds.Left, selection_manager.selected_area.Bounds.Top);
+
+                    // using the example code found on this stack overflow post(https://stackoverflow.com/a/46424800/15780106), modified for our needs
+                    // if an application doesn't support pasting png's, then they can use bitmap instead
+                    // (but it won't have transparency, fully transparent areas will be grey instead).
+                    DataObject dataObj = new DataObject();
+                    dataObj.SetData(DataFormats.Bitmap, true, surface.Snapshot().ToBitmap());
+
+                    // if an application supports pasting png's, then they can prefer this one and get the transparency
+                    SKData skData = surface.Snapshot().Encode();
+                    skData.SaveTo(pngMemStream);
+                    dataObj.SetData("PNG", false, pngMemStream);
+
+                    Clipboard.SetDataObject(dataObj, true);
+                }
+
+            }
+        }
+
+
+        internal void Handle_Cut()
+        {
+            if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
+                return;
+            if (selection_manager.active_select_tool != Selection_Manager.Selection_Tools.None)
+            {
+                Handle_Copy();
+
+                using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels()))
+                {
+                    surface.Canvas.ClipRegion(selection_manager.selected_area);
+                    surface.Canvas.Clear();
+                }
+            }
+        }
+
+        internal void Handle_Paste()
+        {
+            if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
+                return;
+
+            if (Clipboard.ContainsData("PNG"))
+            {
+                selection_manager.Reset_Selection();
+                current_tool = SketchPopTool.move_pasted;
+                using (MemoryStream png_stream = Clipboard.GetData("PNG") as MemoryStream)
+                {
+                    paste_manager.start_pasting(SKImage.FromEncodedData(png_stream));
+                }
+            }
+            else if (Clipboard.ContainsData(DataFormats.Bitmap))
+            {
+                selection_manager.Reset_Selection();
+                current_tool = SketchPopTool.move_pasted;
+                paste_manager.start_pasting(SKImage.FromBitmap(new Bitmap(Clipboard.GetImage()).ToSKBitmap()));
+            }
+        }
+
         public enum SketchPopTool
         {
             brush, // this one is actually brush and eraser, currently
             selector_rect,
             selector_lasso,
             fill,
+            move_pasted,
             hand
         }
     }
