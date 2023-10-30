@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using SkiaSharp;
 using System.Linq;
+using System.Net.NetworkInformation;
 
 namespace Sketchpop
 {
@@ -17,7 +18,7 @@ namespace Sketchpop
     /// 
     /// The Color Code for the tips is as follows:
     /// 
-    /// 0:(blue) : ui folder_name
+    /// 0:(blue) : ui elements
     /// 1:(pink) : exercise
     /// 2:(green): information
     /// 
@@ -35,10 +36,11 @@ namespace Sketchpop
 
         private bool _expand;
         private bool _expanded = false;
-        private Dictionary<Image, string> slides = new Dictionary<Image, string>();
-        private int _curr_idx = 0;
+        private bool _shrink = false;
+        private Dictionary<int, Slide> slides = new Dictionary<int, Slide>();
+        private int _curr_idx = 1;
 
-        private Timer _timer = new Timer();
+        private Timer _timer;// = new Timer();
 
         private readonly int _triangle_width = 25; // modify for length of the triangle on the form
         private readonly int _radius = 20; // modify for roundness of rectangle
@@ -49,6 +51,7 @@ namespace Sketchpop
         public event EventHandler<Tip> new_tip;
 
         private Point _prev_location;
+        private Label pages;
 
         /// <summary>
         /// Constructor. Takes the main_window form, the control that the tip is representing,
@@ -73,8 +76,6 @@ namespace Sketchpop
             Generate_Tip(); // draws the tip 
 
             new_tip?.Invoke(this, this); // signal to main that a new tip is now active
-
-            this.TopMost = true; // keep folder_name in front
         }
 
         /// <summary>
@@ -98,8 +99,19 @@ namespace Sketchpop
             Generate_Tip(); // draws the tip 
 
             new_tip?.Invoke(this, this); // signal to main that a new tip is now active
+        }
 
-            this.TopMost = true; // keep folder_name in front
+        /// <summary>
+        /// Method for closing the tip when the form loses focus.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (Form.ActiveForm != this)
+            {
+                close_link_label_LinkClicked(null, null);
+            }
         }
 
         /// <summary>
@@ -115,14 +127,19 @@ namespace Sketchpop
         {
             this.StartPosition = FormStartPosition.Manual;
 
-            // use the folder_name and its container to calculate the position for the tip
-            Point element_pos = element.Location;
-            Point container_pos = element.Parent.Location;
+            // calculate the position for the tip
 
-            int tip_x = container_pos.X + element_pos.X + element.Width;
-            int tip_y = container_pos.Y + element_pos.Y - element.Height / 2; // pos the Tip in the middle of the folder_name
+            Point elementPos = element.PointToScreen(Point.Empty);
 
-            this._tip_position = new Point(tip_x, tip_y); // set this Tip's position
+            // set the tip's position to the center of the element's right side
+            int tip_x = elementPos.X - main_window.Location.X + element.Width;
+            int tip_y = elementPos.Y - main_window.Location.Y + element.Height / 2 - this.Height / 2;
+
+            this._tip_position = new Point(tip_x, tip_y);
+
+
+
+
 
             // set color based on type
             switch (type)
@@ -149,12 +166,6 @@ namespace Sketchpop
             this._expanded = false;
             this._folder = folder;
 
-            // create a timer for closing the tip after 10 seconds
-            this._timer.Interval = 10000;
-            this._timer.Tick += (s, e) =>
-            { close_link_label_LinkClicked(null, null); };
-            this.Load += (sender, e) => { _timer.Start(); };
-
             // save dimensions for redrawing
             this._original_width = this.Width;
             this._original_height = this.Height;
@@ -164,7 +175,22 @@ namespace Sketchpop
             // add an event listener for when the window is maximized/minimized
             this._main_window.LocationChanged += MainWindow_LocationChanged;
             this._main_window.Resize += MainWindow_LocationChanged;
-        }
+            this._main_window.ResizeBegin += (s, ev) =>
+            {
+                this.TopMost = true;
+                this._timer.Stop();
+            };
+            this._main_window.ResizeEnd += (s, ev) =>
+            {
+                this._timer.Start();
+                this.TopMost = false;
+            };
+
+            // check to see if the form is in focus, if not (the user clicks off of the tip) close the form
+            this._timer = new Timer();
+            this._timer.Tick += Timer_Tick;
+            this._timer.Start();
+        }      
 
         /// <summary>
         /// Draws the Tip form. A triangle is drawn and added to the Form's path so that
@@ -239,6 +265,7 @@ namespace Sketchpop
         {
             if (!this.IsDisposed)
             {
+                this._timer.Stop();
                 // recalculate the form's position based on the new window size
                 this._tip_position = Calculate_Form_Position();
 
@@ -247,18 +274,16 @@ namespace Sketchpop
                 new_tip._expanded = this._expanded;
                 new_tip.new_tip += this.new_tip;
                 new_tip.closed += this.closed;
-                new_tip._timer = this._timer;
                 new_tip.more_link_label.Text = this.more_link_label.Text;
-
-                // close old form
-                Close();
 
                 // open a new tip form at the updated position                
                 if (new_tip._expanded)
-                {
                     new_tip.Expand();
-                }
 
+                // close old form
+                this.Close();
+
+                // show the new form
                 new_tip.Show();
             }
             else
@@ -266,6 +291,7 @@ namespace Sketchpop
                 // remove the event handler to avoid triggering this event
                 this._main_window.LocationChanged -= MainWindow_LocationChanged;
                 this._main_window.Resize -= MainWindow_LocationChanged;
+                this._timer.Tick -= Timer_Tick;
             }
         }
 
@@ -281,6 +307,7 @@ namespace Sketchpop
             this.Dispose();
             this._main_window.LocationChanged -= MainWindow_LocationChanged;
             this._main_window.Resize -= MainWindow_LocationChanged;
+            this._timer.Tick -= Timer_Tick;
         }
 
         /// <summary>
@@ -314,17 +341,22 @@ namespace Sketchpop
         /// </summary>
         private void Expand()
         {
-            _timer.Stop();
+            this._timer.Stop();
+            this._timer.Tick -= Timer_Tick;
+            this.TopMost = true;
 
             // make the form larger to show more information
             this.Height = 500;
-            this.Width = 500;
+            this.Width = 300;
 
             this.main_Flow_Layout_Panel.Visible = false;
 
             this.Show();
 
-            this.Set_Content("Repeated_Circles");
+            this.Set_Content(this._folder); // add images, buttons, descriptions
+
+            // show all of the hidden elements
+            this.flowLayoutPanel1.Visible = true;
             this.flowLayoutPanel2.Padding = new Padding(0, 0, 20, 0);
             this.flowLayoutPanel2.Visible = true;
             this.flowLayoutPanel3.Controls.Add(more_link_label);
@@ -332,7 +364,7 @@ namespace Sketchpop
             this.flowLayoutPanel3.Height = 20;
             this.flowLayoutPanel3.Visible = true;
 
-
+            // draw the new expanded form
             using (GraphicsPath path = new GraphicsPath())
             {
                 // create the right rounded rectangle
@@ -358,22 +390,26 @@ namespace Sketchpop
             if (this._prev_location != null)
                 this.Location = this._prev_location; // reset the location if it was changed
 
+            // reset the timer
+            this._timer = new Timer();
+            this._timer.Tick += Timer_Tick;
+            this._timer.Start();
+            this.TopMost = false;
+
+            // move the labels to the correct layout
             this.link_Label_Layout_Panel.Controls.Add(more_link_label);
             this.link_Label_Layout_Panel.Controls.Add(close_link_label);
 
+            // hide the expanded form elements
             this.flowLayoutPanel1.Visible = false;
             this.flowLayoutPanel2.Visible = false;
             this.flowLayoutPanel3.Visible = false;
 
+            // display the original Tip form
             this.main_Flow_Layout_Panel.Visible = true;
 
             this.Height = this._original_height;
             this.Width = this._original_width;
-
-            // reset shown image to first image
-            this._curr_idx = 0;
-            pb.Image = slides.ElementAt(_curr_idx).Key;
-            label1.Text = slides.ElementAt(_curr_idx).Value;
 
             Generate_Tip(); // redraw the tip
         }
@@ -404,76 +440,114 @@ namespace Sketchpop
         /// <param name="folder_name">name of the folder to retrieve images and descriptions from</param>
         public void Set_Content(string folder_name)
         {
+            // if slides are already created, dont reload all of the elements
             if (slides.Count == 0)
             {
+                // get image and description folders
                 var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 var imageFolder = Path.Combine(baseDirectory, $"..\\..\\Tip_Images\\{folder_name}");
                 var descrFolder = Path.Combine(baseDirectory, $"..\\..\\Tip_Descriptions\\{folder_name}");
 
-                var tmp_imgs = new List<Image>();
-                foreach (string png in Directory.GetFiles(imageFolder, "*.*"))
+                // iterate through images and descriptions, adding them to our data structure for Slides
+
+                foreach (string img_file in Directory.GetFiles(imageFolder, "*.*"))
                 {
-                    var img = Image.FromFile(png);
-                    tmp_imgs.Add(img);
+                    string fileName = Path.GetFileNameWithoutExtension(img_file);
+                    int startIndex = fileName.LastIndexOf('_') + 1; // find the position of the last '_'
+
+                    // create a new slide with the image (if there are any)
+                    int slide = int.Parse(fileName.Substring(startIndex));
+                    Slide s = new Slide();
+                    s._image = Image.FromFile(img_file);
+
+                    slides.Add(slide, s);
                 }
 
-                var tmp_descs = new List<string>();
-                foreach (string des in Directory.GetFiles(descrFolder, "*.txt").ToList())
+                // iterate through descriptions, add a slide if one does not already exist
+                foreach (string des_file in Directory.GetFiles(descrFolder, "*.*"))
                 {
-                    var descr = File.ReadAllText(des);
-                    tmp_descs.Add(descr);
+                    string fileName = Path.GetFileNameWithoutExtension(des_file);
+                    int startIndex = fileName.LastIndexOf('_') + 1; // find the position of the last '_'
+
+                    int slide = int.Parse(fileName.Substring(startIndex));
+
+                    if (slides.ContainsKey(slide))
+                    {
+                        slides[slide]._description = File.ReadAllText(des_file);
+                    }
+                    else
+                    {
+                        Slide s = new Slide();
+                        s._description = File.ReadAllText(des_file);
+
+                        slides.Add(slide, s);
+                    }
                 }
 
-                for (int i = 0; i < tmp_imgs.Count; i++)
+                // display the first slide
+
+                Slide first_slide = slides[_curr_idx];
+
+                // if the image is not null, display image
+                if (first_slide._image != null)
                 {
-                    slides.Add(tmp_imgs[i], tmp_descs[i]);
+                    pb.Image = first_slide._image;
+                }
+                else
+                {
+                    this.flowLayoutPanel1.Height = (int)(this.flowLayoutPanel1.Height * 0.6);
+                    this.flowLayoutPanel1.Dock = DockStyle.Bottom;
+                    this.pb.Visible = false;
+                    this.flowLayoutPanel2.Dock = DockStyle.Fill;
+                    _shrink = true;
                 }
 
-                pb.Width = 500;
-                pb.Height = 200;
-                pb.Image = slides.First().Key;
-                pb.SizeMode = PictureBoxSizeMode.Zoom;
-                pb.Visible = true;
+                // if the description is not null, display description
+                if (first_slide._description != null)
+                    label1.Text = first_slide._description;
 
-                flowLayoutPanel1.Controls.Add(pb);
-                label1.Text = slides.First().Value;
+                // add navigation buttons if more that 1 slide
+                if (slides.Count > 1)
+                {
+                    Panel sp1 = new Panel();
+                    sp1.Height = 20;
+                    sp1.Width = 70;
+                    sp1.Anchor = AnchorStyles.Bottom;
+                    sp1.BackColor = this.BackColor;
 
-                Panel sp1 = new Panel();
-                sp1.Height = 20;
-                sp1.Width = 185;
-                sp1.Anchor = AnchorStyles.Bottom;
-                sp1.BackColor = this.BackColor;
+                    Button left_arrow = new Button();
+                    left_arrow.Height = 20;
+                    left_arrow.Width = 45;
+                    left_arrow.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
+                    left_arrow.BackColor = Control.DefaultBackColor;
+                    left_arrow.Text = "←";
+                    left_arrow.Click += Left_Click;
 
-                Button left_arrow = new Button();
-                left_arrow.Height = 20;
-                left_arrow.Width = 45;
-                left_arrow.Anchor = AnchorStyles.Left | AnchorStyles.Bottom;
-                left_arrow.BackColor = Control.DefaultBackColor;
-                left_arrow.Text = "←";
-                left_arrow.Click += Left_Click;
+                    Panel sp2 = new Panel();
+                    sp2.Height = 20;
+                    sp2.Width = 20;
+                    sp2.Anchor = AnchorStyles.Bottom;
+                    sp2.BackColor = this.BackColor;
 
-                Panel sp2 = new Panel();
-                sp2.Height = 20;
-                sp2.Width = 20;
-                sp2.Anchor = AnchorStyles.Bottom;
-                sp2.BackColor = this.BackColor;
+                    Button right_arrow = new Button();
+                    right_arrow.Height = 20;
+                    right_arrow.Width = 45;
+                    right_arrow.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
+                    right_arrow.BackColor = Control.DefaultBackColor;
+                    right_arrow.Text = "→";
+                    right_arrow.Click += Right_Click;
 
-                Button right_arrow = new Button();
-                right_arrow.Height = 20;
-                right_arrow.Width = 45;
-                right_arrow.Anchor = AnchorStyles.Right | AnchorStyles.Bottom;
-                right_arrow.BackColor = Control.DefaultBackColor;
-                right_arrow.Text = "→";
-                right_arrow.Click += Right_Click;
+                    this.flowLayoutPanel1.Controls.Add(sp1);
+                    this.flowLayoutPanel1.Controls.Add(left_arrow);
+                    this.flowLayoutPanel1.Controls.Add(sp2);
+                    this.flowLayoutPanel1.Controls.Add(right_arrow);
+                }
 
-                flowLayoutPanel1.Controls.Add(sp1);
-                flowLayoutPanel1.Controls.Add(left_arrow);
-                flowLayoutPanel1.Controls.Add(sp2);
-                flowLayoutPanel1.Controls.Add(right_arrow);
-
+                // create pages label
+                pages = new Label();
+                pages.Text = $"{_curr_idx} / {slides.Count}";
+                this.flowLayoutPanel3.Controls.Add(pages);
             }
-
-            flowLayoutPanel1.Visible = true;
         }
 
         /// <summary>
@@ -484,12 +558,59 @@ namespace Sketchpop
         /// <param name="e">n/a</param>
         private void Left_Click(object sender, EventArgs e)
         {
-            if (_curr_idx != 0)
+            if (_curr_idx != 1)
             {
                 _curr_idx--;
+                pages.Text = $"{_curr_idx} / {slides.Count}";
 
-                pb.Image = slides.ElementAt(_curr_idx).Key;
-                label1.Text = slides.ElementAt(_curr_idx).Value;
+                Slide s = slides[_curr_idx]; // get the next slide
+
+                // image and descriptions are both shown
+                if (s._image != null && s._description != null)
+                {
+                    this.flowLayoutPanel1.Dock = DockStyle.Top;
+                    this.flowLayoutPanel2.Dock = DockStyle.Bottom;
+
+                    // if the previous slide was just a description
+                    if (_shrink)
+                    {
+                        this.flowLayoutPanel1.Height = (int)(this.flowLayoutPanel1.Height / 0.6);
+                        _shrink = false;
+                    }
+
+                    this.pb.Visible = true; // show the image
+                }
+                // only a description is shown
+                else if (s._image == null && s._description != null)
+                {
+                    this.flowLayoutPanel1.Dock = DockStyle.Bottom;
+                    this.flowLayoutPanel2.Dock = DockStyle.Fill;
+
+                    if (!_shrink)
+                    {
+                        this.flowLayoutPanel1.Height = (int)(this.flowLayoutPanel1.Height * 0.6);
+                        _shrink = true;
+                    }
+
+                    this.pb.Visible = false; // hide the blank image
+                }
+                // only an image is shown
+                else
+                {
+                    this.flowLayoutPanel1.Dock = DockStyle.Top;
+                    this.flowLayoutPanel2.Dock = DockStyle.Bottom;
+
+                    if (_shrink)
+                    {
+                        this.flowLayoutPanel1.Height = (int)(this.flowLayoutPanel1.Height / 0.6);
+                        _shrink = false;
+                    }
+
+                    pb.Visible = true;
+                }
+
+                pb.Image = s._image;
+                label1.Text = s._description;
             }
         }
 
@@ -501,14 +622,66 @@ namespace Sketchpop
         /// <param name="e">n/a</param>
         private void Right_Click(object sender, EventArgs e)
         {
-            if (_curr_idx != slides.Count - 1)
+            if (_curr_idx != slides.Count)
             {
                 _curr_idx++;
+                pages.Text = $"{_curr_idx} / {slides.Count}";
 
-                pb.Image = slides.ElementAt(_curr_idx).Key;
-                label1.Text = slides.ElementAt(_curr_idx).Value;
+                Slide s = slides[_curr_idx];
+
+                // image and descriptions are both shown
+                if (s._image != null && s._description != null)
+                {
+                    this.flowLayoutPanel1.Dock = DockStyle.Top;
+                    this.flowLayoutPanel2.Dock = DockStyle.Bottom;
+
+                    // if the previous slide was just a description
+                    if (_shrink)
+                    {
+                        this.flowLayoutPanel1.Height = (int)(this.flowLayoutPanel1.Height / 0.6);
+                        _shrink = false;
+                    }
+
+                    this.pb.Visible = true; // show the image
+                }
+                // only a description is shown
+                else if (s._image == null && s._description != null)
+                {
+                    this.flowLayoutPanel1.Dock = DockStyle.Bottom;
+                    this.flowLayoutPanel2.Dock = DockStyle.Fill;
+
+                    if (!_shrink)
+                    {
+                        this.flowLayoutPanel1.Height = (int)(this.flowLayoutPanel1.Height * 0.6);
+                        _shrink = true;
+                    }
+
+                    this.pb.Visible = false; // hide the blank image
+                }
+                // only an image is shown
+                else
+                {
+                    this.flowLayoutPanel1.Dock = DockStyle.Top;
+                    this.flowLayoutPanel2.Dock = DockStyle.Bottom;
+
+                    if (_shrink)
+                    {
+                        this.flowLayoutPanel1.Height = (int)(this.flowLayoutPanel1.Height / 0.6);
+                        _shrink = false;
+                    }
+
+                    pb.Visible = true;
+                }
+                pb.Image = s._image;
+                label1.Text = s._description;
             }
         }
     }
 
+    // data structure for the elements of a single 'Slide' of the Tip form's extra content
+    internal class Slide
+    {
+        public Image _image { get; set; }
+        public string _description { get; set; }
+    }
 }

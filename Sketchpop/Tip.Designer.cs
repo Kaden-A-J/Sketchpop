@@ -37,16 +37,16 @@ namespace Sketchpop
             this.more_link_label = new System.Windows.Forms.LinkLabel();
             this.close_link_label = new System.Windows.Forms.LinkLabel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.pb = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.pb = new System.Windows.Forms.PictureBox();
             this.main_Flow_Layout_Panel.SuspendLayout();
             this.description_Layout_Panel.SuspendLayout();
             this.link_Label_Layout_Panel.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
+            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // main_Flow_Layout_Panel
@@ -132,6 +132,15 @@ namespace Sketchpop
             this.flowLayoutPanel1.TabIndex = 3;
             this.flowLayoutPanel1.Visible = false;
             // 
+            // pb
+            // 
+            this.pb.Location = new System.Drawing.Point(3, 3);
+            this.pb.Name = "pb";
+            this.pb.Size = new System.Drawing.Size(270, 200);
+            this.pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pb.TabIndex = 1;
+            this.pb.TabStop = false;
+            // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.label1);
@@ -146,9 +155,11 @@ namespace Sketchpop
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 13);
+            this.label1.Padding = new System.Windows.Forms.Padding(0, 13, 0, 0);
+            this.label1.Size = new System.Drawing.Size(0, 33);
             this.label1.TabIndex = 0;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -160,15 +171,6 @@ namespace Sketchpop
             this.flowLayoutPanel3.Size = new System.Drawing.Size(45, 100);
             this.flowLayoutPanel3.TabIndex = 0;
             this.flowLayoutPanel3.Visible = false;
-            // 
-            // pb
-            // 
-            this.pb.Location = new System.Drawing.Point(3, 3);
-            this.pb.Name = "pb";
-            this.pb.Size = new System.Drawing.Size(100, 50);
-            this.pb.TabIndex = 1;
-            this.pb.TabStop = false;
-            this.pb.Visible = false;
             // 
             // Tip
             // 
@@ -191,9 +193,9 @@ namespace Sketchpop
             this.link_Label_Layout_Panel.ResumeLayout(false);
             this.link_Label_Layout_Panel.PerformLayout();
             this.flowLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
             this.flowLayoutPanel2.ResumeLayout(false);
             this.flowLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
             this.ResumeLayout(false);
 
         }
