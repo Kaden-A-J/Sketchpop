@@ -44,7 +44,20 @@ namespace Sketchpop
 
         public void Save_as_PNG(string path, Layer_Manager layers)
         {
-
+            var final_image = new SKBitmap(500, 500);
+            var canvas = new SKCanvas(final_image);
+            canvas.Clear(SKColors.Transparent);
+            for (int i = 0; i < layers.count; i++)
+            {
+                canvas.DrawImage(layers.get_image(i), 0, 0);
+            }
+            canvas.Flush();
+            using (var image = SKImage.FromBitmap(final_image))
+            using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
+            using (var stream = File.OpenWrite(path))
+            {
+                data.SaveTo(stream);
+            }
         }
 
         public int Load_as_EXC(string path, Layer_Manager layers)
