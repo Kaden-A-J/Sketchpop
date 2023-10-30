@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using static Sketchpop.Image_Layer_Options_Form;
 using static Sketchpop.Image_Search_Form;
@@ -13,7 +14,7 @@ namespace Sketchpop
     public partial class main_window : Form
     {
         public Point middle_drawing_start = new Point(0, 0);
-        public Timer draw_timer = new Timer();
+        public System.Windows.Forms.Timer draw_timer = new System.Windows.Forms.Timer();
         bool mouse_down = false;
         List<Panel> layers_ui;
 
@@ -30,7 +31,10 @@ namespace Sketchpop
 
         // Tip notification variables
         private bool _tips_toggled = false;
+        private bool _tips_highlighted = false;
+        private bool _starter_tip_shown;
         private Tip _curr;
+        private List<Control> _tip_elements = new List<Control>();
 
         private bool bg_layer_added = false;
         private float drawing_box_stored_width, drawing_box_stored_height;
@@ -84,6 +88,9 @@ namespace Sketchpop
             // add layer to make debugging easier
             layer_add_button_Click(null, null);
 
+            // add tip elements to list
+            //Add_Tip_Elements();
+
             middle_drawing_start = new Point(
                 (canvas_panel.Width / 2) - (Program.canvas_manager.canvas_info.Width / 2),
                 (canvas_panel.Height / 2) - (Program.canvas_manager.canvas_info.Height / 2) - 28);
@@ -95,6 +102,11 @@ namespace Sketchpop
             draw_timer.Interval = 8; // 11.111... ms is 90 fps
             draw_timer.Start();
         }
+
+        //private void Add_Tip_Elements()
+        //{
+        //    clear_canvas_button.Paint += buttonToHighlight_Paint;
+        //}
 
         private void exit_button_Click(object sender, EventArgs e)
         {
@@ -247,6 +259,15 @@ namespace Sketchpop
         {
             var options_form = new Repeated_Circles_Options_Form(this);
             options_form.ShowDialog();
+
+            if (_curr != null)
+                _curr.Close();
+
+            var tmp = new Tip(this, canvas_frame, "Draw uniform circles between the blue lines.", 1, true, "Repeated_Circles");
+            tmp.closed += Deactivate_Tip;
+            tmp.new_tip += Activate;
+            tmp.Show();
+            _curr = tmp;
         }
 
 
@@ -811,11 +832,19 @@ namespace Sketchpop
                 }
             }
 
-
             // change pen settings
             red_input_box.Value = 255;
             green_input_box.Value = 0;
             blue_input_box.Value = 0;
+
+            if (_curr != null)
+                _curr.Close();
+
+            var tmp = new Tip(this, canvas_frame, "Red-Line the image on the canvas.", 1, true, "Red_Lining");
+            tmp.closed += Deactivate_Tip;
+            tmp.new_tip += Activate;
+            tmp.Show();
+            _curr = tmp;
         }
 
         /// <summary>
@@ -854,21 +883,78 @@ namespace Sketchpop
             if (_tips_toggled)
             {
                 TipToolStripMenuItem.Text = "Toggle Tips [ON]";
+
+                if (!_tips_highlighted)
+                {
+                    Add_Tip_Highlights();
+                    _tips_highlighted = true;
+                }
             }
             else
             {
-                TipToolStripMenuItem.Text = "Toggle Tips [OFF]";                
+                TipToolStripMenuItem.Text = "Toggle Tips [OFF]";
+
+                Remove_Tip_Highlights();
+            }
+        }
+
+        private void Add_Tip_Highlights()
+        {
+            // add elements with tips
+            _tip_elements.Add(clear_canvas_button);
+            _tip_elements.Add(img_form_button);
+            _tip_elements.Add(layer_add_button);
+            _tip_elements.Add(layer_delete_button);
+
+            foreach (Control c in _tip_elements)
+            {
+                c.Paint += buttonToHighlight_Paint;
+                c.Invalidate();
+            }
+        }
+
+        private void Remove_Tip_Highlights()
+        {
+            foreach (Control c in _tip_elements)
+            {
+                c.Paint -= buttonToHighlight_Paint;
+                c.Invalidate();
             }
         }
 
         /*
          * Add Tip Logic Here (add a mouse hover event to the element that you would like to add a Tip to).
          */
+        private void main_window_Load(object sender, EventArgs e)
+        {
+            _starter_tip_shown = false;
+
+            int centerX = canvas_frame.Left + canvas_frame.Width / 2;
+            int centerY = canvas_frame.Top + canvas_frame.Height / 2;
+
+            // Set the mouse position to the center of the specific control
+            Cursor.Position = PointToScreen(new Point(centerX, centerY));
+        }
+
+        private void canvas_frame_MouseHover(object sender, EventArgs e)
+        {
+            if (!_starter_tip_shown)
+            {
+                _starter_tip_shown = true;
+
+                var tmp = new Tip(this, label1, "Helpful Tips Can Be Toggled [ON] Here.", 2, false);
+                tmp.closed += Deactivate_Tip;
+                tmp.new_tip += Activate;
+                tmp.Show();
+                _curr = tmp;
+            }
+        }
+
         private void clear_canvas_button_MouseHover(object sender, EventArgs e)
         {
             if (_tips_toggled && _curr == null)
             {
-                var tmp = new Tip(this, clear_canvas_button, "Click here to clear the canvas and all layers.", 0, true, "Repeated_Circles");
+                var tmp = new Tip(this, clear_canvas_button, "Click here to clear the canvas and all layers.", 0, false);
                 tmp.closed += Deactivate_Tip;
                 tmp.new_tip += Activate;
                 tmp.Show();
@@ -886,6 +972,39 @@ namespace Sketchpop
                 tmp.Show();
                 _curr = tmp;
             }
-        }        
+        }
+
+        private void layer_add_button_MouseHover(object sender, EventArgs e)
+        {
+            if (_tips_toggled && _curr == null)
+            {
+                var tmp = new Tip(this, layer_add_button, "Press this button to add a new top layer.", 0, false);
+                tmp.closed += Deactivate_Tip;
+                tmp.new_tip += Activate;
+                tmp.Show();
+                _curr = tmp;
+            }
+        }
+
+        private void layer_delete_button_MouseHover(object sender, EventArgs e)
+        {
+            if (_tips_toggled && _curr == null)
+            {
+                var tmp = new Tip(this, layer_delete_button, "Press this button to delete the topmost layer.", 0, false);
+                tmp.closed += Deactivate_Tip;
+                tmp.new_tip += Activate;
+                tmp.Show();
+                _curr = tmp;
+            }
+        }
+
+        private void buttonToHighlight_Paint(object sender, PaintEventArgs e)
+        {
+            Control control = (Control)sender;
+
+            Graphics g = e.Graphics;
+            Pen pen = new Pen(Color.Purple, 2);
+            g.DrawRectangle(pen, new Rectangle(0, 0, control.Width - 1, control.Height - 1));
+        }
     }
 }
