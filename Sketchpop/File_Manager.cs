@@ -49,7 +49,12 @@ namespace Sketchpop
             canvas.Clear(SKColors.Transparent);
             for (int i = 0; i < layers.count; i++)
             {
-                canvas.DrawImage(layers.get_image(i), 0, 0);
+                var paint = new SKPaint
+                {
+                    Color = new SKColor(255, 255, 255, (byte)(255 * layers.get_layer_opacity(i))),
+                    BlendMode = SKBlendMode.SrcOver
+                };
+                canvas.DrawImage(layers.get_image(i), 0, 0, paint);
             }
             canvas.Flush();
             using (var image = SKImage.FromBitmap(final_image))
