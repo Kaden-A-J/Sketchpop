@@ -524,19 +524,19 @@ namespace Sketchpop
             {
                 case 30:
                     {
-                        return 2.25f;
+                        return 2.25f * stored_scale;
                     }
                 case 50:
                     {
-                        return 3.5f;
+                        return 3.5f * stored_scale;
                     }
                 case 80:
                     {
-                        return 4.25f;
+                        return 4.25f * stored_scale;
                     }
                 case 100:
                     {
-                        return 5.0f;
+                        return 5.0f * stored_scale;
                     }
             }
             return -1;
