@@ -1,6 +1,7 @@
 ﻿using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Sketchpop
 {
     public class File_Manager
     {
+        private Layer_Manager layers = Program.canvas_manager.layer_manager;
         public void Save_as_EXC(string path, Layer_Manager layers)
         {
             XmlWriterSettings settings = new XmlWriterSettings
@@ -104,6 +106,33 @@ namespace Sketchpop
             }
             ret = layers.count;
             return ret;
+
+        }
+
+        public Image convert_canvas_into_Image()
+        {
+            var final_bitmap = new SKBitmap(500, 500);
+            var canvas = new SKCanvas(final_bitmap);
+            canvas.Clear(SKColors.Transparent);
+            for (int i = 0; i < layers.count; i++)
+            {
+                var paint = new SKPaint
+                {
+                    Color = new SKColor(255, 255, 255, (byte)(255 * layers.get_layer_opacity(i))),
+                    BlendMode = SKBlendMode.SrcOver
+                };
+                canvas.DrawImage(layers.get_image(i), 0, 0, paint);
+            }
+            canvas.Flush();
+            // convert to Image format
+            using (var image = SKImage.FromBitmap(final_bitmap))
+            using (var memoryStream = new MemoryStream())
+            {
+                image.Encode(SKEncodedImageFormat.Png, 100).SaveTo(memoryStream);
+                // Create System.Drawing.Image from MemoryStream
+                var final_image = System.Drawing.Image.FromStream(memoryStream);
+                return final_image;
+            }
 
         }
 

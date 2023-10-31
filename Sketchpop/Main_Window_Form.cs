@@ -886,6 +886,12 @@ namespace Sketchpop
             }
         }
 
+        private void saveIntoCloudToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Save_Form save = new Save_Form();
+            save.Show();
+        }
+
         /// <summary>
         /// When toggled, active Tips may be shown to the user.
         /// </summary>

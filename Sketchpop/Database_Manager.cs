@@ -271,6 +271,38 @@ namespace Sketchpop
             }
         }
 
+        public bool Execute_Drawing_Upload_Query(string _picture_name)
+        {
+            // Read image file
+            Image image = new File_Manager().convert_canvas_into_Image();
+
+            // Convert image to byte array
+            MemoryStream stream = new MemoryStream();
+            image.Save(stream, System.Drawing.Imaging.ImageFormat.Jpeg);
+            byte[] imageBytes = stream.ToArray();
+
+            // Insert image into database
+            try
+            {
+                using (MySqlConnection conn = new MySqlConnection(_connection_string))
+                {
+                    conn.Open();
+
+                    string query = "INSERT INTO local_pictures (Name, ImageData) VALUES (@Name, @ImageData)";
+                    MySqlCommand comm = new MySqlCommand(query, conn);
+                    comm.Parameters.AddWithValue("@Name", _picture_name);
+                    comm.Parameters.AddWithValue("@ImageData", imageBytes);
+                    comm.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// Deletes the entire database, mainly for testing purposes.
         /// </summary>

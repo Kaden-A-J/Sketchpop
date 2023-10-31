@@ -99,6 +99,7 @@ namespace Sketchpop
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.saveAsPNGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveIntoCloudToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.title_bar.SuspendLayout();
             this.tool_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
@@ -563,7 +564,8 @@ namespace Sketchpop
             // 
             this.saveToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveAsEXCToolStripMenuItem,
-            this.saveAsPNGToolStripMenuItem});
+            this.saveAsPNGToolStripMenuItem,
+            this.saveIntoCloudToolStripMenuItem});
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.saveToolStripMenuItem.Text = "Save";
@@ -879,6 +881,13 @@ namespace Sketchpop
             this.saveAsPNGToolStripMenuItem.Text = "Save as PNG";
             this.saveAsPNGToolStripMenuItem.Click += new System.EventHandler(this.saveAsPNGToolStripMenuItem_Click);
             // 
+            // saveIntoCloudToolStripMenuItem
+            // 
+            this.saveIntoCloudToolStripMenuItem.Name = "saveIntoCloudToolStripMenuItem";
+            this.saveIntoCloudToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveIntoCloudToolStripMenuItem.Text = "Save into Cloud";
+            this.saveIntoCloudToolStripMenuItem.Click += new System.EventHandler(this.saveIntoCloudToolStripMenuItem_Click);
+            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1011,6 +1020,7 @@ namespace Sketchpop
         private System.Windows.Forms.Button zoom_canvas_in_button;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem saveAsPNGToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveIntoCloudToolStripMenuItem;
     }
 }
 
