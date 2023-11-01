@@ -871,6 +871,27 @@ namespace Sketchpop
             _curr = null;
         }
 
+        private void saveAsPNGToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog save_file_window = new SaveFileDialog())
+            {
+                save_file_window.InitialDirectory = ".\\";
+                save_file_window.Filter = "png files (*.png)|*.png";
+                save_file_window.FilterIndex = 1;
+                save_file_window.RestoreDirectory = true;
+                if (save_file_window.ShowDialog() == DialogResult.OK)
+                {
+                    new File_Manager().Save_as_PNG(save_file_window.FileName, Program.canvas_manager.layer_manager);
+                }
+            }
+        }
+
+        private void saveIntoCloudToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Save_Form save = new Save_Form();
+            save.Show();
+        }
+
         /// <summary>
         /// When toggled, active Tips may be shown to the user.
         /// </summary>
