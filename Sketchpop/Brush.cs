@@ -11,6 +11,7 @@ namespace Sketchpop
     {
         private string _name;
         private int _stroke;
+        private int _last_pressurized_stroke;
         private SKColor _color;
         private SKPaint _paint;
 
@@ -32,6 +33,7 @@ namespace Sketchpop
         {
             _name = name;
             _stroke = stroke;
+            _last_pressurized_stroke = 0;
             _color = color;
             _paint = new SKPaint
             {
@@ -120,6 +122,7 @@ namespace Sketchpop
         public void Set_Stroke(int stroke)
         {
             _stroke = stroke;
+            _last_pressurized_stroke = 0;
             _paint.StrokeWidth = _stroke;
             if (_textures != null)
             {
@@ -134,6 +137,20 @@ namespace Sketchpop
                     _textures["brush"] = SKBitmap.FromImage(resizedTexture);
                 }
             }
+        }
+
+        public void Set_Pressurized_Stroke(int pressure)
+        {
+            // pressure is 0 - 1024
+            int modifier = ((pressure * _stroke) / 1024) + _last_pressurized_stroke / 2; // super basic interpolation, barely noticeable
+            _last_pressurized_stroke = modifier;
+            _paint.StrokeWidth = modifier;
+        }
+
+        public void Reset_Pressurized_Stroke()
+        {
+            _last_pressurized_stroke = 0;
+            _paint.StrokeWidth = _stroke;
         }
 
         /* Getters */

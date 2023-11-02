@@ -7,18 +7,16 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 using static Sketchpop.Image_Layer_Options_Form;
 using static Sketchpop.Image_Search_Form;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Sketchpop
 {
-    public partial class main_window : Form
+    public partial class main_window : Form 
     {
         public Point middle_drawing_start = new Point(0, 0);
-        public System.Windows.Forms.Timer draw_timer = new System.Windows.Forms.Timer();
+        public Timer draw_timer = new Timer();
         bool mouse_down = false;
         List<Panel> layers_ui;
 
@@ -51,7 +49,7 @@ namespace Sketchpop
         private bool bg_layer_added = false;
         private float drawing_box_stored_width, drawing_box_stored_height;
 
-        public void draw_timer_method(Object my_object, EventArgs my_event_args)
+        public void draw_timer_method(object my_object, EventArgs my_event_args)
         {
             if (mouse_down)
             {
@@ -70,7 +68,7 @@ namespace Sketchpop
                 Program.canvas_manager.hand_difference.Y + middle_drawing_start.Y);
         }
 
-        public void render_layer_previews(Object my_object, EventArgs my_event_args)
+        public void render_layer_previews(object my_object, EventArgs my_event_args)
         {
             for (int idx = 0; idx < layers_ui.Count; idx++)
                 foreach (Control c in layers_ui[idx].Controls)
@@ -80,10 +78,13 @@ namespace Sketchpop
                     }
         }
 
+
         public main_window()
         {
             InitializeComponent();
             Program.canvas_manager = new Canvas_Manager();
+            Application.AddMessageFilter(new PenPressureMessageFilter(Program.canvas_manager));
+            int result = PenPressureMessageFilter.EnableMouseInPointer(true); 
 
             layers_ui = new List<Panel>();
             _um = new Unsplash_Manager();
@@ -305,11 +306,11 @@ namespace Sketchpop
             login.Show();
         }
 
-        public void layer_visible_button_clicked(Object my_object, EventArgs my_event_args)
+        public void layer_visible_button_clicked(object my_object, EventArgs my_event_args)
         {
             RadioButton c_button = (RadioButton)(my_object);
             Panel c_panel = (Panel)(c_button).Parent;
-            int c_idx = Int32.Parse(c_panel.Name);
+            int c_idx = int.Parse(c_panel.Name);
 
             // uncheck old selection
             foreach (Control c in layers_ui[Program.canvas_manager.layer_manager.selected_layer].Controls)
@@ -321,11 +322,11 @@ namespace Sketchpop
             Program.canvas_manager.layer_manager.selected_layer = c_idx;
         }
 
-        public void layer_trackbar_scrolled(Object my_object, EventArgs my_event_args)
+        public void layer_trackbar_scrolled(object my_object, EventArgs my_event_args)
         {
             TrackBar c_trackbar = (TrackBar)(my_object);
             Panel c_panel = (Panel)(c_trackbar).Parent;
-            int c_idx = Int32.Parse(c_panel.Name);
+            int c_idx = int.Parse(c_panel.Name);
 
             //Console.WriteLine((float)c_trackbar.Value);
             Program.canvas_manager.layer_manager.set_layer_opacity(c_idx, (float)c_trackbar.Value / 100);
@@ -485,7 +486,7 @@ namespace Sketchpop
                 else if (bottom.Contains(cursor)) message.Result = (IntPtr)HTBOTTOM;
             }
         }
-
+        
         private void brush_button_Click(object sender, EventArgs e)
         {
             Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
@@ -774,7 +775,7 @@ namespace Sketchpop
         {
 
             int layer_count = 0;
-            String path = "";
+            string path = "";
             using (OpenFileDialog open_file_window = new OpenFileDialog())
             {
                 open_file_window.InitialDirectory = ".\\";
@@ -1000,6 +1001,11 @@ namespace Sketchpop
         {
             Save_Form save = new Save_Form();
             save.Show();
+        }
+
+        private void pen_pressure_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.use_pressure = !Program.canvas_manager.use_pressure;
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
