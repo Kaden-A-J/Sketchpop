@@ -156,7 +156,7 @@ namespace Sketchpop
             }
 
             // save this Object's fields for redrawing if necessary
-            this.Opacity = 0.75;
+            this.Opacity = 0.85;
             this.description_label.Text = desc;
             this._main_window = main_window;
             this._element = element;
