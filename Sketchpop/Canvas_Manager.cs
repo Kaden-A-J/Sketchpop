@@ -28,6 +28,31 @@ namespace Sketchpop
                 _current_tool = value;
             }
         }
+
+        private bool _use_pressure = false;
+        public bool use_pressure { get { return _use_pressure; }  
+            set
+            {
+                brush_manager.Get_Current_Brush().Reset_Pressurized_Stroke();
+                _use_pressure = value;
+            }
+        }
+        private uint _pressure;
+        public uint pressure { private get { return _pressure; } 
+            set
+            {
+                if (use_pressure)
+                {
+                    _pressure = value;
+                }
+                else
+                {
+                    _pressure = 0;
+                }
+            }
+        }
+
+
         public SKImageInfo canvas_info;
         public Layer_Manager layer_manager;
         public Point hand_difference = new Point(0, 28);
@@ -296,8 +321,13 @@ namespace Sketchpop
             {
                 using (SKSurface surface = SKSurface.Create(layer_manager.get_image(layer_manager.selected_layer).PeekPixels()))
                 {
-                    if (pointsToDraw.TryDequeue(out Point_Operation po))
+                    if (use_pressure)
                     {
+                        brush_manager.Get_Current_Brush().Set_Pressurized_Stroke((int)pressure);
+                    }
+                    foreach (Point_Operation po in pointsToDraw)
+                    {
+                        pointsToDraw.TryDequeue(out _);
                         if (po.operationType == Point_Operation.OperationType.line_to)
                         {
                             current_path.LineTo(po.point.X, po.point.Y);
@@ -310,8 +340,11 @@ namespace Sketchpop
                         {
                             current_path.MoveTo(po.point.X, po.point.Y);
                         }
-                        surface.Canvas.DrawPath(current_path, brush_manager.Get_Current_Brush().Paint());
                     }
+                    surface.Canvas.DrawPath(current_path, brush_manager.Get_Current_Brush().Paint()); // todo: set size
+                    SKPoint end = current_path.LastPoint;
+                    current_path.Reset();
+                    current_path.MoveTo(end);
                 }
             }
         }

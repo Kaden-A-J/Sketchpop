@@ -147,6 +147,7 @@ namespace Sketchpop
             this.layer_add_button = new System.Windows.Forms.Button();
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
+            this.pen_pressure_button = new System.Windows.Forms.Button();
             this.title_bar.SuspendLayout();
             this.tool_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
@@ -1088,6 +1089,7 @@ namespace Sketchpop
             // 
             this.top_canvas_strip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.top_canvas_strip.Controls.Add(this.pen_pressure_button);
             this.top_canvas_strip.Controls.Add(this.zoom_canvas_out_button);
             this.top_canvas_strip.Controls.Add(this.zoom_canvas_in_button);
             this.top_canvas_strip.Location = new System.Drawing.Point(0, 0);
@@ -1440,6 +1442,16 @@ namespace Sketchpop
             this.main_preview_picturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
             this.main_preview_picturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
             // 
+            // pen_pressure_button
+            // 
+            this.pen_pressure_button.Location = new System.Drawing.Point(242, 3);
+            this.pen_pressure_button.Name = "pen_pressure_button";
+            this.pen_pressure_button.Size = new System.Drawing.Size(82, 23);
+            this.pen_pressure_button.TabIndex = 24;
+            this.pen_pressure_button.Text = "Pen Pressure";
+            this.pen_pressure_button.UseVisualStyleBackColor = true;
+            this.pen_pressure_button.Click += new System.EventHandler(this.pen_pressure_button_Click);
+            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1627,6 +1639,7 @@ namespace Sketchpop
         private System.Windows.Forms.Button end_exercise_button;
         private System.Windows.Forms.ToolStripMenuItem saveAsPNGToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveIntoCloudToolStripMenuItem;
+        private System.Windows.Forms.Button pen_pressure_button;
     }
 }
 
