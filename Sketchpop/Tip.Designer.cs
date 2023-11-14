@@ -143,6 +143,7 @@ namespace Sketchpop
             // 
             // flowLayoutPanel2
             // 
+            this.flowLayoutPanel2.AutoScroll = true;
             this.flowLayoutPanel2.Controls.Add(this.label1);
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, -193);
@@ -158,8 +159,8 @@ namespace Sketchpop
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Padding = new System.Windows.Forms.Padding(0, 13, 0, 0);
-            this.label1.Size = new System.Drawing.Size(0, 33);
+            this.label1.Padding = new System.Windows.Forms.Padding(0, 13, 0, 20);
+            this.label1.Size = new System.Drawing.Size(0, 53);
             this.label1.TabIndex = 0;
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 

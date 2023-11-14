@@ -37,6 +37,7 @@
             this.op_panel = new System.Windows.Forms.Panel();
             this.opacity_label = new System.Windows.Forms.Label();
             this.opacity_slider = new System.Windows.Forms.TrackBar();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.options_panel.SuspendLayout();
             this.pb_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.image_pb)).BeginInit();
@@ -47,6 +48,7 @@
             // options_panel
             // 
             this.options_panel.BackColor = System.Drawing.Color.Silver;
+            this.options_panel.Controls.Add(this.flowLayoutPanel1);
             this.options_panel.Controls.Add(this.add_layer_button);
             this.options_panel.Controls.Add(this.save_button);
             this.options_panel.Controls.Add(this.pb_panel);
@@ -107,6 +109,7 @@
             this.layer_panel.Name = "layer_panel";
             this.layer_panel.Size = new System.Drawing.Size(257, 380);
             this.layer_panel.TabIndex = 2;
+            this.layer_panel.Visible = false;
             // 
             // op_panel
             // 
@@ -140,6 +143,15 @@
             this.opacity_slider.Value = 255;
             this.opacity_slider.Scroll += new System.EventHandler(this.opacity_slider_Scroll);
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.DimGray;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(468, 12);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(257, 380);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
             // Image_Layer_Options_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -172,5 +184,6 @@
         private System.Windows.Forms.Panel pb_panel;
         private System.Windows.Forms.Button save_button;
         private System.Windows.Forms.Button add_layer_button;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }

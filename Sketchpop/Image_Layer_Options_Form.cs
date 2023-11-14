@@ -137,7 +137,7 @@ namespace Sketchpop
             t_name_label2.Text = "layer (" + index.ToString() + ")";
             t_panel2.Controls.Add(t_name_label2);
 
-            layer_panel.Controls.Add(t_panel2);
+            flowLayoutPanel1.Controls.Add(t_panel2);
 
             t_visible_button2.Click += T_visible_button2_Click;
             _rb.Add(t_visible_button2);

@@ -39,6 +39,33 @@ namespace Sketchpop
             this.hand_button = new System.Windows.Forms.Button();
             this.brush_button = new System.Windows.Forms.Button();
             this.left_settings_panel = new System.Windows.Forms.Panel();
+            this.color_pal_label = new System.Windows.Forms.Label();
+            this.color_palette = new System.Windows.Forms.Panel();
+            this.palette_colors = new System.Windows.Forms.TableLayoutPanel();
+            this.color1 = new System.Windows.Forms.Panel();
+            this.color2 = new System.Windows.Forms.Panel();
+            this.color3 = new System.Windows.Forms.Panel();
+            this.color4 = new System.Windows.Forms.Panel();
+            this.color5 = new System.Windows.Forms.Panel();
+            this.color6 = new System.Windows.Forms.Panel();
+            this.color7 = new System.Windows.Forms.Panel();
+            this.color8 = new System.Windows.Forms.Panel();
+            this.color9 = new System.Windows.Forms.Panel();
+            this.color10 = new System.Windows.Forms.Panel();
+            this.color11 = new System.Windows.Forms.Panel();
+            this.color12 = new System.Windows.Forms.Panel();
+            this.color13 = new System.Windows.Forms.Panel();
+            this.color14 = new System.Windows.Forms.Panel();
+            this.color15 = new System.Windows.Forms.Panel();
+            this.color16 = new System.Windows.Forms.Panel();
+            this.color17 = new System.Windows.Forms.Panel();
+            this.color18 = new System.Windows.Forms.Panel();
+            this.color19 = new System.Windows.Forms.Panel();
+            this.color20 = new System.Windows.Forms.Panel();
+            this.color21 = new System.Windows.Forms.Panel();
+            this.color22 = new System.Windows.Forms.Panel();
+            this.color23 = new System.Windows.Forms.Panel();
+            this.color24 = new System.Windows.Forms.Panel();
             this.paintbrush_trackbar = new System.Windows.Forms.TrackBar();
             this.stroke_track_bar = new System.Windows.Forms.TrackBar();
             this.set_color_button = new System.Windows.Forms.Button();
@@ -61,26 +88,28 @@ namespace Sketchpop
             this.red_label = new System.Windows.Forms.Label();
             this.stroke_label = new System.Windows.Forms.Label();
             this.quick_launch_bar = new System.Windows.Forms.Panel();
+            this.prompt_link = new System.Windows.Forms.LinkLabel();
+            this.prompt = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.exercisesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.muscleMemoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.repeatedCirclesPracticeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.redLiningToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.randomPromptToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.valuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.randomImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uploadImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sketchpopTutorialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TipToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsEXCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsPNGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveIntoCloudToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.place_holder1 = new System.Windows.Forms.Label();
             this.canvas_panel = new System.Windows.Forms.Panel();
-            this.brush_menustrip = new System.Windows.Forms.MenuStrip();
-            this.penToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.paintBrushToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.painBrushStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ref_img_menustrip = new System.Windows.Forms.MenuStrip();
-            this.viewImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addImageToLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clear_canvas_button = new System.Windows.Forms.Button();
             this.pen_button = new System.Windows.Forms.Button();
             this.eraser_button = new System.Windows.Forms.Button();
@@ -92,17 +121,37 @@ namespace Sketchpop
             this.zoom_canvas_in_button = new System.Windows.Forms.Button();
             this.drawing_picture_box = new System.Windows.Forms.PictureBox();
             this.canvas_frame = new System.Windows.Forms.PictureBox();
+            this.brush_menustrip = new System.Windows.Forms.MenuStrip();
+            this.penToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.paintBrushToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.painBrushStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ref_img_menustrip = new System.Windows.Forms.MenuStrip();
+            this.viewImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addImageToLayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.right_settings_panel = new System.Windows.Forms.Panel();
+            this.end_exercise_button = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.exercise_panel = new System.Windows.Forms.Panel();
+            this.exercise_controls = new System.Windows.Forms.TableLayoutPanel();
+            this.exercise_palette = new System.Windows.Forms.Panel();
+            this.exercise_palette_colors = new System.Windows.Forms.TableLayoutPanel();
+            this.ex_color1 = new System.Windows.Forms.Panel();
+            this.ex_color2 = new System.Windows.Forms.Panel();
+            this.ex_color3 = new System.Windows.Forms.Panel();
+            this.ex_color4 = new System.Windows.Forms.Panel();
+            this.ex_color5 = new System.Windows.Forms.Panel();
+            this.exercise_arrow_buttons = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.layer_delete_button = new System.Windows.Forms.Button();
             this.layer_add_button = new System.Windows.Forms.Button();
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.saveAsPNGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveIntoCloudToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.title_bar.SuspendLayout();
             this.tool_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
+            this.color_palette.SuspendLayout();
+            this.palette_colors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.paintbrush_trackbar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.stroke_track_bar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).BeginInit();
@@ -113,19 +162,23 @@ namespace Sketchpop
             this.quick_launch_bar.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.canvas_panel.SuspendLayout();
-            this.brush_menustrip.SuspendLayout();
-            this.ref_img_menustrip.SuspendLayout();
             this.top_canvas_strip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.drawing_picture_box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).BeginInit();
+            this.brush_menustrip.SuspendLayout();
+            this.ref_img_menustrip.SuspendLayout();
             this.right_settings_panel.SuspendLayout();
+            this.exercise_panel.SuspendLayout();
+            this.exercise_controls.SuspendLayout();
+            this.exercise_palette.SuspendLayout();
+            this.exercise_palette_colors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.main_preview_picturebox)).BeginInit();
             this.SuspendLayout();
             // 
             // RegisterToolStripMenuItem
             // 
             this.RegisterToolStripMenuItem.Name = "RegisterToolStripMenuItem";
-            this.RegisterToolStripMenuItem.Size = new System.Drawing.Size(237, 34);
+            this.RegisterToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.RegisterToolStripMenuItem.Text = "Sign up/ Login";
             this.RegisterToolStripMenuItem.Click += new System.EventHandler(this.RegisterToolStripMenuItem_Click);
             // 
@@ -151,7 +204,7 @@ namespace Sketchpop
             this.title_bar.Enabled = false;
             this.title_bar.Location = new System.Drawing.Point(0, 0);
             this.title_bar.Name = "title_bar";
-            this.title_bar.Size = new System.Drawing.Size(1280, 4);
+            this.title_bar.Size = new System.Drawing.Size(1280, 13);
             this.title_bar.TabIndex = 2;
             // 
             // title_label
@@ -164,7 +217,7 @@ namespace Sketchpop
             this.title_label.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.title_label.Location = new System.Drawing.Point(610, 4);
             this.title_label.Name = "title_label";
-            this.title_label.Size = new System.Drawing.Size(86, 20);
+            this.title_label.Size = new System.Drawing.Size(59, 13);
             this.title_label.TabIndex = 4;
             this.title_label.Text = "Sketchpop";
             this.title_label.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -220,6 +273,8 @@ namespace Sketchpop
             this.left_settings_panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.left_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
+            this.left_settings_panel.Controls.Add(this.color_pal_label);
+            this.left_settings_panel.Controls.Add(this.color_palette);
             this.left_settings_panel.Controls.Add(this.paintbrush_trackbar);
             this.left_settings_panel.Controls.Add(this.stroke_track_bar);
             this.left_settings_panel.Controls.Add(this.set_color_button);
@@ -246,6 +301,273 @@ namespace Sketchpop
             this.left_settings_panel.Size = new System.Drawing.Size(172, 690);
             this.left_settings_panel.TabIndex = 4;
             // 
+            // color_pal_label
+            // 
+            this.color_pal_label.AutoSize = true;
+            this.color_pal_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.color_pal_label.Location = new System.Drawing.Point(4, 327);
+            this.color_pal_label.Name = "color_pal_label";
+            this.color_pal_label.Size = new System.Drawing.Size(70, 13);
+            this.color_pal_label.TabIndex = 24;
+            this.color_pal_label.Text = "Color Palette:";
+            // 
+            // color_palette
+            // 
+            this.color_palette.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.color_palette.Controls.Add(this.palette_colors);
+            this.color_palette.Location = new System.Drawing.Point(7, 349);
+            this.color_palette.Name = "color_palette";
+            this.color_palette.Size = new System.Drawing.Size(157, 104);
+            this.color_palette.TabIndex = 23;
+            // 
+            // palette_colors
+            // 
+            this.palette_colors.BackColor = System.Drawing.Color.Silver;
+            this.palette_colors.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.palette_colors.ColumnCount = 6;
+            this.palette_colors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.palette_colors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.palette_colors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.palette_colors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.palette_colors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.palette_colors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.palette_colors.Controls.Add(this.color1, 0, 0);
+            this.palette_colors.Controls.Add(this.color2, 1, 0);
+            this.palette_colors.Controls.Add(this.color3, 2, 0);
+            this.palette_colors.Controls.Add(this.color4, 3, 0);
+            this.palette_colors.Controls.Add(this.color5, 4, 0);
+            this.palette_colors.Controls.Add(this.color6, 5, 0);
+            this.palette_colors.Controls.Add(this.color7, 0, 1);
+            this.palette_colors.Controls.Add(this.color8, 1, 1);
+            this.palette_colors.Controls.Add(this.color9, 2, 1);
+            this.palette_colors.Controls.Add(this.color10, 3, 1);
+            this.palette_colors.Controls.Add(this.color11, 4, 1);
+            this.palette_colors.Controls.Add(this.color12, 5, 1);
+            this.palette_colors.Controls.Add(this.color13, 0, 2);
+            this.palette_colors.Controls.Add(this.color14, 1, 2);
+            this.palette_colors.Controls.Add(this.color15, 2, 2);
+            this.palette_colors.Controls.Add(this.color16, 3, 2);
+            this.palette_colors.Controls.Add(this.color17, 4, 2);
+            this.palette_colors.Controls.Add(this.color18, 5, 2);
+            this.palette_colors.Controls.Add(this.color19, 0, 3);
+            this.palette_colors.Controls.Add(this.color20, 1, 3);
+            this.palette_colors.Controls.Add(this.color21, 2, 3);
+            this.palette_colors.Controls.Add(this.color22, 3, 3);
+            this.palette_colors.Controls.Add(this.color23, 4, 3);
+            this.palette_colors.Controls.Add(this.color24, 5, 3);
+            this.palette_colors.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.palette_colors.Location = new System.Drawing.Point(0, 0);
+            this.palette_colors.Name = "palette_colors";
+            this.palette_colors.RowCount = 4;
+            this.palette_colors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.palette_colors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.palette_colors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.palette_colors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.palette_colors.Size = new System.Drawing.Size(157, 104);
+            this.palette_colors.TabIndex = 0;
+            this.palette_colors.MouseHover += new System.EventHandler(this.palette_colors_MouseHover);
+            // 
+            // color1
+            // 
+            this.color1.BackColor = System.Drawing.Color.Black;
+            this.color1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.color1.Location = new System.Drawing.Point(4, 4);
+            this.color1.Name = "color1";
+            this.color1.Size = new System.Drawing.Size(19, 18);
+            this.color1.TabIndex = 0;
+            // 
+            // color2
+            // 
+            this.color2.BackColor = System.Drawing.Color.Red;
+            this.color2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.color2.Location = new System.Drawing.Point(30, 4);
+            this.color2.Name = "color2";
+            this.color2.Size = new System.Drawing.Size(19, 18);
+            this.color2.TabIndex = 1;
+            // 
+            // color3
+            // 
+            this.color3.BackColor = System.Drawing.Color.Lime;
+            this.color3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.color3.Location = new System.Drawing.Point(56, 4);
+            this.color3.Name = "color3";
+            this.color3.Size = new System.Drawing.Size(19, 18);
+            this.color3.TabIndex = 2;
+            // 
+            // color4
+            // 
+            this.color4.BackColor = System.Drawing.Color.Blue;
+            this.color4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.color4.Location = new System.Drawing.Point(82, 4);
+            this.color4.Name = "color4";
+            this.color4.Size = new System.Drawing.Size(19, 18);
+            this.color4.TabIndex = 3;
+            // 
+            // color5
+            // 
+            this.color5.BackColor = System.Drawing.Color.Yellow;
+            this.color5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.color5.Location = new System.Drawing.Point(108, 4);
+            this.color5.Name = "color5";
+            this.color5.Size = new System.Drawing.Size(19, 18);
+            this.color5.TabIndex = 4;
+            // 
+            // color6
+            // 
+            this.color6.BackColor = System.Drawing.Color.DarkSeaGreen;
+            this.color6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.color6.Location = new System.Drawing.Point(134, 4);
+            this.color6.Name = "color6";
+            this.color6.Size = new System.Drawing.Size(19, 18);
+            this.color6.TabIndex = 5;
+            // 
+            // color7
+            // 
+            this.color7.BackColor = System.Drawing.Color.White;
+            this.color7.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.color7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.color7.Location = new System.Drawing.Point(4, 29);
+            this.color7.Name = "color7";
+            this.color7.Size = new System.Drawing.Size(19, 18);
+            this.color7.TabIndex = 6;
+            // 
+            // color8
+            // 
+            this.color8.BackColor = System.Drawing.Color.Orange;
+            this.color8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.color8.Location = new System.Drawing.Point(30, 29);
+            this.color8.Name = "color8";
+            this.color8.Size = new System.Drawing.Size(19, 18);
+            this.color8.TabIndex = 7;
+            // 
+            // color9
+            // 
+            this.color9.BackColor = System.Drawing.Color.SkyBlue;
+            this.color9.Location = new System.Drawing.Point(56, 29);
+            this.color9.Name = "color9";
+            this.color9.Size = new System.Drawing.Size(19, 18);
+            this.color9.TabIndex = 8;
+            // 
+            // color10
+            // 
+            this.color10.BackColor = System.Drawing.Color.Purple;
+            this.color10.Location = new System.Drawing.Point(82, 29);
+            this.color10.Name = "color10";
+            this.color10.Size = new System.Drawing.Size(19, 18);
+            this.color10.TabIndex = 9;
+            // 
+            // color11
+            // 
+            this.color11.BackColor = System.Drawing.Color.Thistle;
+            this.color11.Location = new System.Drawing.Point(108, 29);
+            this.color11.Name = "color11";
+            this.color11.Size = new System.Drawing.Size(19, 18);
+            this.color11.TabIndex = 10;
+            // 
+            // color12
+            // 
+            this.color12.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.color12.Location = new System.Drawing.Point(134, 29);
+            this.color12.Name = "color12";
+            this.color12.Size = new System.Drawing.Size(19, 18);
+            this.color12.TabIndex = 11;
+            // 
+            // color13
+            // 
+            this.color13.BackColor = System.Drawing.Color.Olive;
+            this.color13.Location = new System.Drawing.Point(4, 54);
+            this.color13.Name = "color13";
+            this.color13.Size = new System.Drawing.Size(19, 18);
+            this.color13.TabIndex = 12;
+            // 
+            // color14
+            // 
+            this.color14.BackColor = System.Drawing.Color.Pink;
+            this.color14.Location = new System.Drawing.Point(30, 54);
+            this.color14.Name = "color14";
+            this.color14.Size = new System.Drawing.Size(19, 18);
+            this.color14.TabIndex = 13;
+            // 
+            // color15
+            // 
+            this.color15.BackColor = System.Drawing.Color.Coral;
+            this.color15.Location = new System.Drawing.Point(56, 54);
+            this.color15.Name = "color15";
+            this.color15.Size = new System.Drawing.Size(19, 18);
+            this.color15.TabIndex = 14;
+            // 
+            // color16
+            // 
+            this.color16.BackColor = System.Drawing.Color.Firebrick;
+            this.color16.Location = new System.Drawing.Point(82, 54);
+            this.color16.Name = "color16";
+            this.color16.Size = new System.Drawing.Size(19, 18);
+            this.color16.TabIndex = 15;
+            // 
+            // color17
+            // 
+            this.color17.BackColor = System.Drawing.Color.HotPink;
+            this.color17.Location = new System.Drawing.Point(108, 54);
+            this.color17.Name = "color17";
+            this.color17.Size = new System.Drawing.Size(19, 18);
+            this.color17.TabIndex = 16;
+            // 
+            // color18
+            // 
+            this.color18.BackColor = System.Drawing.Color.DarkSlateGray;
+            this.color18.Location = new System.Drawing.Point(134, 54);
+            this.color18.Name = "color18";
+            this.color18.Size = new System.Drawing.Size(19, 18);
+            this.color18.TabIndex = 17;
+            // 
+            // color19
+            // 
+            this.color19.BackColor = System.Drawing.Color.Gold;
+            this.color19.Location = new System.Drawing.Point(4, 79);
+            this.color19.Name = "color19";
+            this.color19.Size = new System.Drawing.Size(19, 20);
+            this.color19.TabIndex = 18;
+            // 
+            // color20
+            // 
+            this.color20.BackColor = System.Drawing.Color.Brown;
+            this.color20.Location = new System.Drawing.Point(30, 79);
+            this.color20.Name = "color20";
+            this.color20.Size = new System.Drawing.Size(19, 20);
+            this.color20.TabIndex = 19;
+            // 
+            // color21
+            // 
+            this.color21.BackColor = System.Drawing.Color.DarkRed;
+            this.color21.Location = new System.Drawing.Point(56, 79);
+            this.color21.Name = "color21";
+            this.color21.Size = new System.Drawing.Size(19, 20);
+            this.color21.TabIndex = 20;
+            // 
+            // color22
+            // 
+            this.color22.BackColor = System.Drawing.Color.PaleGoldenrod;
+            this.color22.Location = new System.Drawing.Point(82, 79);
+            this.color22.Name = "color22";
+            this.color22.Size = new System.Drawing.Size(19, 20);
+            this.color22.TabIndex = 21;
+            // 
+            // color23
+            // 
+            this.color23.BackColor = System.Drawing.Color.LightYellow;
+            this.color23.Location = new System.Drawing.Point(108, 79);
+            this.color23.Name = "color23";
+            this.color23.Size = new System.Drawing.Size(19, 20);
+            this.color23.TabIndex = 22;
+            // 
+            // color24
+            // 
+            this.color24.BackColor = System.Drawing.Color.SlateBlue;
+            this.color24.Location = new System.Drawing.Point(134, 79);
+            this.color24.Name = "color24";
+            this.color24.Size = new System.Drawing.Size(19, 20);
+            this.color24.TabIndex = 23;
+            // 
             // paintbrush_trackbar
             // 
             this.paintbrush_trackbar.LargeChange = 1;
@@ -253,7 +575,7 @@ namespace Sketchpop
             this.paintbrush_trackbar.Maximum = 3;
             this.paintbrush_trackbar.Name = "paintbrush_trackbar";
             this.paintbrush_trackbar.RightToLeftLayout = true;
-            this.paintbrush_trackbar.Size = new System.Drawing.Size(107, 69);
+            this.paintbrush_trackbar.Size = new System.Drawing.Size(107, 45);
             this.paintbrush_trackbar.TabIndex = 22;
             this.paintbrush_trackbar.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.paintbrush_trackbar.Visible = false;
@@ -265,7 +587,7 @@ namespace Sketchpop
             this.stroke_track_bar.Maximum = 50;
             this.stroke_track_bar.Minimum = 1;
             this.stroke_track_bar.Name = "stroke_track_bar";
-            this.stroke_track_bar.Size = new System.Drawing.Size(107, 69);
+            this.stroke_track_bar.Size = new System.Drawing.Size(107, 45);
             this.stroke_track_bar.TabIndex = 19;
             this.stroke_track_bar.TickStyle = System.Windows.Forms.TickStyle.Both;
             this.stroke_track_bar.Value = 2;
@@ -302,7 +624,7 @@ namespace Sketchpop
             0,
             0});
             this.green_input_box.Name = "green_input_box";
-            this.green_input_box.Size = new System.Drawing.Size(45, 26);
+            this.green_input_box.Size = new System.Drawing.Size(45, 20);
             this.green_input_box.TabIndex = 8;
             this.green_input_box.ValueChanged += new System.EventHandler(this.green_input_box_ValueChanged);
             // 
@@ -315,7 +637,7 @@ namespace Sketchpop
             0,
             0});
             this.blue_input_box.Name = "blue_input_box";
-            this.blue_input_box.Size = new System.Drawing.Size(45, 26);
+            this.blue_input_box.Size = new System.Drawing.Size(45, 20);
             this.blue_input_box.TabIndex = 8;
             this.blue_input_box.ValueChanged += new System.EventHandler(this.blue_input_box_ValueChanged);
             // 
@@ -328,7 +650,7 @@ namespace Sketchpop
             0,
             0});
             this.red_input_box.Name = "red_input_box";
-            this.red_input_box.Size = new System.Drawing.Size(45, 26);
+            this.red_input_box.Size = new System.Drawing.Size(45, 20);
             this.red_input_box.TabIndex = 8;
             this.red_input_box.ValueChanged += new System.EventHandler(this.red_input_box_ValueChanged);
             // 
@@ -336,7 +658,7 @@ namespace Sketchpop
             // 
             this.stroke_size_input_box.Location = new System.Drawing.Point(119, 275);
             this.stroke_size_input_box.Name = "stroke_size_input_box";
-            this.stroke_size_input_box.Size = new System.Drawing.Size(45, 26);
+            this.stroke_size_input_box.Size = new System.Drawing.Size(45, 20);
             this.stroke_size_input_box.TabIndex = 9;
             this.stroke_size_input_box.Value = new decimal(new int[] {
             2,
@@ -351,7 +673,7 @@ namespace Sketchpop
             this.unsplash_link.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.unsplash_link.Location = new System.Drawing.Point(110, 124);
             this.unsplash_link.Name = "unsplash_link";
-            this.unsplash_link.Size = new System.Drawing.Size(67, 17);
+            this.unsplash_link.Size = new System.Drawing.Size(44, 12);
             this.unsplash_link.TabIndex = 15;
             this.unsplash_link.TabStop = true;
             this.unsplash_link.Text = "Unsplash";
@@ -364,7 +686,7 @@ namespace Sketchpop
             this.on_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.on_label.Location = new System.Drawing.Point(95, 124);
             this.on_label.Name = "on_label";
-            this.on_label.Size = new System.Drawing.Size(24, 17);
+            this.on_label.Size = new System.Drawing.Size(15, 12);
             this.on_label.TabIndex = 15;
             this.on_label.Text = "on";
             this.on_label.Visible = false;
@@ -375,7 +697,7 @@ namespace Sketchpop
             this.author_link_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.author_link_label.Location = new System.Drawing.Point(49, 124);
             this.author_link_label.Name = "author_link_label";
-            this.author_link_label.Size = new System.Drawing.Size(72, 17);
+            this.author_link_label.Size = new System.Drawing.Size(45, 12);
             this.author_link_label.TabIndex = 15;
             this.author_link_label.TabStop = true;
             this.author_link_label.Text = "12345678";
@@ -388,7 +710,7 @@ namespace Sketchpop
             this.pb_label.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pb_label.Location = new System.Drawing.Point(7, 124);
             this.pb_label.Name = "pb_label";
-            this.pb_label.Size = new System.Drawing.Size(64, 17);
+            this.pb_label.Size = new System.Drawing.Size(41, 12);
             this.pb_label.TabIndex = 15;
             this.pb_label.Text = "Photo by";
             this.pb_label.Visible = false;
@@ -422,7 +744,7 @@ namespace Sketchpop
             this.db_status_label.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.db_status_label.Location = new System.Drawing.Point(7, 165);
             this.db_status_label.Name = "db_status_label";
-            this.db_status_label.Size = new System.Drawing.Size(157, 19);
+            this.db_status_label.Size = new System.Drawing.Size(157, 13);
             this.db_status_label.TabIndex = 0;
             this.db_status_label.Visible = false;
             // 
@@ -439,7 +761,7 @@ namespace Sketchpop
             this.blue_label.AutoSize = true;
             this.blue_label.Location = new System.Drawing.Point(109, 181);
             this.blue_label.Name = "blue_label";
-            this.blue_label.Size = new System.Drawing.Size(39, 20);
+            this.blue_label.Size = new System.Drawing.Size(27, 13);
             this.blue_label.TabIndex = 0;
             this.blue_label.Text = "blue";
             // 
@@ -448,7 +770,7 @@ namespace Sketchpop
             this.search_picture_label.AutoSize = true;
             this.search_picture_label.Location = new System.Drawing.Point(3, 146);
             this.search_picture_label.Name = "search_picture_label";
-            this.search_picture_label.Size = new System.Drawing.Size(144, 20);
+            this.search_picture_label.Size = new System.Drawing.Size(96, 13);
             this.search_picture_label.TabIndex = 0;
             this.search_picture_label.Text = "Search for Images:";
             // 
@@ -457,7 +779,7 @@ namespace Sketchpop
             this.green_label.AutoSize = true;
             this.green_label.Location = new System.Drawing.Point(60, 181);
             this.green_label.Name = "green_label";
-            this.green_label.Size = new System.Drawing.Size(50, 20);
+            this.green_label.Size = new System.Drawing.Size(34, 13);
             this.green_label.TabIndex = 0;
             this.green_label.Text = "green";
             // 
@@ -466,7 +788,7 @@ namespace Sketchpop
             this.red_label.AutoSize = true;
             this.red_label.Location = new System.Drawing.Point(6, 181);
             this.red_label.Name = "red_label";
-            this.red_label.Size = new System.Drawing.Size(32, 20);
+            this.red_label.Size = new System.Drawing.Size(22, 13);
             this.red_label.TabIndex = 0;
             this.red_label.Text = "red";
             // 
@@ -475,7 +797,7 @@ namespace Sketchpop
             this.stroke_label.AutoSize = true;
             this.stroke_label.Location = new System.Drawing.Point(4, 258);
             this.stroke_label.Name = "stroke_label";
-            this.stroke_label.Size = new System.Drawing.Size(95, 20);
+            this.stroke_label.Size = new System.Drawing.Size(64, 13);
             this.stroke_label.TabIndex = 0;
             this.stroke_label.Text = "Stroke Size:";
             // 
@@ -484,15 +806,43 @@ namespace Sketchpop
             this.quick_launch_bar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.quick_launch_bar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
+            this.quick_launch_bar.Controls.Add(this.prompt_link);
+            this.quick_launch_bar.Controls.Add(this.prompt);
             this.quick_launch_bar.Controls.Add(this.menuStrip1);
+            this.quick_launch_bar.Controls.Add(this.place_holder1);
             this.quick_launch_bar.Location = new System.Drawing.Point(210, 26);
             this.quick_launch_bar.Name = "quick_launch_bar";
             this.quick_launch_bar.Size = new System.Drawing.Size(767, 36);
             this.quick_launch_bar.TabIndex = 5;
             // 
+            // prompt_link
+            // 
+            this.prompt_link.AutoSize = true;
+            this.prompt_link.BackColor = System.Drawing.Color.LightPink;
+            this.prompt_link.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.prompt_link.LinkColor = System.Drawing.Color.Black;
+            this.prompt_link.Location = new System.Drawing.Point(172, 6);
+            this.prompt_link.Name = "prompt_link";
+            this.prompt_link.Size = new System.Drawing.Size(112, 13);
+            this.prompt_link.TabIndex = 22;
+            this.prompt_link.TabStop = true;
+            this.prompt_link.Text = "Random Prompt →";
+            this.prompt_link.Visible = false;
+            this.prompt_link.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            // 
+            // prompt
+            // 
+            this.prompt.AutoSize = true;
+            this.prompt.BackColor = System.Drawing.Color.LightPink;
+            this.prompt.Location = new System.Drawing.Point(282, 6);
+            this.prompt.MaximumSize = new System.Drawing.Size(485, 0);
+            this.prompt.Name = "prompt";
+            this.prompt.Size = new System.Drawing.Size(0, 13);
+            this.prompt.TabIndex = 23;
+            this.prompt.Visible = false;
+            // 
             // menuStrip1
             // 
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exercisesToolStripMenuItem,
@@ -500,7 +850,7 @@ namespace Sketchpop
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(767, 32);
+            this.menuStrip1.Size = new System.Drawing.Size(767, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -508,9 +858,11 @@ namespace Sketchpop
             // 
             this.exercisesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.muscleMemoryToolStripMenuItem,
-            this.randomPromptToolStripMenuItem});
+            this.redLiningToolStripMenuItem,
+            this.randomPromptToolStripMenuItem,
+            this.valuesToolStripMenuItem});
             this.exercisesToolStripMenuItem.Name = "exercisesToolStripMenuItem";
-            this.exercisesToolStripMenuItem.Size = new System.Drawing.Size(102, 28);
+            this.exercisesToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
             this.exercisesToolStripMenuItem.Text = "Exercises";
             // 
             // muscleMemoryToolStripMenuItem
@@ -518,22 +870,57 @@ namespace Sketchpop
             this.muscleMemoryToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.repeatedCirclesPracticeToolStripMenuItem});
             this.muscleMemoryToolStripMenuItem.Name = "muscleMemoryToolStripMenuItem";
-            this.muscleMemoryToolStripMenuItem.Size = new System.Drawing.Size(249, 34);
+            this.muscleMemoryToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.muscleMemoryToolStripMenuItem.Text = "Muscle Memory";
             // 
             // repeatedCirclesPracticeToolStripMenuItem
             // 
             this.repeatedCirclesPracticeToolStripMenuItem.Name = "repeatedCirclesPracticeToolStripMenuItem";
-            this.repeatedCirclesPracticeToolStripMenuItem.Size = new System.Drawing.Size(327, 34);
+            this.repeatedCirclesPracticeToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.repeatedCirclesPracticeToolStripMenuItem.Text = "Repeated Circles Practice";
             this.repeatedCirclesPracticeToolStripMenuItem.Click += new System.EventHandler(this.repeatedCirclesPracticeToolStripMenuItem_Click);
+            // 
+            // redLiningToolStripMenuItem
+            // 
+            this.redLiningToolStripMenuItem.Name = "redLiningToolStripMenuItem";
+            this.redLiningToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.redLiningToolStripMenuItem.Text = "Red Lining ";
+            this.redLiningToolStripMenuItem.Click += new System.EventHandler(this.redLiningToolStripMenuItem_Click);
             // 
             // randomPromptToolStripMenuItem
             // 
             this.randomPromptToolStripMenuItem.Name = "randomPromptToolStripMenuItem";
-            this.randomPromptToolStripMenuItem.Size = new System.Drawing.Size(249, 34);
-            this.randomPromptToolStripMenuItem.Text = "Red Lining ";
-            this.randomPromptToolStripMenuItem.Click += new System.EventHandler(this.redLiningToolStripMenuItem_Click);
+            this.randomPromptToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.randomPromptToolStripMenuItem.Text = "Random Prompt";
+            this.randomPromptToolStripMenuItem.Click += new System.EventHandler(this.randomPromptToolStripMenuItem_Click);
+            // 
+            // valuesToolStripMenuItem
+            // 
+            this.valuesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.randomImageToolStripMenuItem,
+            this.uploadImageToolStripMenuItem,
+            this.sketchpopTutorialToolStripMenuItem});
+            this.valuesToolStripMenuItem.Name = "valuesToolStripMenuItem";
+            this.valuesToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.valuesToolStripMenuItem.Text = "Values";
+            // 
+            // randomImageToolStripMenuItem
+            // 
+            this.randomImageToolStripMenuItem.Name = "randomImageToolStripMenuItem";
+            this.randomImageToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.randomImageToolStripMenuItem.Text = "Random Image";
+            // 
+            // uploadImageToolStripMenuItem
+            // 
+            this.uploadImageToolStripMenuItem.Name = "uploadImageToolStripMenuItem";
+            this.uploadImageToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.uploadImageToolStripMenuItem.Text = "Upload Image";
+            // 
+            // sketchpopTutorialToolStripMenuItem
+            // 
+            this.sketchpopTutorialToolStripMenuItem.Name = "sketchpopTutorialToolStripMenuItem";
+            this.sketchpopTutorialToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.sketchpopTutorialToolStripMenuItem.Text = "Sketchpop Tutorial";
             // 
             // aboutToolStripMenuItem
             // 
@@ -541,13 +928,13 @@ namespace Sketchpop
             this.RegisterToolStripMenuItem,
             this.TipToolStripMenuItem});
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(80, 28);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
             // 
             // TipToolStripMenuItem
             // 
             this.TipToolStripMenuItem.Name = "TipToolStripMenuItem";
-            this.TipToolStripMenuItem.Size = new System.Drawing.Size(237, 34);
+            this.TipToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.TipToolStripMenuItem.Text = "Toggle Tips";
             this.TipToolStripMenuItem.Click += new System.EventHandler(this.TipToolStripMenuItem_Click);
             // 
@@ -557,7 +944,7 @@ namespace Sketchpop
             this.saveToolStripMenuItem,
             this.loadToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(56, 28);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // saveToolStripMenuItem
@@ -567,22 +954,46 @@ namespace Sketchpop
             this.saveAsPNGToolStripMenuItem,
             this.saveIntoCloudToolStripMenuItem});
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveToolStripMenuItem.Text = "Save";
             // 
             // saveAsEXCToolStripMenuItem
             // 
             this.saveAsEXCToolStripMenuItem.Name = "saveAsEXCToolStripMenuItem";
-            this.saveAsEXCToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.saveAsEXCToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
             this.saveAsEXCToolStripMenuItem.Text = "Save as EXC";
             this.saveAsEXCToolStripMenuItem.Click += new System.EventHandler(this.saveAsExcToolStripMenuItem_Click);
+            // 
+            // saveAsPNGToolStripMenuItem
+            // 
+            this.saveAsPNGToolStripMenuItem.Name = "saveAsPNGToolStripMenuItem";
+            this.saveAsPNGToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.saveAsPNGToolStripMenuItem.Text = "Save as PNG";
+            this.saveAsPNGToolStripMenuItem.Click += new System.EventHandler(this.saveAsPNGToolStripMenuItem_Click);
+            // 
+            // saveIntoCloudToolStripMenuItem
+            // 
+            this.saveIntoCloudToolStripMenuItem.Name = "saveIntoCloudToolStripMenuItem";
+            this.saveIntoCloudToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.saveIntoCloudToolStripMenuItem.Text = "Save into Cloud";
+            this.saveIntoCloudToolStripMenuItem.Click += new System.EventHandler(this.saveIntoCloudToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.LoadToolStripMenuItem_Click);
+            // 
+            // place_holder1
+            // 
+            this.place_holder1.AutoSize = true;
+            this.place_holder1.Location = new System.Drawing.Point(83, 5);
+            this.place_holder1.Name = "place_holder1";
+            this.place_holder1.Size = new System.Drawing.Size(35, 13);
+            this.place_holder1.TabIndex = 22;
+            this.place_holder1.Text = "label1";
+            this.place_holder1.Visible = false;
             // 
             // canvas_panel
             // 
@@ -590,8 +1001,6 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
-            this.canvas_panel.Controls.Add(this.brush_menustrip);
-            this.canvas_panel.Controls.Add(this.ref_img_menustrip);
             this.canvas_panel.Controls.Add(this.clear_canvas_button);
             this.canvas_panel.Controls.Add(this.pen_button);
             this.canvas_panel.Controls.Add(this.eraser_button);
@@ -601,86 +1010,12 @@ namespace Sketchpop
             this.canvas_panel.Controls.Add(this.top_canvas_strip);
             this.canvas_panel.Controls.Add(this.drawing_picture_box);
             this.canvas_panel.Controls.Add(this.canvas_frame);
+            this.canvas_panel.Controls.Add(this.brush_menustrip);
+            this.canvas_panel.Controls.Add(this.ref_img_menustrip);
             this.canvas_panel.Location = new System.Drawing.Point(210, 63);
             this.canvas_panel.Name = "canvas_panel";
             this.canvas_panel.Size = new System.Drawing.Size(767, 653);
             this.canvas_panel.TabIndex = 6;
-            // 
-            // brush_menustrip
-            // 
-            this.brush_menustrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.brush_menustrip.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
-            this.brush_menustrip.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.brush_menustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.penToolStripMenuItem,
-            this.painBrushStripMenuItem});
-            this.brush_menustrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
-            this.brush_menustrip.Location = new System.Drawing.Point(510, 26);
-            this.brush_menustrip.Name = "brush_menustrip";
-            this.brush_menustrip.Size = new System.Drawing.Size(129, 60);
-            this.brush_menustrip.TabIndex = 21;
-            this.brush_menustrip.Visible = false;
-            // 
-            // penToolStripMenuItem
-            // 
-            this.penToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.paintBrushToolStripMenuItem});
-            this.penToolStripMenuItem.Name = "penToolStripMenuItem";
-            this.penToolStripMenuItem.Size = new System.Drawing.Size(58, 28);
-            this.penToolStripMenuItem.Text = "Pen";
-            this.penToolStripMenuItem.Click += new System.EventHandler(this.penToolStripMenuItem_Click);
-            // 
-            // paintBrushToolStripMenuItem
-            // 
-            this.paintBrushToolStripMenuItem.Name = "paintBrushToolStripMenuItem";
-            this.paintBrushToolStripMenuItem.Size = new System.Drawing.Size(207, 34);
-            this.paintBrushToolStripMenuItem.Text = "Paint Brush";
-            // 
-            // painBrushStripMenuItem
-            // 
-            this.painBrushStripMenuItem.Name = "painBrushStripMenuItem";
-            this.painBrushStripMenuItem.Size = new System.Drawing.Size(123, 28);
-            this.painBrushStripMenuItem.Text = "Paint Brush";
-            this.painBrushStripMenuItem.Click += new System.EventHandler(this.painBrushStripMenuItem_Click);
-            // 
-            // ref_img_menustrip
-            // 
-            this.ref_img_menustrip.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.ref_img_menustrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.ref_img_menustrip.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
-            this.ref_img_menustrip.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.ref_img_menustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewImageToolStripMenuItem,
-            this.addImageToLayerToolStripMenuItem,
-            this.saveImageToolStripMenuItem});
-            this.ref_img_menustrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
-            this.ref_img_menustrip.Location = new System.Drawing.Point(0, 71);
-            this.ref_img_menustrip.Name = "ref_img_menustrip";
-            this.ref_img_menustrip.Size = new System.Drawing.Size(202, 88);
-            this.ref_img_menustrip.TabIndex = 11;
-            this.ref_img_menustrip.Text = "menuStrip2";
-            this.ref_img_menustrip.Visible = false;
-            // 
-            // viewImageToolStripMenuItem
-            // 
-            this.viewImageToolStripMenuItem.Name = "viewImageToolStripMenuItem";
-            this.viewImageToolStripMenuItem.Size = new System.Drawing.Size(126, 28);
-            this.viewImageToolStripMenuItem.Text = "View Image";
-            this.viewImageToolStripMenuItem.Click += new System.EventHandler(this.viewImageToolStripMenuItem_Click);
-            // 
-            // addImageToLayerToolStripMenuItem
-            // 
-            this.addImageToLayerToolStripMenuItem.Name = "addImageToLayerToolStripMenuItem";
-            this.addImageToLayerToolStripMenuItem.Size = new System.Drawing.Size(196, 28);
-            this.addImageToLayerToolStripMenuItem.Text = "Add Image to Layer";
-            this.addImageToLayerToolStripMenuItem.Click += new System.EventHandler(this.addImageToLayerToolStripMenuItem_Click);
-            // 
-            // saveImageToolStripMenuItem
-            // 
-            this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
-            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(124, 28);
-            this.saveImageToolStripMenuItem.Text = "Save Image";
-            this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
             // 
             // clear_canvas_button
             // 
@@ -784,7 +1119,7 @@ namespace Sketchpop
             // 
             this.drawing_picture_box.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(167)))), ((int)(((byte)(167)))));
             this.drawing_picture_box.Enabled = false;
-            this.drawing_picture_box.Location = new System.Drawing.Point(0, 28);
+            this.drawing_picture_box.Location = new System.Drawing.Point(7, 34);
             this.drawing_picture_box.Name = "drawing_picture_box";
             this.drawing_picture_box.Size = new System.Drawing.Size(767, 625);
             this.drawing_picture_box.TabIndex = 19;
@@ -805,11 +1140,88 @@ namespace Sketchpop
             this.canvas_frame.MouseHover += new System.EventHandler(this.canvas_frame_MouseHover);
             this.canvas_frame.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
             // 
+            // brush_menustrip
+            // 
+            this.brush_menustrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.brush_menustrip.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.brush_menustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.penToolStripMenuItem,
+            this.painBrushStripMenuItem});
+            this.brush_menustrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
+            this.brush_menustrip.Location = new System.Drawing.Point(510, 26);
+            this.brush_menustrip.Name = "brush_menustrip";
+            this.brush_menustrip.Size = new System.Drawing.Size(85, 42);
+            this.brush_menustrip.TabIndex = 21;
+            this.brush_menustrip.Visible = false;
+            // 
+            // penToolStripMenuItem
+            // 
+            this.penToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.paintBrushToolStripMenuItem});
+            this.penToolStripMenuItem.Name = "penToolStripMenuItem";
+            this.penToolStripMenuItem.Size = new System.Drawing.Size(39, 19);
+            this.penToolStripMenuItem.Text = "Pen";
+            this.penToolStripMenuItem.Click += new System.EventHandler(this.penToolStripMenuItem_Click);
+            // 
+            // paintBrushToolStripMenuItem
+            // 
+            this.paintBrushToolStripMenuItem.Name = "paintBrushToolStripMenuItem";
+            this.paintBrushToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.paintBrushToolStripMenuItem.Text = "Paint Brush";
+            // 
+            // painBrushStripMenuItem
+            // 
+            this.painBrushStripMenuItem.Name = "painBrushStripMenuItem";
+            this.painBrushStripMenuItem.Size = new System.Drawing.Size(79, 19);
+            this.painBrushStripMenuItem.Text = "Paint Brush";
+            this.painBrushStripMenuItem.Click += new System.EventHandler(this.painBrushStripMenuItem_Click);
+            // 
+            // ref_img_menustrip
+            // 
+            this.ref_img_menustrip.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.ref_img_menustrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.ref_img_menustrip.ImageScalingSize = new System.Drawing.Size(24, 24);
+            this.ref_img_menustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.viewImageToolStripMenuItem,
+            this.addImageToLayerToolStripMenuItem,
+            this.saveImageToolStripMenuItem});
+            this.ref_img_menustrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
+            this.ref_img_menustrip.Location = new System.Drawing.Point(0, 71);
+            this.ref_img_menustrip.Name = "ref_img_menustrip";
+            this.ref_img_menustrip.Size = new System.Drawing.Size(128, 61);
+            this.ref_img_menustrip.TabIndex = 11;
+            this.ref_img_menustrip.Text = "menuStrip2";
+            this.ref_img_menustrip.Visible = false;
+            // 
+            // viewImageToolStripMenuItem
+            // 
+            this.viewImageToolStripMenuItem.Name = "viewImageToolStripMenuItem";
+            this.viewImageToolStripMenuItem.Size = new System.Drawing.Size(80, 19);
+            this.viewImageToolStripMenuItem.Text = "View Image";
+            this.viewImageToolStripMenuItem.Click += new System.EventHandler(this.viewImageToolStripMenuItem_Click);
+            // 
+            // addImageToLayerToolStripMenuItem
+            // 
+            this.addImageToLayerToolStripMenuItem.Name = "addImageToLayerToolStripMenuItem";
+            this.addImageToLayerToolStripMenuItem.Size = new System.Drawing.Size(122, 19);
+            this.addImageToLayerToolStripMenuItem.Text = "Add Image to Layer";
+            this.addImageToLayerToolStripMenuItem.Click += new System.EventHandler(this.addImageToLayerToolStripMenuItem_Click);
+            // 
+            // saveImageToolStripMenuItem
+            // 
+            this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
+            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(79, 19);
+            this.saveImageToolStripMenuItem.Text = "Save Image";
+            this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
+            // 
             // right_settings_panel
             // 
             this.right_settings_panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.right_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
+            this.right_settings_panel.BackColor = System.Drawing.Color.Transparent;
+            this.right_settings_panel.Controls.Add(this.end_exercise_button);
+            this.right_settings_panel.Controls.Add(this.label2);
+            this.right_settings_panel.Controls.Add(this.exercise_panel);
             this.right_settings_panel.Controls.Add(this.layer_delete_button);
             this.right_settings_panel.Controls.Add(this.layer_add_button);
             this.right_settings_panel.Controls.Add(this.layer_panel);
@@ -818,6 +1230,170 @@ namespace Sketchpop
             this.right_settings_panel.Name = "right_settings_panel";
             this.right_settings_panel.Size = new System.Drawing.Size(294, 690);
             this.right_settings_panel.TabIndex = 7;
+            // 
+            // end_exercise_button
+            // 
+            this.end_exercise_button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.end_exercise_button.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.end_exercise_button.Font = new System.Drawing.Font("Microsoft Tai Le", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.end_exercise_button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.end_exercise_button.Location = new System.Drawing.Point(218, 389);
+            this.end_exercise_button.Name = "end_exercise_button";
+            this.end_exercise_button.Size = new System.Drawing.Size(67, 23);
+            this.end_exercise_button.TabIndex = 4;
+            this.end_exercise_button.Text = "End";
+            this.end_exercise_button.UseVisualStyleBackColor = false;
+            this.end_exercise_button.Visible = false;
+            this.end_exercise_button.Click += new System.EventHandler(this.end_exercise_button_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(4, 181);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(91, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Exercise Controls:";
+            // 
+            // exercise_panel
+            // 
+            this.exercise_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(167)))), ((int)(((byte)(167)))));
+            this.exercise_panel.Controls.Add(this.exercise_controls);
+            this.exercise_panel.Location = new System.Drawing.Point(7, 197);
+            this.exercise_panel.Name = "exercise_panel";
+            this.exercise_panel.Size = new System.Drawing.Size(278, 193);
+            this.exercise_panel.TabIndex = 2;
+            // 
+            // exercise_controls
+            // 
+            this.exercise_controls.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.exercise_controls.ColumnCount = 1;
+            this.exercise_controls.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.exercise_controls.Controls.Add(this.exercise_palette, 0, 2);
+            this.exercise_controls.Controls.Add(this.exercise_arrow_buttons, 0, 1);
+            this.exercise_controls.Controls.Add(this.tableLayoutPanel1, 0, 0);
+            this.exercise_controls.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.exercise_controls.Location = new System.Drawing.Point(0, 0);
+            this.exercise_controls.Name = "exercise_controls";
+            this.exercise_controls.RowCount = 3;
+            this.exercise_controls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 65F));
+            this.exercise_controls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.exercise_controls.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.exercise_controls.Size = new System.Drawing.Size(278, 193);
+            this.exercise_controls.TabIndex = 0;
+            this.exercise_controls.Visible = false;
+            // 
+            // exercise_palette
+            // 
+            this.exercise_palette.AutoSize = true;
+            this.exercise_palette.Controls.Add(this.exercise_palette_colors);
+            this.exercise_palette.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.exercise_palette.Location = new System.Drawing.Point(3, 166);
+            this.exercise_palette.Name = "exercise_palette";
+            this.exercise_palette.Padding = new System.Windows.Forms.Padding(50, 0, 50, 0);
+            this.exercise_palette.Size = new System.Drawing.Size(272, 24);
+            this.exercise_palette.TabIndex = 22;
+            this.exercise_palette.Visible = false;
+            // 
+            // exercise_palette_colors
+            // 
+            this.exercise_palette_colors.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(167)))), ((int)(((byte)(167)))));
+            this.exercise_palette_colors.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.exercise_palette_colors.ColumnCount = 5;
+            this.exercise_palette_colors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.exercise_palette_colors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.exercise_palette_colors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.exercise_palette_colors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.exercise_palette_colors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.exercise_palette_colors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
+            this.exercise_palette_colors.Controls.Add(this.ex_color1, 0, 0);
+            this.exercise_palette_colors.Controls.Add(this.ex_color2, 1, 0);
+            this.exercise_palette_colors.Controls.Add(this.ex_color3, 2, 0);
+            this.exercise_palette_colors.Controls.Add(this.ex_color4, 3, 0);
+            this.exercise_palette_colors.Controls.Add(this.ex_color5, 4, 0);
+            this.exercise_palette_colors.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.exercise_palette_colors.Location = new System.Drawing.Point(50, 0);
+            this.exercise_palette_colors.Name = "exercise_palette_colors";
+            this.exercise_palette_colors.RowCount = 1;
+            this.exercise_palette_colors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.exercise_palette_colors.Size = new System.Drawing.Size(172, 24);
+            this.exercise_palette_colors.TabIndex = 0;
+            // 
+            // ex_color1
+            // 
+            this.ex_color1.BackColor = System.Drawing.Color.White;
+            this.ex_color1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ex_color1.Location = new System.Drawing.Point(4, 4);
+            this.ex_color1.Name = "ex_color1";
+            this.ex_color1.Size = new System.Drawing.Size(27, 16);
+            this.ex_color1.TabIndex = 0;
+            // 
+            // ex_color2
+            // 
+            this.ex_color2.BackColor = System.Drawing.Color.Silver;
+            this.ex_color2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ex_color2.Location = new System.Drawing.Point(38, 4);
+            this.ex_color2.Name = "ex_color2";
+            this.ex_color2.Size = new System.Drawing.Size(27, 16);
+            this.ex_color2.TabIndex = 1;
+            // 
+            // ex_color3
+            // 
+            this.ex_color3.BackColor = System.Drawing.Color.Gray;
+            this.ex_color3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ex_color3.Location = new System.Drawing.Point(72, 4);
+            this.ex_color3.Name = "ex_color3";
+            this.ex_color3.Size = new System.Drawing.Size(27, 16);
+            this.ex_color3.TabIndex = 2;
+            // 
+            // ex_color4
+            // 
+            this.ex_color4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ex_color4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ex_color4.Location = new System.Drawing.Point(106, 4);
+            this.ex_color4.Name = "ex_color4";
+            this.ex_color4.Size = new System.Drawing.Size(27, 16);
+            this.ex_color4.TabIndex = 3;
+            // 
+            // ex_color5
+            // 
+            this.ex_color5.BackColor = System.Drawing.Color.Black;
+            this.ex_color5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ex_color5.Location = new System.Drawing.Point(140, 4);
+            this.ex_color5.Name = "ex_color5";
+            this.ex_color5.Size = new System.Drawing.Size(28, 16);
+            this.ex_color5.TabIndex = 4;
+            // 
+            // exercise_arrow_buttons
+            // 
+            this.exercise_arrow_buttons.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(167)))), ((int)(((byte)(167)))));
+            this.exercise_arrow_buttons.ColumnCount = 2;
+            this.exercise_arrow_buttons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.exercise_arrow_buttons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.exercise_arrow_buttons.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.exercise_arrow_buttons.Location = new System.Drawing.Point(3, 128);
+            this.exercise_arrow_buttons.Name = "exercise_arrow_buttons";
+            this.exercise_arrow_buttons.Padding = new System.Windows.Forms.Padding(40, 0, 40, 0);
+            this.exercise_arrow_buttons.RowCount = 1;
+            this.exercise_arrow_buttons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.exercise_arrow_buttons.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.exercise_arrow_buttons.Size = new System.Drawing.Size(272, 32);
+            this.exercise_arrow_buttons.TabIndex = 23;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(167)))), ((int)(((byte)(167)))));
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(272, 119);
+            this.tableLayoutPanel1.TabIndex = 0;
             // 
             // layer_delete_button
             // 
@@ -864,30 +1440,6 @@ namespace Sketchpop
             this.main_preview_picturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
             this.main_preview_picturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(292, 30);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 20);
-            this.label1.TabIndex = 22;
-            this.label1.Text = "label1";
-            this.label1.Visible = false;
-            // 
-            // saveAsPNGToolStripMenuItem
-            // 
-            this.saveAsPNGToolStripMenuItem.Name = "saveAsPNGToolStripMenuItem";
-            this.saveAsPNGToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.saveAsPNGToolStripMenuItem.Text = "Save as PNG";
-            this.saveAsPNGToolStripMenuItem.Click += new System.EventHandler(this.saveAsPNGToolStripMenuItem_Click);
-            // 
-            // saveIntoCloudToolStripMenuItem
-            // 
-            this.saveIntoCloudToolStripMenuItem.Name = "saveIntoCloudToolStripMenuItem";
-            this.saveIntoCloudToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-            this.saveIntoCloudToolStripMenuItem.Text = "Save into Cloud";
-            this.saveIntoCloudToolStripMenuItem.Click += new System.EventHandler(this.saveIntoCloudToolStripMenuItem_Click);
-            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -895,7 +1447,6 @@ namespace Sketchpop
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.ClientSize = new System.Drawing.Size(1280, 720);
             this.ControlBox = false;
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.right_settings_panel);
             this.Controls.Add(this.canvas_panel);
             this.Controls.Add(this.quick_launch_bar);
@@ -918,6 +1469,8 @@ namespace Sketchpop
             this.tool_bar.ResumeLayout(false);
             this.left_settings_panel.ResumeLayout(false);
             this.left_settings_panel.PerformLayout();
+            this.color_palette.ResumeLayout(false);
+            this.palette_colors.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.paintbrush_trackbar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.stroke_track_bar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.green_input_box)).EndInit();
@@ -931,14 +1484,20 @@ namespace Sketchpop
             this.menuStrip1.PerformLayout();
             this.canvas_panel.ResumeLayout(false);
             this.canvas_panel.PerformLayout();
+            this.top_canvas_strip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.drawing_picture_box)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).EndInit();
             this.brush_menustrip.ResumeLayout(false);
             this.brush_menustrip.PerformLayout();
             this.ref_img_menustrip.ResumeLayout(false);
             this.ref_img_menustrip.PerformLayout();
-            this.top_canvas_strip.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.drawing_picture_box)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.canvas_frame)).EndInit();
             this.right_settings_panel.ResumeLayout(false);
+            this.right_settings_panel.PerformLayout();
+            this.exercise_panel.ResumeLayout(false);
+            this.exercise_controls.ResumeLayout(false);
+            this.exercise_controls.PerformLayout();
+            this.exercise_palette.ResumeLayout(false);
+            this.exercise_palette_colors.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.main_preview_picturebox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -997,7 +1556,7 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem saveImageToolStripMenuItem;
         private System.Windows.Forms.Button brush_button;
         private System.Windows.Forms.Button hand_button;
-        private System.Windows.Forms.ToolStripMenuItem randomPromptToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem redLiningToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsEXCToolStripMenuItem;
@@ -1018,7 +1577,54 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem TipToolStripMenuItem;
         private System.Windows.Forms.Button zoom_canvas_out_button;
         private System.Windows.Forms.Button zoom_canvas_in_button;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label place_holder1;
+        private System.Windows.Forms.ToolStripMenuItem randomPromptToolStripMenuItem;
+        private System.Windows.Forms.Label prompt;
+        private System.Windows.Forms.LinkLabel prompt_link;
+        private System.Windows.Forms.Panel color_palette;
+        private System.Windows.Forms.Label color_pal_label;
+        private System.Windows.Forms.TableLayoutPanel palette_colors;
+        private System.Windows.Forms.Panel color1;
+        private System.Windows.Forms.Panel color2;
+        private System.Windows.Forms.Panel color3;
+        private System.Windows.Forms.Panel color4;
+        private System.Windows.Forms.Panel color5;
+        private System.Windows.Forms.Panel color6;
+        private System.Windows.Forms.Panel color7;
+        private System.Windows.Forms.Panel color8;
+        private System.Windows.Forms.Panel color9;
+        private System.Windows.Forms.Panel color10;
+        private System.Windows.Forms.Panel color11;
+        private System.Windows.Forms.Panel color12;
+        private System.Windows.Forms.Panel color13;
+        private System.Windows.Forms.Panel color14;
+        private System.Windows.Forms.Panel color15;
+        private System.Windows.Forms.Panel color16;
+        private System.Windows.Forms.Panel color17;
+        private System.Windows.Forms.Panel color18;
+        private System.Windows.Forms.Panel color19;
+        private System.Windows.Forms.Panel color20;
+        private System.Windows.Forms.Panel color21;
+        private System.Windows.Forms.Panel color22;
+        private System.Windows.Forms.Panel color23;
+        private System.Windows.Forms.Panel color24;
+        private System.Windows.Forms.ToolStripMenuItem valuesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem randomImageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uploadImageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sketchpopTutorialToolStripMenuItem;
+        private System.Windows.Forms.Panel exercise_panel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TableLayoutPanel exercise_controls;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel exercise_palette;
+        private System.Windows.Forms.TableLayoutPanel exercise_palette_colors;
+        private System.Windows.Forms.Panel ex_color1;
+        private System.Windows.Forms.Panel ex_color2;
+        private System.Windows.Forms.Panel ex_color3;
+        private System.Windows.Forms.Panel ex_color4;
+        private System.Windows.Forms.Panel ex_color5;
+        private System.Windows.Forms.TableLayoutPanel exercise_arrow_buttons;
+        private System.Windows.Forms.Button end_exercise_button;
         private System.Windows.Forms.ToolStripMenuItem saveAsPNGToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveIntoCloudToolStripMenuItem;
     }

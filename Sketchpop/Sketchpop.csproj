@@ -245,8 +245,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\butterfly.jpg" />
-    <Content Include="Images\cat.jpg" />
+    <Content Include="Exercise_Images\sketchpop_example1.jpg" />
+    <Content Include="Exercise_Images\sketchpop_example2.jpg" />
+    <Content Include="Exercise_Images\sketchpop_example3.jpg" />
+    <Content Include="Random_Prompts\prompts.txt" />
     <Content Include="Textures\brush.png" />
   </ItemGroup>
   <ItemGroup>
