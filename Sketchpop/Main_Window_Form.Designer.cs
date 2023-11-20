@@ -148,6 +148,7 @@ namespace Sketchpop
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
             this.pen_pressure_button = new System.Windows.Forms.Button();
+            this.fill_tool_button = new System.Windows.Forms.Button();
             this.title_bar.SuspendLayout();
             this.tool_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
@@ -1089,6 +1090,7 @@ namespace Sketchpop
             // 
             this.top_canvas_strip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.top_canvas_strip.Controls.Add(this.fill_tool_button);
             this.top_canvas_strip.Controls.Add(this.pen_pressure_button);
             this.top_canvas_strip.Controls.Add(this.zoom_canvas_out_button);
             this.top_canvas_strip.Controls.Add(this.zoom_canvas_in_button);
@@ -1452,6 +1454,16 @@ namespace Sketchpop
             this.pen_pressure_button.UseVisualStyleBackColor = true;
             this.pen_pressure_button.Click += new System.EventHandler(this.pen_pressure_button_Click);
             // 
+            // fill_tool_button
+            // 
+            this.fill_tool_button.Location = new System.Drawing.Point(161, 3);
+            this.fill_tool_button.Name = "fill_tool_button";
+            this.fill_tool_button.Size = new System.Drawing.Size(75, 23);
+            this.fill_tool_button.TabIndex = 25;
+            this.fill_tool_button.Text = "Fill tool";
+            this.fill_tool_button.UseVisualStyleBackColor = true;
+            this.fill_tool_button.Click += new System.EventHandler(this.fill_tool_button_Click);
+            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1640,6 +1652,7 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem saveAsPNGToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveIntoCloudToolStripMenuItem;
         private System.Windows.Forms.Button pen_pressure_button;
+        private System.Windows.Forms.Button fill_tool_button;
     }
 }
 

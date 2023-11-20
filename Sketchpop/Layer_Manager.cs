@@ -126,5 +126,9 @@ namespace Sketchpop
             }
         }
 
+        internal void set_image(int idx, SKImage new_image)
+        {
+            _layers[idx].Img = new_image;
+        }
     }
 }

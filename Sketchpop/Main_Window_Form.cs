@@ -1114,6 +1114,11 @@ namespace Sketchpop
             blue_input_box.Value = color1.BackColor.B;
         }
 
+        private void fill_tool_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.fill;
+        }
+
         private void Get_Random_Monochrome_Image(object sender, EventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)sender;

@@ -5,6 +5,8 @@ using System.Collections.Concurrent;
 using System.Windows.Forms;
 using SkiaSharp.Views.Desktop;
 using System.IO;
+using SkiaSharp.Views.WPF;
+using System.Collections.Generic;
 
 namespace Sketchpop
 {
@@ -80,6 +82,54 @@ namespace Sketchpop
             Reset_Canvas_State();
         }
 
+        public void fill(Point click_point, SKColor replacement_color)
+        {
+            if (layer_manager.get_image(layer_manager.selected_layer).Info.Rect.Contains(click_point.X, click_point.Y))
+            {
+                using (SKBitmap replacement_image = SKBitmap.FromImage(layer_manager.get_image(layer_manager.selected_layer)))
+                {
+                    SKColor[] color_array = replacement_image.Pixels;
+                    SKColor initial_color = replacement_image.GetPixel(click_point.X, click_point.Y);
+                    Queue<Point> points_to_check = new Queue<Point>();
+                    points_to_check.Enqueue(click_point);
+                    while (points_to_check.Count >= 1)
+                    {
+                        Point p = points_to_check.Dequeue();
+                        SKColor color_to_check = color_array[p.X + (p.Y * replacement_image.Info.Width)];
+                        int difference = Math.Abs(color_to_check.Red - initial_color.Red);
+                        difference += Math.Abs(color_to_check.Green - initial_color.Green);
+                        difference += Math.Abs(color_to_check.Blue - initial_color.Blue);
+                        if (difference <= 80 && color_to_check != replacement_color)
+                        {
+                            color_array[p.X + (p.Y * replacement_image.Info.Width)] = replacement_color;
+                            Point left = new Point(p.X - 1, p.Y);
+                            if (p.X - 1 >= 0)
+                            {
+                                points_to_check.Enqueue(left);
+                            }
+                            Point up = new Point(p.X, p.Y - 1);
+                            if (p.Y - 1 >= 0)
+                            {
+                                points_to_check.Enqueue(up);
+                            }
+                            Point right = new Point(p.X + 1, p.Y);
+                            if (p.X + 1 <= canvas_info.Width - 1)
+                            {
+                                points_to_check.Enqueue(right);
+                            }
+                            Point down = new Point(p.X, p.Y + 1);
+                            if (p.Y + 1 <= canvas_info.Height - 1)
+                            {
+                                points_to_check.Enqueue(down);
+                            }
+                        }
+                    }
+                    replacement_image.Pixels = color_array;
+                    layer_manager.set_image(layer_manager.selected_layer, SKImage.FromBitmap(replacement_image));
+                }
+            }
+        }
+
         public void Mouse_Down_Handler(Point click_position)
         {
             Point adjusted = Adjust_Point_To_Hand(click_position);
@@ -113,6 +163,12 @@ namespace Sketchpop
                 if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
                     return;
                 paste_manager.start_moving(adjusted);
+            }
+            else if (current_tool == SketchPopTool.fill)
+            {
+                if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
+                    return;
+                fill(adjusted, brush_manager.Get_Current_Brush().Color());
             }
         }
 
