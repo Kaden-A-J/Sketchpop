@@ -165,11 +165,12 @@ namespace Sketchpop
 
         private void canvas_frame_MouseDown(object sender, MouseEventArgs e)
         {
+            Console.WriteLine("HERE2");
             // close menus that are open
             if (brush_menustrip.Visible) { brush_menustrip.Visible = false; }
             if (ref_img_menustrip.Visible) { ref_img_menustrip.Visible = false; }
 
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
             {
                 if (!mouse_down)
                 {
@@ -195,7 +196,7 @@ namespace Sketchpop
 
         private void canvas_frame_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
             {
                 mouse_down = false;
                 var click_pos = canvas_frame.PointToClient(MousePosition);

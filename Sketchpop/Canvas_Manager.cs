@@ -76,7 +76,7 @@ namespace Sketchpop
             paste_manager = new Paste_Manager();
 
             //picture_box = canvas_frame;
-            canvas_info = new SKImageInfo(1000, 1000);
+            canvas_info = new SKImageInfo(750, 750);
 
 
             Reset_Canvas_State();
@@ -135,6 +135,8 @@ namespace Sketchpop
         // called when the mouse is pressed down, invokes the current tool
         public void Mouse_Down_Handler(Point click_position)
         {
+            Console.WriteLine("HERE");
+
             Point adjusted = Adjust_Point_To_Hand(click_position);
 
             if (current_tool == SketchPopTool.brush)

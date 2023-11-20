@@ -24,7 +24,7 @@ namespace Sketchpop
         public Brush_Manager()
         {
             _brushes = new Dictionary<string, Brush>();
-            _current_brush = new Brush("basic", 2, new SKColor(0, 0, 0, 255));
+            _current_brush = new Brush("basic", 3, new SKColor(0, 0, 0, 255));
 
             // add basic brush and eraser
             _brushes.Add(_current_brush.Name(), _current_brush);

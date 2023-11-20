@@ -38,6 +38,8 @@ namespace Sketchpop
             this.fullscreen_button = new System.Windows.Forms.Button();
             this.tool_bar = new System.Windows.Forms.Panel();
             this.left_settings_panel = new System.Windows.Forms.Panel();
+            this.canvas_height_label = new System.Windows.Forms.Label();
+            this.canvas_width_label = new System.Windows.Forms.Label();
             this.resize_canvas_input_y = new System.Windows.Forms.NumericUpDown();
             this.resize_canvas_input_x = new System.Windows.Forms.NumericUpDown();
             this.resize_canvas_button = new System.Windows.Forms.Button();
@@ -113,15 +115,15 @@ namespace Sketchpop
             this.place_holder1 = new System.Windows.Forms.Label();
             this.canvas_panel = new System.Windows.Forms.Panel();
             this.clear_canvas_button = new System.Windows.Forms.Button();
-            this.pen_button = new System.Windows.Forms.Button();
-            this.eraser_button = new System.Windows.Forms.Button();
-            this.select_rect_button = new System.Windows.Forms.Button();
-            this.select_lasso_button = new System.Windows.Forms.Button();
-            this.brush_selector_button = new System.Windows.Forms.Button();
             this.top_canvas_strip = new System.Windows.Forms.Panel();
             this.fill_tool_button = new System.Windows.Forms.Button();
+            this.select_lasso_button = new System.Windows.Forms.Button();
+            this.select_rect_button = new System.Windows.Forms.Button();
+            this.eraser_button = new System.Windows.Forms.Button();
+            this.pen_button = new System.Windows.Forms.Button();
             this.pen_pressure_button = new System.Windows.Forms.Button();
             this.zoom_canvas_out_button = new System.Windows.Forms.Button();
+            this.brush_selector_button = new System.Windows.Forms.Button();
             this.zoom_canvas_in_button = new System.Windows.Forms.Button();
             this.drawing_picture_box = new System.Windows.Forms.PictureBox();
             this.canvas_frame = new System.Windows.Forms.PictureBox();
@@ -151,8 +153,6 @@ namespace Sketchpop
             this.layer_add_button = new System.Windows.Forms.Button();
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
-            this.canvas_width_label = new System.Windows.Forms.Label();
-            this.canvas_height_label = new System.Windows.Forms.Label();
             this.title_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resize_canvas_input_y)).BeginInit();
@@ -288,6 +288,24 @@ namespace Sketchpop
             this.left_settings_panel.Name = "left_settings_panel";
             this.left_settings_panel.Size = new System.Drawing.Size(172, 690);
             this.left_settings_panel.TabIndex = 4;
+            // 
+            // canvas_height_label
+            // 
+            this.canvas_height_label.AutoSize = true;
+            this.canvas_height_label.Location = new System.Drawing.Point(91, 479);
+            this.canvas_height_label.Name = "canvas_height_label";
+            this.canvas_height_label.Size = new System.Drawing.Size(36, 13);
+            this.canvas_height_label.TabIndex = 31;
+            this.canvas_height_label.Text = "height";
+            // 
+            // canvas_width_label
+            // 
+            this.canvas_width_label.AutoSize = true;
+            this.canvas_width_label.Location = new System.Drawing.Point(6, 479);
+            this.canvas_width_label.Name = "canvas_width_label";
+            this.canvas_width_label.Size = new System.Drawing.Size(32, 13);
+            this.canvas_width_label.TabIndex = 30;
+            this.canvas_width_label.Text = "width";
             // 
             // resize_canvas_input_y
             // 
@@ -713,7 +731,7 @@ namespace Sketchpop
             this.stroke_size_input_box.Size = new System.Drawing.Size(45, 20);
             this.stroke_size_input_box.TabIndex = 9;
             this.stroke_size_input_box.Value = new decimal(new int[] {
-            2,
+            3,
             0,
             0,
             0});
@@ -1076,61 +1094,6 @@ namespace Sketchpop
             this.clear_canvas_button.Click += new System.EventHandler(this.clear_canvas_button_Click);
             this.clear_canvas_button.MouseHover += new System.EventHandler(this.clear_canvas_button_MouseHover);
             // 
-            // pen_button
-            // 
-            this.pen_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pen_button.Location = new System.Drawing.Point(88, 3);
-            this.pen_button.Name = "pen_button";
-            this.pen_button.Size = new System.Drawing.Size(75, 23);
-            this.pen_button.TabIndex = 2;
-            this.pen_button.Text = "Pen";
-            this.pen_button.UseVisualStyleBackColor = true;
-            this.pen_button.Click += new System.EventHandler(this.pen_button_Click);
-            // 
-            // eraser_button
-            // 
-            this.eraser_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.eraser_button.Location = new System.Drawing.Point(163, 3);
-            this.eraser_button.Name = "eraser_button";
-            this.eraser_button.Size = new System.Drawing.Size(75, 23);
-            this.eraser_button.TabIndex = 1;
-            this.eraser_button.Text = "Eraser";
-            this.eraser_button.UseVisualStyleBackColor = true;
-            this.eraser_button.Click += new System.EventHandler(this.eraser_button_Click);
-            // 
-            // select_rect_button
-            // 
-            this.select_rect_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.select_rect_button.Location = new System.Drawing.Point(257, 3);
-            this.select_rect_button.Name = "select_rect_button";
-            this.select_rect_button.Size = new System.Drawing.Size(75, 23);
-            this.select_rect_button.TabIndex = 18;
-            this.select_rect_button.Text = "Rect Select";
-            this.select_rect_button.UseVisualStyleBackColor = true;
-            this.select_rect_button.Click += new System.EventHandler(this.select_rect_button_Click);
-            // 
-            // select_lasso_button
-            // 
-            this.select_lasso_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.select_lasso_button.Location = new System.Drawing.Point(332, 3);
-            this.select_lasso_button.Name = "select_lasso_button";
-            this.select_lasso_button.Size = new System.Drawing.Size(88, 23);
-            this.select_lasso_button.TabIndex = 19;
-            this.select_lasso_button.Text = "Lasso Select";
-            this.select_lasso_button.UseVisualStyleBackColor = true;
-            this.select_lasso_button.Click += new System.EventHandler(this.select_lasso_button_Click);
-            // 
-            // brush_selector_button
-            // 
-            this.brush_selector_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.brush_selector_button.Location = new System.Drawing.Point(67, 3);
-            this.brush_selector_button.Name = "brush_selector_button";
-            this.brush_selector_button.Size = new System.Drawing.Size(22, 23);
-            this.brush_selector_button.TabIndex = 21;
-            this.brush_selector_button.Text = "▼";
-            this.brush_selector_button.UseVisualStyleBackColor = true;
-            this.brush_selector_button.Click += new System.EventHandler(this.brush_selector_button_Click);
-            // 
             // top_canvas_strip
             // 
             this.top_canvas_strip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -1159,6 +1122,50 @@ namespace Sketchpop
             this.fill_tool_button.UseVisualStyleBackColor = true;
             this.fill_tool_button.Click += new System.EventHandler(this.fill_tool_button_Click);
             // 
+            // select_lasso_button
+            // 
+            this.select_lasso_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.select_lasso_button.Location = new System.Drawing.Point(332, 3);
+            this.select_lasso_button.Name = "select_lasso_button";
+            this.select_lasso_button.Size = new System.Drawing.Size(88, 23);
+            this.select_lasso_button.TabIndex = 19;
+            this.select_lasso_button.Text = "Lasso Select";
+            this.select_lasso_button.UseVisualStyleBackColor = true;
+            this.select_lasso_button.Click += new System.EventHandler(this.select_lasso_button_Click);
+            // 
+            // select_rect_button
+            // 
+            this.select_rect_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.select_rect_button.Location = new System.Drawing.Point(257, 3);
+            this.select_rect_button.Name = "select_rect_button";
+            this.select_rect_button.Size = new System.Drawing.Size(75, 23);
+            this.select_rect_button.TabIndex = 18;
+            this.select_rect_button.Text = "Rect Select";
+            this.select_rect_button.UseVisualStyleBackColor = true;
+            this.select_rect_button.Click += new System.EventHandler(this.select_rect_button_Click);
+            // 
+            // eraser_button
+            // 
+            this.eraser_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.eraser_button.Location = new System.Drawing.Point(163, 3);
+            this.eraser_button.Name = "eraser_button";
+            this.eraser_button.Size = new System.Drawing.Size(75, 23);
+            this.eraser_button.TabIndex = 1;
+            this.eraser_button.Text = "Eraser";
+            this.eraser_button.UseVisualStyleBackColor = true;
+            this.eraser_button.Click += new System.EventHandler(this.eraser_button_Click);
+            // 
+            // pen_button
+            // 
+            this.pen_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pen_button.Location = new System.Drawing.Point(88, 3);
+            this.pen_button.Name = "pen_button";
+            this.pen_button.Size = new System.Drawing.Size(75, 23);
+            this.pen_button.TabIndex = 2;
+            this.pen_button.Text = "Pen";
+            this.pen_button.UseVisualStyleBackColor = true;
+            this.pen_button.Click += new System.EventHandler(this.pen_button_Click);
+            // 
             // pen_pressure_button
             // 
             this.pen_pressure_button.Location = new System.Drawing.Point(599, 3);
@@ -1178,6 +1185,17 @@ namespace Sketchpop
             this.zoom_canvas_out_button.Text = "-";
             this.zoom_canvas_out_button.UseVisualStyleBackColor = true;
             this.zoom_canvas_out_button.Click += new System.EventHandler(this.zoom_canvas_out_button_Click);
+            // 
+            // brush_selector_button
+            // 
+            this.brush_selector_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.brush_selector_button.Location = new System.Drawing.Point(67, 3);
+            this.brush_selector_button.Name = "brush_selector_button";
+            this.brush_selector_button.Size = new System.Drawing.Size(22, 23);
+            this.brush_selector_button.TabIndex = 21;
+            this.brush_selector_button.Text = "▼";
+            this.brush_selector_button.UseVisualStyleBackColor = true;
+            this.brush_selector_button.Click += new System.EventHandler(this.brush_selector_button_Click);
             // 
             // zoom_canvas_in_button
             // 
@@ -1513,24 +1531,6 @@ namespace Sketchpop
             this.main_preview_picturebox.TabStop = false;
             this.main_preview_picturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
             this.main_preview_picturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
-            // 
-            // canvas_width_label
-            // 
-            this.canvas_width_label.AutoSize = true;
-            this.canvas_width_label.Location = new System.Drawing.Point(6, 479);
-            this.canvas_width_label.Name = "canvas_width_label";
-            this.canvas_width_label.Size = new System.Drawing.Size(32, 13);
-            this.canvas_width_label.TabIndex = 30;
-            this.canvas_width_label.Text = "width";
-            // 
-            // canvas_height_label
-            // 
-            this.canvas_height_label.AutoSize = true;
-            this.canvas_height_label.Location = new System.Drawing.Point(91, 479);
-            this.canvas_height_label.Name = "canvas_height_label";
-            this.canvas_height_label.Size = new System.Drawing.Size(36, 13);
-            this.canvas_height_label.TabIndex = 31;
-            this.canvas_height_label.Text = "height";
             // 
             // main_window
             // 
