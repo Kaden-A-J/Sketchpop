@@ -116,6 +116,7 @@ namespace Sketchpop
             this.canvas_panel = new System.Windows.Forms.Panel();
             this.clear_canvas_button = new System.Windows.Forms.Button();
             this.top_canvas_strip = new System.Windows.Forms.Panel();
+            this.hand_button = new System.Windows.Forms.Button();
             this.fill_tool_button = new System.Windows.Forms.Button();
             this.select_lasso_button = new System.Windows.Forms.Button();
             this.select_rect_button = new System.Windows.Forms.Button();
@@ -129,7 +130,6 @@ namespace Sketchpop
             this.canvas_frame = new System.Windows.Forms.PictureBox();
             this.brush_menustrip = new System.Windows.Forms.MenuStrip();
             this.penToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.paintBrushToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.painBrushStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ref_img_menustrip = new System.Windows.Forms.MenuStrip();
             this.viewImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -153,7 +153,6 @@ namespace Sketchpop
             this.layer_add_button = new System.Windows.Forms.Button();
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
-            this.hand_button = new System.Windows.Forms.Button();
             this.title_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resize_canvas_input_y)).BeginInit();
@@ -212,7 +211,7 @@ namespace Sketchpop
             this.title_bar.Enabled = false;
             this.title_bar.Location = new System.Drawing.Point(0, 0);
             this.title_bar.Name = "title_bar";
-            this.title_bar.Size = new System.Drawing.Size(1280, 13);
+            this.title_bar.Size = new System.Drawing.Size(1280, 4);
             this.title_bar.TabIndex = 2;
             // 
             // title_label
@@ -1072,11 +1071,11 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
+            this.canvas_panel.Controls.Add(this.brush_menustrip);
             this.canvas_panel.Controls.Add(this.clear_canvas_button);
             this.canvas_panel.Controls.Add(this.top_canvas_strip);
             this.canvas_panel.Controls.Add(this.drawing_picture_box);
             this.canvas_panel.Controls.Add(this.canvas_frame);
-            this.canvas_panel.Controls.Add(this.brush_menustrip);
             this.canvas_panel.Controls.Add(this.ref_img_menustrip);
             this.canvas_panel.Location = new System.Drawing.Point(210, 63);
             this.canvas_panel.Name = "canvas_panel";
@@ -1113,6 +1112,16 @@ namespace Sketchpop
             this.top_canvas_strip.Name = "top_canvas_strip";
             this.top_canvas_strip.Size = new System.Drawing.Size(767, 28);
             this.top_canvas_strip.TabIndex = 20;
+            // 
+            // hand_button
+            // 
+            this.hand_button.Location = new System.Drawing.Point(238, 3);
+            this.hand_button.Name = "hand_button";
+            this.hand_button.Size = new System.Drawing.Size(75, 23);
+            this.hand_button.TabIndex = 26;
+            this.hand_button.Text = "Hand";
+            this.hand_button.UseVisualStyleBackColor = true;
+            this.hand_button.Click += new System.EventHandler(this.hand_button_Click);
             // 
             // fill_tool_button
             // 
@@ -1236,32 +1245,25 @@ namespace Sketchpop
             // 
             // brush_menustrip
             // 
+            this.brush_menustrip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.brush_menustrip.Dock = System.Windows.Forms.DockStyle.None;
             this.brush_menustrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.brush_menustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.penToolStripMenuItem,
             this.painBrushStripMenuItem});
             this.brush_menustrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
-            this.brush_menustrip.Location = new System.Drawing.Point(510, 26);
+            this.brush_menustrip.Location = new System.Drawing.Point(56, 27);
             this.brush_menustrip.Name = "brush_menustrip";
-            this.brush_menustrip.Size = new System.Drawing.Size(85, 42);
+            this.brush_menustrip.Size = new System.Drawing.Size(126, 61);
             this.brush_menustrip.TabIndex = 21;
             this.brush_menustrip.Visible = false;
             // 
             // penToolStripMenuItem
             // 
-            this.penToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.paintBrushToolStripMenuItem});
             this.penToolStripMenuItem.Name = "penToolStripMenuItem";
             this.penToolStripMenuItem.Size = new System.Drawing.Size(39, 19);
             this.penToolStripMenuItem.Text = "Pen";
             this.penToolStripMenuItem.Click += new System.EventHandler(this.penToolStripMenuItem_Click);
-            // 
-            // paintBrushToolStripMenuItem
-            // 
-            this.paintBrushToolStripMenuItem.Name = "paintBrushToolStripMenuItem";
-            this.paintBrushToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
-            this.paintBrushToolStripMenuItem.Text = "Paint Brush";
             // 
             // painBrushStripMenuItem
             // 
@@ -1534,16 +1536,6 @@ namespace Sketchpop
             this.main_preview_picturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
             this.main_preview_picturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
             // 
-            // hand_button
-            // 
-            this.hand_button.Location = new System.Drawing.Point(238, 3);
-            this.hand_button.Name = "hand_button";
-            this.hand_button.Size = new System.Drawing.Size(75, 23);
-            this.hand_button.TabIndex = 26;
-            this.hand_button.Text = "Hand";
-            this.hand_button.UseVisualStyleBackColor = true;
-            this.hand_button.Click += new System.EventHandler(this.hand_button_Click);
-            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1675,7 +1667,6 @@ namespace Sketchpop
         private System.Windows.Forms.Button brush_selector_button;
         private System.Windows.Forms.MenuStrip brush_menustrip;
         private System.Windows.Forms.ToolStripMenuItem penToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem paintBrushToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem painBrushStripMenuItem;
         private System.Windows.Forms.TrackBar paintbrush_trackbar;
         private System.Windows.Forms.ToolStripMenuItem TipToolStripMenuItem;
