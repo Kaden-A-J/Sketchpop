@@ -117,6 +117,8 @@ namespace Sketchpop
             this.select_lasso_button = new System.Windows.Forms.Button();
             this.brush_selector_button = new System.Windows.Forms.Button();
             this.top_canvas_strip = new System.Windows.Forms.Panel();
+            this.fill_tool_button = new System.Windows.Forms.Button();
+            this.pen_pressure_button = new System.Windows.Forms.Button();
             this.zoom_canvas_out_button = new System.Windows.Forms.Button();
             this.zoom_canvas_in_button = new System.Windows.Forms.Button();
             this.drawing_picture_box = new System.Windows.Forms.PictureBox();
@@ -147,8 +149,6 @@ namespace Sketchpop
             this.layer_add_button = new System.Windows.Forms.Button();
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
-            this.pen_pressure_button = new System.Windows.Forms.Button();
-            this.fill_tool_button = new System.Windows.Forms.Button();
             this.title_bar.SuspendLayout();
             this.tool_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
@@ -206,7 +206,7 @@ namespace Sketchpop
             this.title_bar.Enabled = false;
             this.title_bar.Location = new System.Drawing.Point(0, 0);
             this.title_bar.Name = "title_bar";
-            this.title_bar.Size = new System.Drawing.Size(1280, 13);
+            this.title_bar.Size = new System.Drawing.Size(1280, 4);
             this.title_bar.TabIndex = 2;
             // 
             // title_label
@@ -1099,6 +1099,26 @@ namespace Sketchpop
             this.top_canvas_strip.Size = new System.Drawing.Size(767, 28);
             this.top_canvas_strip.TabIndex = 20;
             // 
+            // fill_tool_button
+            // 
+            this.fill_tool_button.Location = new System.Drawing.Point(161, 3);
+            this.fill_tool_button.Name = "fill_tool_button";
+            this.fill_tool_button.Size = new System.Drawing.Size(75, 23);
+            this.fill_tool_button.TabIndex = 25;
+            this.fill_tool_button.Text = "Fill tool";
+            this.fill_tool_button.UseVisualStyleBackColor = true;
+            this.fill_tool_button.Click += new System.EventHandler(this.fill_tool_button_Click);
+            // 
+            // pen_pressure_button
+            // 
+            this.pen_pressure_button.Location = new System.Drawing.Point(242, 3);
+            this.pen_pressure_button.Name = "pen_pressure_button";
+            this.pen_pressure_button.Size = new System.Drawing.Size(82, 23);
+            this.pen_pressure_button.TabIndex = 24;
+            this.pen_pressure_button.Text = "Pen Pressure";
+            this.pen_pressure_button.UseVisualStyleBackColor = true;
+            this.pen_pressure_button.Click += new System.EventHandler(this.pen_pressure_button_Click);
+            // 
             // zoom_canvas_out_button
             // 
             this.zoom_canvas_out_button.Location = new System.Drawing.Point(26, 3);
@@ -1125,7 +1145,7 @@ namespace Sketchpop
             this.drawing_picture_box.Enabled = false;
             this.drawing_picture_box.Location = new System.Drawing.Point(7, 34);
             this.drawing_picture_box.Name = "drawing_picture_box";
-            this.drawing_picture_box.Size = new System.Drawing.Size(767, 625);
+            this.drawing_picture_box.Size = new System.Drawing.Size(2000, 2000);
             this.drawing_picture_box.TabIndex = 19;
             this.drawing_picture_box.TabStop = false;
             // 
@@ -1443,26 +1463,6 @@ namespace Sketchpop
             this.main_preview_picturebox.TabStop = false;
             this.main_preview_picturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
             this.main_preview_picturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
-            // 
-            // pen_pressure_button
-            // 
-            this.pen_pressure_button.Location = new System.Drawing.Point(242, 3);
-            this.pen_pressure_button.Name = "pen_pressure_button";
-            this.pen_pressure_button.Size = new System.Drawing.Size(82, 23);
-            this.pen_pressure_button.TabIndex = 24;
-            this.pen_pressure_button.Text = "Pen Pressure";
-            this.pen_pressure_button.UseVisualStyleBackColor = true;
-            this.pen_pressure_button.Click += new System.EventHandler(this.pen_pressure_button_Click);
-            // 
-            // fill_tool_button
-            // 
-            this.fill_tool_button.Location = new System.Drawing.Point(161, 3);
-            this.fill_tool_button.Name = "fill_tool_button";
-            this.fill_tool_button.Size = new System.Drawing.Size(75, 23);
-            this.fill_tool_button.TabIndex = 25;
-            this.fill_tool_button.Text = "Fill tool";
-            this.fill_tool_button.UseVisualStyleBackColor = true;
-            this.fill_tool_button.Click += new System.EventHandler(this.fill_tool_button_Click);
             // 
             // main_window
             // 

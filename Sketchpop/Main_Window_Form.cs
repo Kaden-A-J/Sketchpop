@@ -91,6 +91,9 @@ namespace Sketchpop
 
             canvas_frame.MouseWheel += mouse_scrolled;
 
+            drawing_picture_box.Width = Program.canvas_manager.canvas_info.Width;
+            drawing_picture_box.Height = Program.canvas_manager.canvas_info.Height;
+
             drawing_box_stored_width = drawing_picture_box.Width;
             drawing_box_stored_height = drawing_picture_box.Height;
 
@@ -724,7 +727,7 @@ namespace Sketchpop
         private void zoom_canvas_in_button_Click(object sender, EventArgs e)
         {
             Program.canvas_manager.stored_scale += 0.2f;
-            if (Program.canvas_manager.stored_scale == 0)
+            if (Program.canvas_manager.stored_scale >= 2)
                 Program.canvas_manager.stored_scale -= 0.2f;
             resize_drawing_picture_box();
         }
@@ -732,8 +735,9 @@ namespace Sketchpop
         private void zoom_canvas_out_button_Click(object sender, EventArgs e)
         {
             Program.canvas_manager.stored_scale -= 0.2f;
-            if (Program.canvas_manager.stored_scale == 0)
+            if (Program.canvas_manager.stored_scale <= 0.1)
                 Program.canvas_manager.stored_scale += 0.2f;
+            //Console.WriteLine(Program.canvas_manager.stored_scale);
             resize_drawing_picture_box();
         }
 
