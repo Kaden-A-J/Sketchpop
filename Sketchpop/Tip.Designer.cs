@@ -30,6 +30,7 @@ namespace Sketchpop
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Tip));
             this.main_Flow_Layout_Panel = new System.Windows.Forms.FlowLayoutPanel();
             this.description_Layout_Panel = new System.Windows.Forms.FlowLayoutPanel();
             this.description_label = new System.Windows.Forms.Label();
@@ -185,6 +186,7 @@ namespace Sketchpop
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.main_Flow_Layout_Panel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Tip";
             this.Text = "Tip";
             this.main_Flow_Layout_Panel.ResumeLayout(false);

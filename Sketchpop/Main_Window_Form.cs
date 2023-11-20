@@ -97,6 +97,10 @@ namespace Sketchpop
             drawing_box_stored_width = drawing_picture_box.Width;
             drawing_box_stored_height = drawing_picture_box.Height;
 
+            Program.canvas_manager.stored_scale = (float)canvas_frame.Width / (float)Program.canvas_manager.canvas_info.Width - 0.2f;
+
+            //Console.WriteLine(Program.canvas_manager.stored_scale);
+
             // add BG layer
             layer_add_button_Click(null, null);
             bg_layer_added = true;
@@ -109,9 +113,12 @@ namespace Sketchpop
             Load_Exercise_Images();
             Palette_Setup();
 
-            middle_drawing_start = new Point(
-                (canvas_panel.Width / 2) - (Program.canvas_manager.canvas_info.Width / 2),
-                (canvas_panel.Height / 2) - (Program.canvas_manager.canvas_info.Height / 2) - 28);
+            //middle_drawing_start = new Point(
+            //    (int)((Program.canvas_manager.stored_scale * (canvas_panel.Width / 2)) - (Program.canvas_manager.stored_scale * (Program.canvas_manager.canvas_info.Width / 2))),
+            //    (int)((Program.canvas_manager.stored_scale * (canvas_panel.Height / 2)) - (Program.canvas_manager.stored_scale * (Program.canvas_manager.canvas_info.Height / 2))) - 28);
+
+            middle_drawing_start = new Point((int)((canvas_panel.Width / 2) - (Program.canvas_manager.stored_scale * (Program.canvas_manager.canvas_info.Width / 2))),
+                (int)((canvas_panel.Width / 2) - (Program.canvas_manager.stored_scale * (Program.canvas_manager.canvas_info.Height / 2))) - 28*2);
 
             Program.canvas_manager.middle_drawing_start = middle_drawing_start;
 
@@ -726,17 +733,18 @@ namespace Sketchpop
 
         private void zoom_canvas_in_button_Click(object sender, EventArgs e)
         {
-            Program.canvas_manager.stored_scale += 0.2f;
-            if (Program.canvas_manager.stored_scale >= 2)
-                Program.canvas_manager.stored_scale -= 0.2f;
+            Program.canvas_manager.stored_scale += 0.1f;
+            if (Program.canvas_manager.stored_scale >= 1)
+                Program.canvas_manager.stored_scale -= 0.1f;
+            //Console.WriteLine(Program.canvas_manager.stored_scale);
             resize_drawing_picture_box();
         }
 
         private void zoom_canvas_out_button_Click(object sender, EventArgs e)
         {
-            Program.canvas_manager.stored_scale -= 0.2f;
-            if (Program.canvas_manager.stored_scale <= 0.1)
-                Program.canvas_manager.stored_scale += 0.2f;
+            Program.canvas_manager.stored_scale -= 0.1f;
+            if (Program.canvas_manager.stored_scale <= 0.3)
+                Program.canvas_manager.stored_scale += 0.1f;
             //Console.WriteLine(Program.canvas_manager.stored_scale);
             resize_drawing_picture_box();
         }

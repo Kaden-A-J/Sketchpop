@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Repeated_Circles_Options_Form));
             this.spacing_num_up_down = new System.Windows.Forms.NumericUpDown();
             this.angle_num_up_down = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
@@ -115,6 +116,7 @@
             // 
             // cancel_button
             // 
+            this.cancel_button.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancel_button.Location = new System.Drawing.Point(43, 182);
             this.cancel_button.Name = "cancel_button";
             this.cancel_button.Size = new System.Drawing.Size(75, 23);
@@ -137,6 +139,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.angle_num_up_down);
             this.Controls.Add(this.spacing_num_up_down);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Repeated_Circles_Options_Form";
             this.Text = "Repeated_Circles_Options_Form";
             ((System.ComponentModel.ISupportInitialize)(this.spacing_num_up_down)).EndInit();

@@ -49,6 +49,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
@@ -210,6 +217,9 @@
     <EmbeddedResource Include="Image_Search_Form.resx">
       <DependentUpon>Image_Search_Form.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="login_window.resx">
+      <DependentUpon>login_window.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main_Window_Form.resx">
       <DependentUpon>Main_Window_Form.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -252,6 +262,7 @@
     <Content Include="Exercise_Images\sketchpop_example1.jpg" />
     <Content Include="Exercise_Images\sketchpop_example2.jpg" />
     <Content Include="Exercise_Images\sketchpop_example3.jpg" />
+    <Content Include="icon.ico" />
     <Content Include="Random_Prompts\prompts.txt" />
     <Content Include="Textures\brush.png" />
   </ItemGroup>

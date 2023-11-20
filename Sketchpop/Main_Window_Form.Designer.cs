@@ -30,6 +30,7 @@ namespace Sketchpop
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(main_window));
             this.RegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exit_button = new System.Windows.Forms.Button();
             this.title_bar = new System.Windows.Forms.Panel();
@@ -1480,6 +1481,7 @@ namespace Sketchpop
             this.Controls.Add(this.fullscreen_button);
             this.Controls.Add(this.title_bar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(128, 128);

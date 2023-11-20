@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Fullscreen_Image_Form));
             this.image_picturebox = new System.Windows.Forms.PictureBox();
             this.info_label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.image_picturebox)).BeginInit();
@@ -66,6 +67,7 @@
             this.Controls.Add(this.info_label);
             this.Controls.Add(this.image_picturebox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Fullscreen_Image_Form";
             this.Text = "Form1";
             this.TopMost = true;

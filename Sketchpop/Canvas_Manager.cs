@@ -76,7 +76,7 @@ namespace Sketchpop
             paste_manager = new Paste_Manager();
 
             //picture_box = canvas_frame;
-            canvas_info = new SKImageInfo(500, 500);
+            canvas_info = new SKImageInfo(1000, 1000);
 
 
             Reset_Canvas_State();

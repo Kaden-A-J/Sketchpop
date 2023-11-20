@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Image_Layer_Options_Form));
             this.options_panel = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.add_layer_button = new System.Windows.Forms.Button();
             this.save_button = new System.Windows.Forms.Button();
             this.pb_panel = new System.Windows.Forms.Panel();
@@ -37,7 +39,6 @@
             this.op_panel = new System.Windows.Forms.Panel();
             this.opacity_label = new System.Windows.Forms.Label();
             this.opacity_slider = new System.Windows.Forms.TrackBar();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.options_panel.SuspendLayout();
             this.pb_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.image_pb)).BeginInit();
@@ -59,6 +60,15 @@
             this.options_panel.Name = "options_panel";
             this.options_panel.Size = new System.Drawing.Size(747, 539);
             this.options_panel.TabIndex = 0;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.DimGray;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(468, 12);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(257, 380);
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // add_layer_button
             // 
@@ -143,15 +153,6 @@
             this.opacity_slider.Value = 255;
             this.opacity_slider.Scroll += new System.EventHandler(this.opacity_slider_Scroll);
             // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.BackColor = System.Drawing.Color.DimGray;
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(468, 12);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(257, 380);
-            this.flowLayoutPanel1.TabIndex = 0;
-            // 
             // Image_Layer_Options_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -159,6 +160,7 @@
             this.ClientSize = new System.Drawing.Size(747, 539);
             this.Controls.Add(this.options_panel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Image_Layer_Options_Form";
