@@ -1129,14 +1129,9 @@ namespace Sketchpop
             clear_canvas_button_Click(sender, e);
         }
 
-        private void layer_down_button_Click(object sender, EventArgs e)
+        private void hand_button_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void layer_up_button_Click(object sender, EventArgs e)
-        {
-
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.hand;
         }
 
         private void Get_Random_Monochrome_Image(object sender, EventArgs e)

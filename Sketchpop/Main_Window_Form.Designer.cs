@@ -153,6 +153,7 @@ namespace Sketchpop
             this.layer_add_button = new System.Windows.Forms.Button();
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
+            this.hand_button = new System.Windows.Forms.Button();
             this.title_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resize_canvas_input_y)).BeginInit();
@@ -211,7 +212,7 @@ namespace Sketchpop
             this.title_bar.Enabled = false;
             this.title_bar.Location = new System.Drawing.Point(0, 0);
             this.title_bar.Name = "title_bar";
-            this.title_bar.Size = new System.Drawing.Size(1280, 4);
+            this.title_bar.Size = new System.Drawing.Size(1280, 13);
             this.title_bar.TabIndex = 2;
             // 
             // title_label
@@ -1098,6 +1099,7 @@ namespace Sketchpop
             // 
             this.top_canvas_strip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.top_canvas_strip.Controls.Add(this.hand_button);
             this.top_canvas_strip.Controls.Add(this.fill_tool_button);
             this.top_canvas_strip.Controls.Add(this.select_lasso_button);
             this.top_canvas_strip.Controls.Add(this.select_rect_button);
@@ -1114,7 +1116,7 @@ namespace Sketchpop
             // 
             // fill_tool_button
             // 
-            this.fill_tool_button.Location = new System.Drawing.Point(439, 3);
+            this.fill_tool_button.Location = new System.Drawing.Point(509, 3);
             this.fill_tool_button.Name = "fill_tool_button";
             this.fill_tool_button.Size = new System.Drawing.Size(75, 23);
             this.fill_tool_button.TabIndex = 25;
@@ -1125,7 +1127,7 @@ namespace Sketchpop
             // select_lasso_button
             // 
             this.select_lasso_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.select_lasso_button.Location = new System.Drawing.Point(332, 3);
+            this.select_lasso_button.Location = new System.Drawing.Point(403, 3);
             this.select_lasso_button.Name = "select_lasso_button";
             this.select_lasso_button.Size = new System.Drawing.Size(88, 23);
             this.select_lasso_button.TabIndex = 19;
@@ -1136,7 +1138,7 @@ namespace Sketchpop
             // select_rect_button
             // 
             this.select_rect_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.select_rect_button.Location = new System.Drawing.Point(257, 3);
+            this.select_rect_button.Location = new System.Drawing.Point(328, 3);
             this.select_rect_button.Name = "select_rect_button";
             this.select_rect_button.Size = new System.Drawing.Size(75, 23);
             this.select_rect_button.TabIndex = 18;
@@ -1532,6 +1534,16 @@ namespace Sketchpop
             this.main_preview_picturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
             this.main_preview_picturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
             // 
+            // hand_button
+            // 
+            this.hand_button.Location = new System.Drawing.Point(238, 3);
+            this.hand_button.Name = "hand_button";
+            this.hand_button.Size = new System.Drawing.Size(75, 23);
+            this.hand_button.TabIndex = 26;
+            this.hand_button.Text = "Hand";
+            this.hand_button.UseVisualStyleBackColor = true;
+            this.hand_button.Click += new System.EventHandler(this.hand_button_Click);
+            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1726,6 +1738,7 @@ namespace Sketchpop
         private System.Windows.Forms.NumericUpDown resize_canvas_input_y;
         private System.Windows.Forms.Label canvas_height_label;
         private System.Windows.Forms.Label canvas_width_label;
+        private System.Windows.Forms.Button hand_button;
     }
 }
 
