@@ -1131,6 +1131,13 @@ namespace Sketchpop
             Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.fill;
         }
 
+        private void resize_canvas_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.canvas_info.Width = (int)(resize_canvas_input_x.Value);
+            Program.canvas_manager.canvas_info.Height = (int)(resize_canvas_input_y.Value);
+            clear_canvas_button_Click(sender, e);
+        }
+
         private void Get_Random_Monochrome_Image(object sender, EventArgs e)
         {
             ToolStripMenuItem t = (ToolStripMenuItem)sender;

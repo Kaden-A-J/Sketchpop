@@ -150,6 +150,9 @@ namespace Sketchpop
             this.layer_add_button = new System.Windows.Forms.Button();
             this.layer_panel = new System.Windows.Forms.Panel();
             this.main_preview_picturebox = new System.Windows.Forms.PictureBox();
+            this.resize_canvas_button = new System.Windows.Forms.Button();
+            this.resize_canvas_input_x = new System.Windows.Forms.NumericUpDown();
+            this.resize_canvas_input_y = new System.Windows.Forms.NumericUpDown();
             this.title_bar.SuspendLayout();
             this.tool_bar.SuspendLayout();
             this.left_settings_panel.SuspendLayout();
@@ -176,6 +179,8 @@ namespace Sketchpop
             this.exercise_palette.SuspendLayout();
             this.exercise_palette_colors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.main_preview_picturebox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resize_canvas_input_x)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resize_canvas_input_y)).BeginInit();
             this.SuspendLayout();
             // 
             // RegisterToolStripMenuItem
@@ -207,7 +212,7 @@ namespace Sketchpop
             this.title_bar.Enabled = false;
             this.title_bar.Location = new System.Drawing.Point(0, 0);
             this.title_bar.Name = "title_bar";
-            this.title_bar.Size = new System.Drawing.Size(1280, 4);
+            this.title_bar.Size = new System.Drawing.Size(1280, 13);
             this.title_bar.TabIndex = 2;
             // 
             // title_label
@@ -276,6 +281,9 @@ namespace Sketchpop
             this.left_settings_panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.left_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
+            this.left_settings_panel.Controls.Add(this.resize_canvas_input_y);
+            this.left_settings_panel.Controls.Add(this.resize_canvas_input_x);
+            this.left_settings_panel.Controls.Add(this.resize_canvas_button);
             this.left_settings_panel.Controls.Add(this.color_pal_label);
             this.left_settings_panel.Controls.Add(this.color_palette);
             this.left_settings_panel.Controls.Add(this.paintbrush_trackbar);
@@ -957,7 +965,7 @@ namespace Sketchpop
             this.saveAsPNGToolStripMenuItem,
             this.saveIntoCloudToolStripMenuItem});
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.saveToolStripMenuItem.Text = "Save";
             // 
             // saveAsEXCToolStripMenuItem
@@ -984,7 +992,7 @@ namespace Sketchpop
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.LoadToolStripMenuItem_Click);
             // 
@@ -1465,6 +1473,70 @@ namespace Sketchpop
             this.main_preview_picturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseDown);
             this.main_preview_picturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.canvas_frame_MouseUp);
             // 
+            // resize_canvas_button
+            // 
+            this.resize_canvas_button.Location = new System.Drawing.Point(3, 521);
+            this.resize_canvas_button.Name = "resize_canvas_button";
+            this.resize_canvas_button.Size = new System.Drawing.Size(91, 23);
+            this.resize_canvas_button.TabIndex = 25;
+            this.resize_canvas_button.Text = "Resize Canvas";
+            this.resize_canvas_button.UseVisualStyleBackColor = true;
+            this.resize_canvas_button.Click += new System.EventHandler(this.resize_canvas_button_Click);
+            // 
+            // resize_canvas_input_x
+            // 
+            this.resize_canvas_input_x.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.resize_canvas_input_x.Location = new System.Drawing.Point(2, 495);
+            this.resize_canvas_input_x.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.resize_canvas_input_x.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.resize_canvas_input_x.Name = "resize_canvas_input_x";
+            this.resize_canvas_input_x.Size = new System.Drawing.Size(83, 20);
+            this.resize_canvas_input_x.TabIndex = 28;
+            this.resize_canvas_input_x.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
+            // resize_canvas_input_y
+            // 
+            this.resize_canvas_input_y.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.resize_canvas_input_y.Location = new System.Drawing.Point(86, 495);
+            this.resize_canvas_input_y.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.resize_canvas_input_y.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.resize_canvas_input_y.Name = "resize_canvas_input_y";
+            this.resize_canvas_input_y.Size = new System.Drawing.Size(83, 20);
+            this.resize_canvas_input_y.TabIndex = 29;
+            this.resize_canvas_input_y.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            // 
             // main_window
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1525,6 +1597,8 @@ namespace Sketchpop
             this.exercise_palette.ResumeLayout(false);
             this.exercise_palette_colors.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.main_preview_picturebox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resize_canvas_input_x)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.resize_canvas_input_y)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1655,6 +1729,9 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem saveIntoCloudToolStripMenuItem;
         private System.Windows.Forms.Button pen_pressure_button;
         private System.Windows.Forms.Button fill_tool_button;
+        private System.Windows.Forms.Button resize_canvas_button;
+        private System.Windows.Forms.NumericUpDown resize_canvas_input_x;
+        private System.Windows.Forms.NumericUpDown resize_canvas_input_y;
     }
 }
 
