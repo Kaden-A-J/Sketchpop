@@ -496,16 +496,7 @@ namespace Sketchpop
                 else if (bottom.Contains(cursor)) message.Result = (IntPtr)HTBOTTOM;
             }
         }
-        
-        private void brush_button_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
-        }
-
-        private void hand_button_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.hand;
-        }
+       
 
         /*
          *  Start of -- Image Selection and Database Related Code
@@ -1136,6 +1127,16 @@ namespace Sketchpop
             Program.canvas_manager.canvas_info.Width = (int)(resize_canvas_input_x.Value);
             Program.canvas_manager.canvas_info.Height = (int)(resize_canvas_input_y.Value);
             clear_canvas_button_Click(sender, e);
+        }
+
+        private void layer_down_button_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void layer_up_button_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void Get_Random_Monochrome_Image(object sender, EventArgs e)

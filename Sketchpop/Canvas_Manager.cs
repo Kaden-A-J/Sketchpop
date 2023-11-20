@@ -82,6 +82,8 @@ namespace Sketchpop
             Reset_Canvas_State();
         }
 
+
+        // used for the fill tool, fills an area of similar color with a different color
         public void fill(Point click_point, SKColor replacement_color)
         {
             if (layer_manager.get_image(layer_manager.selected_layer).Info.Rect.Contains(click_point.X, click_point.Y))
@@ -130,6 +132,7 @@ namespace Sketchpop
             }
         }
 
+        // called when the mouse is pressed down, invokes the current tool
         public void Mouse_Down_Handler(Point click_position)
         {
             Point adjusted = Adjust_Point_To_Hand(click_position);
@@ -172,6 +175,8 @@ namespace Sketchpop
             }
         }
 
+
+        // called when the mouse is held down, invokes the current tool
         public void Mouse_Is_Still_Down_Handler(Point point)
         {
             Point adjusted = Adjust_Point_To_Hand(point);
@@ -205,6 +210,8 @@ namespace Sketchpop
             }
         }
 
+
+        // projects the given point onto the visible adjusted canvas
         public Point Adjust_Point_To_Hand(Point point)
         {
             return new Point(
@@ -213,6 +220,8 @@ namespace Sketchpop
                 ); // 28 is the size of the topstrip maybe should fix this later
         }
 
+
+        // called when the mouse is released, finishes invoking tools
         internal void Mouse_Up_Handler(Point click_position)
         {
             Point adjusted = Adjust_Point_To_Hand(click_position);
@@ -228,6 +237,8 @@ namespace Sketchpop
             }
         }
 
+
+        // exit out of selection mode
         internal void Esc_Handler()
         {
             if (current_tool == SketchPopTool.hand || current_tool == SketchPopTool.move_pasted)
@@ -247,6 +258,8 @@ namespace Sketchpop
             }
         }
 
+
+        // start the skiasharp path to draw for a mouse event
         public void Begin_Draw_Path(Point point)
         {
             current_path = new SKPath();
@@ -255,20 +268,27 @@ namespace Sketchpop
             pointsToDraw.Enqueue(new Point_Operation(point, Point_Operation.OperationType.jump));
         }
 
+
+        // keeps track of all the registered inputs from the mouse while a line is beign drawn
         public void Add_Point_To_Draw(Point point)
         {
             pointsToDraw.Enqueue(new Point_Operation(point, Point_Operation.OperationType.line_to));
         }
 
+
+        // changes the currently used brush color
         public void Update_Color(byte red, byte green, byte blue, byte alpha)
         {
             brush_manager.Get_Current_Brush().Set_Color(new SKColor(red, green, blue, alpha));
         }
 
+
+        // change the currently used brush size
         public void Update_Stroke_Size(int size)
         {
             brush_manager.Get_Current_Brush().Set_Stroke(size);
         }
+
 
         /// <summary>
         /// Draws the surface onto a Bitmap
@@ -344,6 +364,7 @@ namespace Sketchpop
             }
         }
 
+
         /// <summary>
         /// Resizes the Bitmap to fit the target PictureBox by calculating the ratios
         /// between the SKBitmap and SKSizeI and applies the smaller ratio to the new
@@ -367,6 +388,7 @@ namespace Sketchpop
 
             return t_bitmap.Resize(new SKImageInfo(newWidth, newHeight), SKFilterQuality.High);
         }
+
 
         public void Draw_Path_Points(object state)
         {
@@ -424,10 +446,12 @@ namespace Sketchpop
             }
         }
 
+
         public void Change_Brush(string brush_name)
         {
             brush_manager.Set_Brush(brush_name);
         }
+
 
         public void Change_Brush(string brush_name, NumericUpDown stroke_input_box)
         {
@@ -436,6 +460,7 @@ namespace Sketchpop
             // update the UI 
             stroke_input_box.Value = brush_manager.Get_Current_Brush().Stroke();
         }
+
 
         public void Repeated_Circles_Exercise(int spacing, int angle)
         {
@@ -607,6 +632,7 @@ namespace Sketchpop
         }
 
 
+        // used for the stamping brush
         private float Get_Step_Size(int stroke)
         {
             switch (stroke)
@@ -630,6 +656,7 @@ namespace Sketchpop
             }
             return -1;
         }
+
 
         internal void Handle_Copy()
         {
@@ -682,6 +709,7 @@ namespace Sketchpop
             }
         }
 
+
         internal void Handle_Paste()
         {
             if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
@@ -703,6 +731,7 @@ namespace Sketchpop
                 paste_manager.start_pasting(SKImage.FromBitmap(new Bitmap(Clipboard.GetImage()).ToSKBitmap()));
             }
         }
+
 
         public enum SketchPopTool
         {
