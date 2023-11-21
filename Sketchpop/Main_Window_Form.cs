@@ -1324,6 +1324,16 @@ namespace Sketchpop
             }
         }
 
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
         public byte[] ConvertToBlackAndWhite(byte[] originalImageBytes)
         {
             using (MemoryStream ms = new MemoryStream(originalImageBytes))
