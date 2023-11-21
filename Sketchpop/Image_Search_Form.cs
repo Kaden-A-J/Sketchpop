@@ -289,10 +289,11 @@ namespace Sketchpop
                 select_button.Enabled = true;
                 add_fav_button.Visible = true;
                 remove_fav_button.Visible = false;
-
                 _search_results_showing = true;
                 _favs_showing = false;
                 _uploaded_showing = false;
+                user_images_button.ForeColor = Color.Black;
+                view_fav_button.ForeColor = Color.Black;
 
                 Get_Images(sender, e);
             }
@@ -390,10 +391,11 @@ namespace Sketchpop
                 select_button.Enabled = true;
                 remove_fav_button.Visible = true;
                 add_fav_button.Visible = true;
-
                 _uploaded_showing = true;
                 _favs_showing = false;
                 _search_results_showing = false;
+                user_images_button.ForeColor = Color.Blue;
+                view_fav_button.ForeColor = Color.Black;
 
                 _uploaded_images = _dbm.Get_User_Images();
                 images_panel.Controls.Clear();
@@ -411,6 +413,8 @@ namespace Sketchpop
         /// <param name="e">n/a</param>
         private void view_fav_button_Click(object sender, EventArgs e)
         {
+            view_fav_button.ForeColor = Color.Blue;
+
             // cancel the previous flow layout if images are being added when this button is clicked
             _cts.Cancel();
             _cts = new CancellationTokenSource(); // create a new cancel token
@@ -424,10 +428,10 @@ namespace Sketchpop
             select_button.Enabled = true;
             remove_fav_button.Visible = true;
             add_fav_button.Visible = false;
-
             _favs_showing = true;
             _search_results_showing = false;
             _uploaded_showing = false;
+            user_images_button.ForeColor = Color.Black;
 
             Add_Images_To_Panel(_favorite_images, _cts); // pass the cancel token so that the search criteria can cancel if needed
         }
@@ -440,6 +444,7 @@ namespace Sketchpop
         /// <param name="e">n/a</param>
         private void user_images_button_Click(object sender, EventArgs e)
         {
+            user_images_button.ForeColor = Color.Blue;
             _cts.Cancel();
             _cts = new CancellationTokenSource();
 
@@ -451,10 +456,10 @@ namespace Sketchpop
             select_button.Enabled = true;
             remove_fav_button.Visible = true;
             add_fav_button.Visible = true;
-
             _uploaded_showing = true;
             _favs_showing = false;
             _search_results_showing = false;
+            view_fav_button.ForeColor= Color.Black;
 
             Add_Images_To_Panel(_uploaded_images, _cts);
         }
