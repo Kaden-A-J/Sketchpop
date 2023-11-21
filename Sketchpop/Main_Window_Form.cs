@@ -539,7 +539,7 @@ namespace Sketchpop
             }
 
             Program.canvas_manager.layer_manager.delete_layer(last_idx);
-
+            Program.canvas_manager.delete_layer_in_operation_manager(last_idx);
             this.layer_panel.Controls.Remove(layers_ui[last_idx]);
             layers_ui.RemoveAt(last_idx);
         }
