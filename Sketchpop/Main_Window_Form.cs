@@ -755,6 +755,23 @@ namespace Sketchpop
                 {
                     Program.canvas_manager.Handle_Paste();
                 }
+                else if (e.KeyCode == Keys.Z)
+                {
+                    if (e.Shift)
+                    {
+                        if (redoToolStripMenuItem.Enabled)
+                        {
+                            redoToolStripMenuItem_Click(sender, e);
+                        }
+                    }
+                    else 
+                    {
+                        if (undoToolStripMenuItem.Enabled)
+                        {
+                            undoToolStripMenuItem_Click(sender, e);
+                        }
+                    }
+                }    
             }
             else if (e.KeyCode == Keys.Escape)
             {
