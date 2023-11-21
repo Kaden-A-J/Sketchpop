@@ -13,7 +13,7 @@ using static Sketchpop.Image_Search_Form;
 
 namespace Sketchpop
 {
-    public partial class main_window : Form 
+    public partial class main_window : Form
     {
         public Point middle_drawing_start = new Point(0, 0);
         public Timer draw_timer = new Timer();
@@ -41,6 +41,7 @@ namespace Sketchpop
         // random exercise variables
         private Random r = new Random();
         private List<string> _prompts;
+        private string[] exercise_labels = { "Muscle Memory", "Red Lining", "Random Prompt", "Values" };
 
         // Sketchpop Exercise Images
         private List<byte[]> _value_examples = new List<byte[]>();
@@ -84,7 +85,7 @@ namespace Sketchpop
             InitializeComponent();
             Program.canvas_manager = new Canvas_Manager();
             Application.AddMessageFilter(new PenPressureMessageFilter(Program.canvas_manager));
-            int result = PenPressureMessageFilter.EnableMouseInPointer(true); 
+            int result = PenPressureMessageFilter.EnableMouseInPointer(true);
 
             layers_ui = new List<Panel>();
             _um = new Unsplash_Manager();
@@ -118,7 +119,7 @@ namespace Sketchpop
             //    (int)((Program.canvas_manager.stored_scale * (canvas_panel.Height / 2)) - (Program.canvas_manager.stored_scale * (Program.canvas_manager.canvas_info.Height / 2))) - 28);
 
             middle_drawing_start = new Point((int)((canvas_panel.Width / 2) - (Program.canvas_manager.stored_scale * (Program.canvas_manager.canvas_info.Width / 2))),
-                (int)((canvas_panel.Width / 2) - (Program.canvas_manager.stored_scale * (Program.canvas_manager.canvas_info.Height / 2))) - 28*2);
+                (int)((canvas_panel.Width / 2) - (Program.canvas_manager.stored_scale * (Program.canvas_manager.canvas_info.Height / 2))) - 28 * 2);
 
             Program.canvas_manager.middle_drawing_start = middle_drawing_start;
 
@@ -284,6 +285,7 @@ namespace Sketchpop
         {
             // clear the exercise controls:
             exercise_arrow_buttons.Controls.Clear();
+            clear_canvas_button_Click(null, null);
 
             var options_form = new Repeated_Circles_Options_Form(this);
             options_form.ShowDialog();
@@ -301,9 +303,18 @@ namespace Sketchpop
             }
 
             // reset exercises logic (if needed)
+            for (int i = 0; i < exercisesToolStripMenuItem.DropDownItems.Count; i++)
+            {
+                if (!exercisesToolStripMenuItem.DropDownItems[i].Text.Equals("Muscle Memory"))
+                {
+                    exercisesToolStripMenuItem.DropDownItems[i].Text = exercise_labels[i];
+                }
+            }
+
+            valuesToolStripMenuItem.Text = "Muscle Memory  [ACTIVE]";
+
             if (prompt.Visible && prompt_link.Visible)
             {
-                randomPromptToolStripMenuItem.Text = "Random Prompt";
                 prompt.Hide();
                 prompt_link.Hide();
             }
@@ -496,7 +507,7 @@ namespace Sketchpop
                 else if (bottom.Contains(cursor)) message.Result = (IntPtr)HTBOTTOM;
             }
         }
-       
+
 
         /*
          *  Start of -- Image Selection and Database Related Code
@@ -885,9 +896,18 @@ namespace Sketchpop
             }
 
             // reset exercises logic (if needed)
+            for (int i = 0; i < exercisesToolStripMenuItem.DropDownItems.Count; i++)
+            {
+                if (!exercisesToolStripMenuItem.DropDownItems[i].Text.Equals("Red Lining"))
+                {
+                    exercisesToolStripMenuItem.DropDownItems[i].Text = exercise_labels[i];
+                }
+            }
+
+            valuesToolStripMenuItem.Text = "Red Lining   [ACTIVE]";
+
             if (prompt.Visible && prompt_link.Visible)
             {
-                randomPromptToolStripMenuItem.Text = "Random Prompt";
                 prompt.Hide();
                 prompt_link.Hide();
             }
@@ -897,37 +917,34 @@ namespace Sketchpop
         {
             // clear the exercise controls:
             exercise_arrow_buttons.Controls.Clear();
+            clear_canvas_button_Click(null, null);
 
-            if (prompt.Visible && prompt_link.Visible)
+            Get_Random_Prompt();
+            this.prompt_link.Show();
+            this.prompt.Show();
+
+            if (_tips_toggled && _curr == null)
             {
-                randomPromptToolStripMenuItem.Text = "Random Prompt";
+                if (_curr != null)
+                    _curr.Close();
 
-                prompt.Hide();
-                prompt_link.Hide();
+                var tmp = new Tip(this, prompt_link, "Click here to generate new prompts!", 1, false);
+                tmp.closed += Deactivate_Tip;
+                tmp.new_tip += Activate;
+                tmp.Show();
+                _curr = tmp;
             }
-            else
-            {
-                Get_Random_Prompt();
-                this.prompt_link.Show();
-                this.prompt.Show();
 
-                if (_tips_toggled && _curr == null)
+            // reset exercises logic (if needed)
+            for (int i = 0; i < exercisesToolStripMenuItem.DropDownItems.Count; i++)
+            {
+                if (!exercisesToolStripMenuItem.DropDownItems[i].Text.Equals("Random Prompt"))
                 {
-                    if (_curr != null)
-                        _curr.Close();
-
-                    var tmp = new Tip(this, prompt_link, "Click here to generate new prompts!", 1, false);
-                    tmp.closed += Deactivate_Tip;
-                    tmp.new_tip += Activate;
-                    tmp.Show();
-                    _curr = tmp;
+                    exercisesToolStripMenuItem.DropDownItems[i].Text = exercise_labels[i];
                 }
-
-                randomPromptToolStripMenuItem.Text = "Random Prompt" + "   [ACTIVE]";
-
-                prompt.Show();
-                prompt_link.Show();
             }
+
+            randomPromptToolStripMenuItem.Text = "Random Prompt  [ACTIVE]";
         }
 
         private void Get_Random_Prompt()
@@ -1071,6 +1088,9 @@ namespace Sketchpop
         {
             Panel color = (Panel)sender;
 
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
+            Program.canvas_manager.Change_Brush("basic");
+
             red_input_box.Value = color.BackColor.R;
             green_input_box.Value = color.BackColor.G;
             blue_input_box.Value = color.BackColor.B;
@@ -1108,6 +1128,12 @@ namespace Sketchpop
             if (!color_palette.Visible)
                 color_palette.Show();
 
+            // reset exercises logic (if needed)
+            for (int i = 0; i < exercisesToolStripMenuItem.DropDownItems.Count; i++)
+            {
+                exercisesToolStripMenuItem.DropDownItems[i].Text = exercise_labels[i];
+            }            
+
             clear_canvas_button_Click(sender, e);
             exercise_controls.Hide();
             end_exercise_button.Hide();
@@ -1136,9 +1162,12 @@ namespace Sketchpop
 
         private void Get_Random_Monochrome_Image(object sender, EventArgs e)
         {
+            valuesToolStripMenuItem.Text = "";
+
             ToolStripMenuItem t = (ToolStripMenuItem)sender;
 
             // clear the exercise controls, hide color palette:
+            clear_canvas_button_Click(null, null);
             exercise_arrow_buttons.Controls.Clear();
             color_palette.Hide();
             exercise_controls.Show();
@@ -1278,9 +1307,18 @@ namespace Sketchpop
             exercise_palette.Show();
 
             // reset exercises logic (if needed)
+            for (int i = 0; i < exercisesToolStripMenuItem.DropDownItems.Count; i++)
+            {
+                if (!exercisesToolStripMenuItem.DropDownItems[i].Text.Equals("Values"))
+                {
+                    exercisesToolStripMenuItem.DropDownItems[i].Text = exercise_labels[i];
+                }
+            }
+
+            valuesToolStripMenuItem.Text = "Values   [ACTIVE]";
+
             if (prompt.Visible && prompt_link.Visible)
             {
-                randomPromptToolStripMenuItem.Text = "Random Prompt";
                 prompt.Hide();
                 prompt_link.Hide();
             }
@@ -1424,6 +1462,27 @@ namespace Sketchpop
             Graphics g = e.Graphics;
             Pen pen = new Pen(Color.Purple, 2);
             g.DrawRectangle(pen, new Rectangle(0, 0, control.Width - 1, control.Height - 1));
+        }
+
+        /*
+         *  Hot Keys
+         */
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.F))
+            {
+                // Handle Ctrl + F logic here
+                var _ims = new Image_Search_Form();
+
+                _ims._image_selected += image_selected; // subscribe to the selected image even            
+                _ims.StartPosition = FormStartPosition.CenterParent;
+
+                _ims.ShowDialog();
+                return true; // indicate that the key has been handled
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }
