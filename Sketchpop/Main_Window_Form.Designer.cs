@@ -120,8 +120,8 @@ namespace Sketchpop
             this.brush_menustrip = new System.Windows.Forms.MenuStrip();
             this.penToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.painBrushStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.clear_canvas_button = new System.Windows.Forms.Button();
             this.top_canvas_strip = new System.Windows.Forms.Panel();
+            this.clear_canvas_button = new System.Windows.Forms.Button();
             this.hand_button = new System.Windows.Forms.Button();
             this.fill_tool_button = new System.Windows.Forms.Button();
             this.select_lasso_button = new System.Windows.Forms.Button();
@@ -189,7 +189,7 @@ namespace Sketchpop
             // RegisterToolStripMenuItem
             // 
             this.RegisterToolStripMenuItem.Name = "RegisterToolStripMenuItem";
-            this.RegisterToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.RegisterToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.RegisterToolStripMenuItem.Text = "Sign up/ Login";
             this.RegisterToolStripMenuItem.Click += new System.EventHandler(this.RegisterToolStripMenuItem_Click);
             // 
@@ -215,7 +215,7 @@ namespace Sketchpop
             this.title_bar.Enabled = false;
             this.title_bar.Location = new System.Drawing.Point(0, 0);
             this.title_bar.Name = "title_bar";
-            this.title_bar.Size = new System.Drawing.Size(1280, 13);
+            this.title_bar.Size = new System.Drawing.Size(1280, 4);
             this.title_bar.TabIndex = 2;
             // 
             // title_label
@@ -881,8 +881,8 @@ namespace Sketchpop
             this.quick_launch_bar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.quick_launch_bar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
-            this.quick_launch_bar.Controls.Add(this.prompt_link);
             this.quick_launch_bar.Controls.Add(this.prompt);
+            this.quick_launch_bar.Controls.Add(this.prompt_link);
             this.quick_launch_bar.Controls.Add(this.menuStrip1);
             this.quick_launch_bar.Controls.Add(this.place_holder1);
             this.quick_launch_bar.Location = new System.Drawing.Point(210, 26);
@@ -892,16 +892,16 @@ namespace Sketchpop
             // 
             // prompt_link
             // 
-            this.prompt_link.AutoSize = true;
             this.prompt_link.BackColor = System.Drawing.Color.LightPink;
-            this.prompt_link.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.prompt_link.LinkColor = System.Drawing.Color.Black;
-            this.prompt_link.Location = new System.Drawing.Point(319, 5);
+            this.prompt_link.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.prompt_link.ForeColor = System.Drawing.Color.Black;
+            this.prompt_link.LinkColor = System.Drawing.Color.Blue;
+            this.prompt_link.Location = new System.Drawing.Point(203, 5);
             this.prompt_link.Name = "prompt_link";
-            this.prompt_link.Size = new System.Drawing.Size(112, 13);
+            this.prompt_link.Size = new System.Drawing.Size(106, 13);
             this.prompt_link.TabIndex = 22;
             this.prompt_link.TabStop = true;
-            this.prompt_link.Text = "Random Prompt →";
+            this.prompt_link.Text = "Random Prompt→";
             this.prompt_link.Visible = false;
             this.prompt_link.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
@@ -909,11 +909,14 @@ namespace Sketchpop
             // 
             this.prompt.AutoSize = true;
             this.prompt.BackColor = System.Drawing.Color.LightPink;
-            this.prompt.Location = new System.Drawing.Point(282, 6);
-            this.prompt.MaximumSize = new System.Drawing.Size(485, 0);
+            this.prompt.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.prompt.Location = new System.Drawing.Point(294, 5);
+            this.prompt.MaximumSize = new System.Drawing.Size(478, 0);
             this.prompt.Name = "prompt";
-            this.prompt.Size = new System.Drawing.Size(0, 13);
+            this.prompt.Size = new System.Drawing.Size(478, 13);
             this.prompt.TabIndex = 23;
+            this.prompt.Text = "Sitting with Crossed Legs and Hands Clasped: A seated figure with crossed legs an" +
+    "d hands clasped.";
             this.prompt.Visible = false;
             // 
             // menuStrip1
@@ -944,21 +947,21 @@ namespace Sketchpop
             // muscleMemoryToolStripMenuItem
             // 
             this.muscleMemoryToolStripMenuItem.Name = "muscleMemoryToolStripMenuItem";
-            this.muscleMemoryToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.muscleMemoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.muscleMemoryToolStripMenuItem.Text = "Repeated Circles";
             this.muscleMemoryToolStripMenuItem.Click += new System.EventHandler(this.muscleMemoryToolStripMenuItem_Click);
             // 
             // redLiningToolStripMenuItem
             // 
             this.redLiningToolStripMenuItem.Name = "redLiningToolStripMenuItem";
-            this.redLiningToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.redLiningToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.redLiningToolStripMenuItem.Text = "Red Lining ";
             this.redLiningToolStripMenuItem.Click += new System.EventHandler(this.redLiningToolStripMenuItem_Click);
             // 
             // randomPromptToolStripMenuItem
             // 
             this.randomPromptToolStripMenuItem.Name = "randomPromptToolStripMenuItem";
-            this.randomPromptToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.randomPromptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.randomPromptToolStripMenuItem.Text = "Random Prompt";
             this.randomPromptToolStripMenuItem.Click += new System.EventHandler(this.randomPromptToolStripMenuItem_Click);
             // 
@@ -969,7 +972,7 @@ namespace Sketchpop
             this.uploadImageToolStripMenuItem,
             this.sketchpopTutorialToolStripMenuItem});
             this.valuesToolStripMenuItem.Name = "valuesToolStripMenuItem";
-            this.valuesToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.valuesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.valuesToolStripMenuItem.Text = "Values";
             // 
             // randomImageToolStripMenuItem
@@ -1002,7 +1005,7 @@ namespace Sketchpop
             // TipToolStripMenuItem
             // 
             this.TipToolStripMenuItem.Name = "TipToolStripMenuItem";
-            this.TipToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.TipToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.TipToolStripMenuItem.Text = "Toggle Tips";
             this.TipToolStripMenuItem.Click += new System.EventHandler(this.TipToolStripMenuItem_Click);
             // 
@@ -1131,17 +1134,6 @@ namespace Sketchpop
             this.painBrushStripMenuItem.Text = "Paint Brush";
             this.painBrushStripMenuItem.Click += new System.EventHandler(this.painBrushStripMenuItem_Click);
             // 
-            // clear_canvas_button
-            // 
-            this.clear_canvas_button.Location = new System.Drawing.Point(689, 3);
-            this.clear_canvas_button.Name = "clear_canvas_button";
-            this.clear_canvas_button.Size = new System.Drawing.Size(75, 23);
-            this.clear_canvas_button.TabIndex = 10;
-            this.clear_canvas_button.Text = "Clear";
-            this.clear_canvas_button.UseVisualStyleBackColor = true;
-            this.clear_canvas_button.Click += new System.EventHandler(this.clear_canvas_button_Click);
-            this.clear_canvas_button.MouseHover += new System.EventHandler(this.clear_canvas_button_MouseHover);
-            // 
             // top_canvas_strip
             // 
             this.top_canvas_strip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -1161,6 +1153,17 @@ namespace Sketchpop
             this.top_canvas_strip.Name = "top_canvas_strip";
             this.top_canvas_strip.Size = new System.Drawing.Size(767, 28);
             this.top_canvas_strip.TabIndex = 20;
+            // 
+            // clear_canvas_button
+            // 
+            this.clear_canvas_button.Location = new System.Drawing.Point(689, 3);
+            this.clear_canvas_button.Name = "clear_canvas_button";
+            this.clear_canvas_button.Size = new System.Drawing.Size(75, 23);
+            this.clear_canvas_button.TabIndex = 10;
+            this.clear_canvas_button.Text = "Clear";
+            this.clear_canvas_button.UseVisualStyleBackColor = true;
+            this.clear_canvas_button.Click += new System.EventHandler(this.clear_canvas_button_Click);
+            this.clear_canvas_button.MouseHover += new System.EventHandler(this.clear_canvas_button_MouseHover);
             // 
             // hand_button
             // 

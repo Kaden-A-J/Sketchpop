@@ -24,7 +24,7 @@ namespace Sketchpop
         private string _author_link;
         private byte[] _ref_image_data;
 
-        private int[] paint_brush_values = { 30, 50, 80, 100 };
+        private int[] paint_brush_values = { 40, 50, 80, 100 };
         private bool eraser_selected = false;
 
         private Unsplash_Manager _um;
@@ -41,7 +41,7 @@ namespace Sketchpop
         // random exercise variables
         private Random r = new Random();
         private List<string> _prompts;
-        private string[] exercise_labels = { "Muscle Memory", "Red Lining", "Random Prompt", "Values" };
+        private string[] exercise_labels = { "Repeated Circles", "Red Lining", "Random Prompt", "Values" };
 
         // Sketchpop Exercise Images
         private List<byte[]> _value_examples = new List<byte[]>();
@@ -315,13 +315,13 @@ namespace Sketchpop
             // reset exercises logic (if needed)
             for (int i = 0; i < exercisesToolStripMenuItem.DropDownItems.Count; i++)
             {
-                if (!exercisesToolStripMenuItem.DropDownItems[i].Text.Equals("Muscle Memory"))
+                if (!exercisesToolStripMenuItem.DropDownItems[i].Text.Equals("Repeated Circles"))
                 {
                     exercisesToolStripMenuItem.DropDownItems[i].Text = exercise_labels[i];
                 }
             }
 
-            valuesToolStripMenuItem.Text = "Muscle Memory  [ACTIVE]";
+            muscleMemoryToolStripMenuItem.Text = "Repeated Circles  [ACTIVE]";
 
             if (prompt.Visible && prompt_link.Visible)
             {
@@ -1019,7 +1019,7 @@ namespace Sketchpop
                 }
             }
 
-            valuesToolStripMenuItem.Text = "Red Lining   [ACTIVE]";
+            redLiningToolStripMenuItem.Text = "Red Lining   [ACTIVE]";
 
             if (prompt.Visible && prompt_link.Visible)
             {
@@ -1037,6 +1037,7 @@ namespace Sketchpop
             Get_Random_Prompt();
             this.prompt_link.Show();
             this.prompt.Show();
+            this.prompt.BringToFront();
 
             if (_tips_toggled && _curr == null)
             {

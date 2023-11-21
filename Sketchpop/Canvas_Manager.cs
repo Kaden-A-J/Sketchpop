@@ -655,9 +655,9 @@ namespace Sketchpop
         {
             switch (stroke)
             {
-                case 30:
+                case 40:
                     {
-                        return 2.25f * stored_scale;
+                        return 2.05f * stored_scale;
                     }
                 case 50:
                     {
