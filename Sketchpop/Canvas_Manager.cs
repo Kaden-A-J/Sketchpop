@@ -114,22 +114,22 @@ namespace Sketchpop
                         {
                             color_array[p.X + (p.Y * replacement_image.Info.Width)] = replacement_color;
                             Point left = new Point(p.X - 1, p.Y);
-                            if (p.X - 1 >= 0)
+                            if (p.X - 1 >= 0 && selection_manager.Allowed(left))
                             {
                                 points_to_check.Enqueue(left);
                             }
                             Point up = new Point(p.X, p.Y - 1);
-                            if (p.Y - 1 >= 0)
+                            if (p.Y - 1 >= 0 && selection_manager.Allowed(up))
                             {
                                 points_to_check.Enqueue(up);
                             }
                             Point right = new Point(p.X + 1, p.Y);
-                            if (p.X + 1 <= canvas_info.Width - 1)
+                            if (p.X + 1 <= canvas_info.Width - 1 && selection_manager.Allowed(right))
                             {
                                 points_to_check.Enqueue(right);
                             }
                             Point down = new Point(p.X, p.Y + 1);
-                            if (p.Y + 1 <= canvas_info.Height - 1)
+                            if (p.Y + 1 <= canvas_info.Height - 1 && selection_manager.Allowed(down))
                             {
                                 points_to_check.Enqueue(down);
                             }

@@ -1186,8 +1186,11 @@ namespace Sketchpop
         {
             Panel color = (Panel)sender;
 
-            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
-            Program.canvas_manager.Change_Brush("basic");
+            if (eraser_selected)
+            {
+                Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
+                Program.canvas_manager.Change_Brush("basic");
+            }
 
             red_input_box.Value = color.BackColor.R;
             green_input_box.Value = color.BackColor.G;
@@ -1244,6 +1247,7 @@ namespace Sketchpop
         private void fill_tool_button_Click(object sender, EventArgs e)
         {
             Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.fill;
+            eraser_selected = false;
         }
 
         private void resize_canvas_button_Click(object sender, EventArgs e)

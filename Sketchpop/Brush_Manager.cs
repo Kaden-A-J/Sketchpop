@@ -100,6 +100,16 @@ namespace Sketchpop
         }
 
         /// <summary>
+        /// useful for getting the color, since the current brush might be set to the eraser
+        /// </summary>
+        /// <param name="brush_name"></param>
+        /// <returns></returns>
+        public SKColor Get_Last_Selected_Color()
+        {
+            return _brushes["basic"].Color();
+        }
+
+        /// <summary>
         /// Returns the current brush.
         /// </summary>
         /// <returns>current brush</returns>
