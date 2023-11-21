@@ -215,7 +215,7 @@ namespace Sketchpop
             this.title_bar.Enabled = false;
             this.title_bar.Location = new System.Drawing.Point(0, 0);
             this.title_bar.Name = "title_bar";
-            this.title_bar.Size = new System.Drawing.Size(1280, 4);
+            this.title_bar.Size = new System.Drawing.Size(1280, 13);
             this.title_bar.TabIndex = 2;
             // 
             // title_label
@@ -944,21 +944,21 @@ namespace Sketchpop
             // muscleMemoryToolStripMenuItem
             // 
             this.muscleMemoryToolStripMenuItem.Name = "muscleMemoryToolStripMenuItem";
-            this.muscleMemoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.muscleMemoryToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.muscleMemoryToolStripMenuItem.Text = "Repeated Circles";
             this.muscleMemoryToolStripMenuItem.Click += new System.EventHandler(this.muscleMemoryToolStripMenuItem_Click);
             // 
             // redLiningToolStripMenuItem
             // 
             this.redLiningToolStripMenuItem.Name = "redLiningToolStripMenuItem";
-            this.redLiningToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.redLiningToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.redLiningToolStripMenuItem.Text = "Red Lining ";
             this.redLiningToolStripMenuItem.Click += new System.EventHandler(this.redLiningToolStripMenuItem_Click);
             // 
             // randomPromptToolStripMenuItem
             // 
             this.randomPromptToolStripMenuItem.Name = "randomPromptToolStripMenuItem";
-            this.randomPromptToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.randomPromptToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.randomPromptToolStripMenuItem.Text = "Random Prompt";
             this.randomPromptToolStripMenuItem.Click += new System.EventHandler(this.randomPromptToolStripMenuItem_Click);
             // 
@@ -969,7 +969,7 @@ namespace Sketchpop
             this.uploadImageToolStripMenuItem,
             this.sketchpopTutorialToolStripMenuItem});
             this.valuesToolStripMenuItem.Name = "valuesToolStripMenuItem";
-            this.valuesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.valuesToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
             this.valuesToolStripMenuItem.Text = "Values";
             // 
             // randomImageToolStripMenuItem
@@ -1093,7 +1093,6 @@ namespace Sketchpop
             | System.Windows.Forms.AnchorStyles.Right)));
             this.canvas_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(144)))), ((int)(((byte)(144)))));
             this.canvas_panel.Controls.Add(this.brush_menustrip);
-            this.canvas_panel.Controls.Add(this.clear_canvas_button);
             this.canvas_panel.Controls.Add(this.top_canvas_strip);
             this.canvas_panel.Controls.Add(this.drawing_picture_box);
             this.canvas_panel.Controls.Add(this.canvas_frame);
@@ -1134,7 +1133,6 @@ namespace Sketchpop
             // 
             // clear_canvas_button
             // 
-            this.clear_canvas_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.clear_canvas_button.Location = new System.Drawing.Point(689, 3);
             this.clear_canvas_button.Name = "clear_canvas_button";
             this.clear_canvas_button.Size = new System.Drawing.Size(75, 23);
@@ -1148,6 +1146,7 @@ namespace Sketchpop
             // 
             this.top_canvas_strip.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.top_canvas_strip.Controls.Add(this.clear_canvas_button);
             this.top_canvas_strip.Controls.Add(this.hand_button);
             this.top_canvas_strip.Controls.Add(this.fill_tool_button);
             this.top_canvas_strip.Controls.Add(this.select_lasso_button);
@@ -1185,7 +1184,6 @@ namespace Sketchpop
             // 
             // select_lasso_button
             // 
-            this.select_lasso_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.select_lasso_button.Location = new System.Drawing.Point(403, 3);
             this.select_lasso_button.Name = "select_lasso_button";
             this.select_lasso_button.Size = new System.Drawing.Size(88, 23);
@@ -1196,7 +1194,6 @@ namespace Sketchpop
             // 
             // select_rect_button
             // 
-            this.select_rect_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.select_rect_button.Location = new System.Drawing.Point(328, 3);
             this.select_rect_button.Name = "select_rect_button";
             this.select_rect_button.Size = new System.Drawing.Size(75, 23);
@@ -1207,7 +1204,6 @@ namespace Sketchpop
             // 
             // eraser_button
             // 
-            this.eraser_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.eraser_button.Location = new System.Drawing.Point(163, 3);
             this.eraser_button.Name = "eraser_button";
             this.eraser_button.Size = new System.Drawing.Size(75, 23);
@@ -1218,7 +1214,6 @@ namespace Sketchpop
             // 
             // pen_button
             // 
-            this.pen_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pen_button.Location = new System.Drawing.Point(88, 3);
             this.pen_button.Name = "pen_button";
             this.pen_button.Size = new System.Drawing.Size(75, 23);
@@ -1249,7 +1244,6 @@ namespace Sketchpop
             // 
             // brush_selector_button
             // 
-            this.brush_selector_button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.brush_selector_button.Location = new System.Drawing.Point(67, 3);
             this.brush_selector_button.Name = "brush_selector_button";
             this.brush_selector_button.Size = new System.Drawing.Size(22, 23);
