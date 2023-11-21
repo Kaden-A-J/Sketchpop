@@ -244,6 +244,7 @@
     <EmbeddedResource Include="Tip.resx">
       <DependentUpon>Tip.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="CS4500 README.pdf" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

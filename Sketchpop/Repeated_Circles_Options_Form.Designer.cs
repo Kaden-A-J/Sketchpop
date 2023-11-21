@@ -141,7 +141,7 @@
             this.Controls.Add(this.spacing_num_up_down);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Repeated_Circles_Options_Form";
-            this.Text = "Repeated_Circles_Options_Form";
+            this.Text = "Repeated Circles Options";
             ((System.ComponentModel.ISupportInitialize)(this.spacing_num_up_down)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.angle_num_up_down)).EndInit();
             this.ResumeLayout(false);

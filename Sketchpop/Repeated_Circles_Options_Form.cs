@@ -11,6 +11,9 @@ namespace Sketchpop
         {
             this.main_window_form = main_window;
             InitializeComponent();
+            Random r = new Random();
+            spacing_num_up_down.Value = r.Next((int)spacing_num_up_down.Minimum, (int)spacing_num_up_down.Maximum);
+            angle_num_up_down.Value = r.Next((int)angle_num_up_down.Minimum, (int)angle_num_up_down.Maximum);
         }
 
         private void start_button_Click(object sender, EventArgs e)

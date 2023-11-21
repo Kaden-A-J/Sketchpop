@@ -1461,6 +1461,11 @@ namespace Sketchpop
                 undoToolStripMenuItem.Enabled = true;
         }
 
+        private void muscleMemoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            repeatedCirclesPracticeToolStripMenuItem_Click(sender, e);
+        }
+
         public byte[] ConvertToBlackAndWhite(byte[] originalImageBytes)
         {
             using (MemoryStream ms = new MemoryStream(originalImageBytes))
