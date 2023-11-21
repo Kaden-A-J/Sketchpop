@@ -182,6 +182,7 @@
     <Compile Include="Main_Window_Form.Designer.cs">
       <DependentUpon>Main_Window_Form.cs</DependentUpon>
     </Compile>
+    <Compile Include="Operation_Manager.cs" />
     <Compile Include="Paste_Manager.cs" />
     <Compile Include="Point_Operation.cs" />
     <Compile Include="Program.cs" />
