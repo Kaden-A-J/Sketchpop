@@ -9,9 +9,9 @@ namespace Sketchpop
 {
     internal static class Program
     {
-        
+        public static main_window main_window { get; private set; }
         public static Canvas_Manager canvas_manager = null;
-        
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -20,7 +20,12 @@ namespace Sketchpop
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new main_window());
+            main_window = new main_window();
+            if (main_window == null)
+            {
+                Console.WriteLine("main_window is null");
+            }
+            Application.Run(main_window);
         }
 
     }

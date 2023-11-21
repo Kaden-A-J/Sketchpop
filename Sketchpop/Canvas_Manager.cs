@@ -67,20 +67,29 @@ namespace Sketchpop
         private Point hand_start = new Point(-1, -1);
         private Point prevMousePosition = new Point(0, 0);
         private Paste_Manager paste_manager;
-
+        private main_window main_window;
+        // when enter the undo process, set it true
+        private bool is_undo = false;
+        public Operation_Manager operation_manager;
         public Canvas_Manager()
         {
             brush_manager = new Brush_Manager();
             layer_manager = new Layer_Manager();
             selection_manager = new Selection_Manager();
             paste_manager = new Paste_Manager();
-
+            operation_manager = new Operation_Manager();
             //picture_box = canvas_frame;
             canvas_info = new SKImageInfo(750, 750);
 
 
             Reset_Canvas_State();
         }
+
+        public void Set_Main_Window(main_window main_window)
+        {
+            this.main_window = main_window;
+        }
+
 
 
         // used for the fill tool, fills an area of similar color with a different color
@@ -174,6 +183,13 @@ namespace Sketchpop
                     return;
                 fill(adjusted, brush_manager.Get_Current_Brush().Color());
             }
+            // if the canvas changed during the undo process and then the users draw somthing on the canvas
+            // we need to save the present layer into the stack
+            if (is_undo)
+            {
+                operation_manager.clear_redo_stack();
+                is_undo = false;
+            }
         }
 
 
@@ -236,6 +252,7 @@ namespace Sketchpop
             {
                 paste_manager.stop_moving(adjusted);
             }
+            Program.canvas_manager.operation_manager.save_snapshot_into_stack(Program.canvas_manager.layer_manager.selected_layer, Program.canvas_manager.layer_manager.get_layer_opacity(Program.canvas_manager.layer_manager.selected_layer), Program.canvas_manager.layer_manager.get_image(Program.canvas_manager.layer_manager.selected_layer).Encode().ToArray());
         }
 
 
@@ -742,6 +759,124 @@ namespace Sketchpop
             fill,
             move_pasted,
             hand
+        }
+
+        public void Undo_Operation()
+        {
+            is_undo = true;
+            var (selected_layer, opacity, data, operation) = operation_manager.undo_operation();
+            if (selected_layer > -2)
+            {
+                if (operation.Equals("canvas"))
+                {
+                    SKImage temp_image = SKImage.FromEncodedData(data);
+                    SKBitmap bitmap = SKBitmap.FromImage(temp_image);
+                    SKImage image = SKImage.FromBitmap(bitmap);
+                    layer_manager.set_layer(selected_layer, opacity, image);
+                }
+                else if (operation.Equals("empty"))
+                {
+                    layer_manager.set_layer(selected_layer, opacity, SKImage.Create(canvas_info));
+                }
+                else if (operation.Equals("add"))
+                {
+                    if (main_window.InvokeRequired)
+                    {
+                        main_window.Invoke(new Action(() =>
+                        {
+                            main_window.layer_delete(selected_layer);
+                        }));
+                    }
+                    else
+                    {
+                        main_window.layer_delete(selected_layer);
+                    }
+                }
+                else
+                {
+                    if (main_window.InvokeRequired)
+                    {
+                        main_window.Invoke(new Action(() =>
+                        {
+                            main_window.layer_add(selected_layer);
+                        }));
+                    }
+                    else
+                    {
+                        main_window.layer_add(selected_layer);
+                    }
+                    SKImage temp_image = SKImage.FromEncodedData(data);
+                    SKBitmap bitmap = SKBitmap.FromImage(temp_image);
+                    SKImage image = SKImage.FromBitmap(bitmap);
+                    layer_manager.set_layer(selected_layer, opacity, image);
+
+                }
+            }
+        }
+
+
+        public void Redo_Operation()
+        {
+            var (selected_layer, opacity, data, operation) = operation_manager.redo_operation();
+            if (selected_layer > -2)
+            {
+                if (operation.Equals("canvas"))
+                {
+                    SKImage temp_image = SKImage.FromEncodedData(data);
+                    SKBitmap bitmap = SKBitmap.FromImage(temp_image);
+                    SKImage image = SKImage.FromBitmap(bitmap);
+                    layer_manager.set_layer(selected_layer, opacity, image);
+                }
+                else if (operation.Equals("delete"))
+                {
+                    if (main_window.InvokeRequired)
+                    {
+                        main_window.Invoke(new Action(() =>
+                        {
+                            main_window.layer_delete(selected_layer);
+                        }));
+                    }
+                    else
+                    {
+                        main_window.layer_delete(selected_layer);
+                    }
+                }
+                else
+                {
+                    if (main_window.InvokeRequired)
+                    {
+                        main_window.Invoke(new Action(() =>
+                        {
+                            main_window.layer_add(selected_layer);
+                        }));
+                    }
+                    else
+                    {
+                        main_window.layer_add(selected_layer);
+                    }
+                }
+            }
+        }
+
+        public void clear_redo_undo()
+        {
+            operation_manager.clear_undo();
+            operation_manager.clear_redo();
+        }
+
+        // when we add a new layer, we need to add a new layer in the operation manager
+        public void add_new_layer_in_operation_manager(int index)
+        {
+            SKBitmap empty = new SKBitmap(500, 500);
+            empty.Erase(SKColors.Empty);
+            SKImage emptyImage = SKImage.FromBitmap(empty);
+            byte[] data = emptyImage.Encode().ToArray();
+            operation_manager.setup_new_layer_into_stack(index, 1, data);
+        }
+
+        public void delete_layer_in_operation_manager(int index)
+        {
+            operation_manager.delete_layer(index);
         }
     }
 }

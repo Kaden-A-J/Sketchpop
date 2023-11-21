@@ -48,6 +48,20 @@ namespace Sketchpop
             return _layers[idx].locked;
         }
 
+        /// <summary>
+        /// adds a layer to the layer manager used in undo/redo
+        /// </summary>
+        /// <param name="canvas_info"></param>
+        /// <param name="layer_index"></param>
+        public void add_layer(SKImageInfo canvas_info, int layer_index)
+        {
+            Layer t_layer = new Layer(layer_index, SKImage.Create(canvas_info), 1);
+            _layers.Insert(layer_index, t_layer);
+
+            // if no layer -> auto select it
+            selected_layer = (selected_layer < 1) ? 1 : selected_layer;
+        }
+
         public void add_layer(SKImageInfo canvas_info)
         {
             Layer t_layer = new Layer(_layers.Count, SKImage.Create(canvas_info), 1);
@@ -55,6 +69,12 @@ namespace Sketchpop
 
             // if no layer -> auto select it
             selected_layer = (selected_layer < 1) ? 1 : selected_layer;
+        }
+
+        public void set_layer(int idx, float opacity, SKImage img)
+        {
+            _layers[idx].Img = img;
+            set_layer_opacity(idx, opacity);
         }
 
         public void add_permalocked_layer(SKImageInfo canvas_info)

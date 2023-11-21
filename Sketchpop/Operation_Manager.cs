@@ -63,16 +63,6 @@ namespace Sketchpop
                 stack_maps.Add(layer_index, new DoubleStack());
                 stack_maps[layer_index].undo_push(info);
             }
-            print_count("add operation");
-        }
-
-        public void print_count(string method)
-        {
-            Console.WriteLine(method);
-            Console.WriteLine("sole redo count: " + redo_stack.Count);
-            Console.WriteLine("sole undo count: " + undo_stack.Count);
-            Console.WriteLine("all redo count: " + get_all_redo_count());
-            Console.WriteLine("all undo count: " + get_all_undo_count());
         }
 
         public (int, float, byte[], string) undo_operation()
@@ -174,9 +164,7 @@ namespace Sketchpop
                 if (undo_stack.Count > 0)
                 {
                     var temp = undo_stack.Pop();
-                    Console.WriteLine("undo count: " + undo_stack.Count);
                     redo_stack.Push(temp);
-                    Console.WriteLine("undo operation: " + temp.Item4);
                     if (temp.Item4.Equals("delete"))
                     {
                         return (undo_stack.Peek().Item1, undo_stack.Peek().Item2, undo_stack.Peek().Item3, "delete");
@@ -193,7 +181,6 @@ namespace Sketchpop
                 }
                 else
                 {
-                    Console.WriteLine("empty undo_stack");
                     return (-2, 0, null, null);
                 }
             }

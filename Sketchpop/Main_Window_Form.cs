@@ -89,7 +89,8 @@ namespace Sketchpop
 
             layers_ui = new List<Panel>();
             _um = new Unsplash_Manager();
-
+            this.redoToolStripMenuItem.Enabled = false;
+            this.undoToolStripMenuItem.Enabled = false;
             canvas_frame.MouseWheel += mouse_scrolled;
 
             drawing_picture_box.Width = Program.canvas_manager.canvas_info.Width;
@@ -99,6 +100,7 @@ namespace Sketchpop
             drawing_box_stored_height = drawing_picture_box.Height;
 
             Program.canvas_manager.stored_scale = (float)canvas_frame.Width / (float)Program.canvas_manager.canvas_info.Width - 0.2f;
+            Program.canvas_manager.Set_Main_Window(this);
 
             //Console.WriteLine(Program.canvas_manager.stored_scale);
 
@@ -201,6 +203,14 @@ namespace Sketchpop
                 mouse_down = false;
                 var click_pos = canvas_frame.PointToClient(MousePosition);
                 Program.canvas_manager.Mouse_Up_Handler(click_pos);
+                if (Program.canvas_manager.operation_manager.undo_stack_empty)
+                    undoToolStripMenuItem.Enabled = false;
+                else
+                    undoToolStripMenuItem.Enabled = true;
+                if (!Program.canvas_manager.operation_manager.redo_stack_empty)
+                    redoToolStripMenuItem.Enabled = true;
+                else
+                    redoToolStripMenuItem.Enabled = false;
             }
             else if (e.Button == MouseButtons.Middle)
             {
@@ -420,7 +430,83 @@ namespace Sketchpop
             if (bg_layer_added)
             {
                 Program.canvas_manager.layer_manager.add_layer(Program.canvas_manager.canvas_info);
+                int layer_index = Program.canvas_manager.layer_manager.count - 1;
+                Program.canvas_manager.add_new_layer_in_operation_manager(layer_index);
+                // autocheck the first layer
+                if (layers_ui.Count == 2)
+                    t_visible_button.Checked = true;
 
+                t_visible_button.Click += new EventHandler(layer_visible_button_clicked);
+            }
+            else
+            {
+                Program.canvas_manager.layer_manager.add_permalocked_layer(Program.canvas_manager.canvas_info);
+            }
+
+            if (Program.canvas_manager.operation_manager.undo_stack_empty)
+                undoToolStripMenuItem.Enabled = false;
+            else
+                undoToolStripMenuItem.Enabled = true;
+            if (!Program.canvas_manager.operation_manager.redo_stack_empty)
+                redoToolStripMenuItem.Enabled = true;
+            else
+                redoToolStripMenuItem.Enabled = false;
+        }
+        public void layer_add(int layer_index)
+        {
+
+            shift_layers_down();
+
+            int buffer = 4;
+            Panel t_panel = new Panel();
+            // panel name is its layer's index to help with layer selection
+            t_panel.Name = layers_ui.Count.ToString();
+            t_panel.BackColor = Color.FromArgb(255, 157, 157, 157);
+            t_panel.Size = new Size(this.layer_panel.Width - buffer - 20, 60);
+            //t_panel.Location = new Point(4, (t_panel.Height + buffer) * layers_ui.Count);
+            t_panel.Location = new Point(4, buffer);
+
+
+            RadioButton t_visible_button = new RadioButton();
+            t_visible_button.Size = new Size(20, 20);
+            t_visible_button.Location = new Point(buffer, t_panel.Height / 2 - t_visible_button.Height / 2);
+            if (bg_layer_added)
+            {
+                t_panel.Controls.Add(t_visible_button);
+            }
+
+            PictureBox t_preview_panel = new PictureBox();
+            t_preview_panel.BackColor = Color.FromArgb(255, 167, 167, 167);
+            t_preview_panel.Size = new Size((t_panel.Height - buffer * 2) / 9 * 16, t_panel.Height - buffer * 2);
+            t_preview_panel.Location = new Point(t_visible_button.Width + buffer, buffer);
+            t_preview_panel.Name = "preview_panel";
+            t_panel.Controls.Add(t_preview_panel);
+
+            Label t_name_label = new Label();
+            //t_name_label.Font = new Font("Microsoft Sans Serif", 6);
+            t_name_label.Location = new Point(t_preview_panel.Location.X + t_preview_panel.Width + buffer, t_panel.Height / 4);
+            t_name_label.Text = "layer (" + layers_ui.Count.ToString() + ")";
+            t_name_label.Size = new Size(t_panel.Width - t_name_label.Location.X, t_name_label.Height);
+            t_panel.Controls.Add(t_name_label);
+
+            TrackBar t_trackbar = new TrackBar();
+            t_trackbar.Location = new Point(t_name_label.Location.X + buffer, t_panel.Height - ((t_panel.Height - buffer * 2) / 2) - buffer - 1);
+            t_trackbar.Size = new Size((t_panel.Width - t_trackbar.Location.X - buffer), (t_panel.Height - buffer * 2) / 2);
+            t_trackbar.Minimum = 0;
+            t_trackbar.Maximum = 100;
+            t_trackbar.Value = 100;
+            t_trackbar.TickStyle = TickStyle.Both;
+            t_panel.Controls.Add(t_trackbar);
+
+
+            layers_ui.Add(t_panel);
+            this.layer_panel.Controls.Add(t_panel);
+
+            t_trackbar.ValueChanged += new EventHandler(layer_trackbar_scrolled);
+
+            if (bg_layer_added)
+            {
+                Program.canvas_manager.layer_manager.add_layer(Program.canvas_manager.canvas_info, layer_index);
                 // autocheck the first layer
                 if (layers_ui.Count == 2)
                     t_visible_button.Checked = true;
@@ -456,6 +542,18 @@ namespace Sketchpop
 
             this.layer_panel.Controls.Remove(layers_ui[last_idx]);
             layers_ui.RemoveAt(last_idx);
+        }
+
+        public void layer_delete(int layer_index)
+        {
+            if (layers_ui.Count < 2) { return; }
+            shift_layers_up();
+            foreach (Control c in layers_ui[layer_index].Controls)
+                if (c.GetType() == typeof(RadioButton))
+                    ((RadioButton)c).Checked = true;
+            Program.canvas_manager.layer_manager.delete_layer(layer_index);
+            this.layer_panel.Controls.Remove(layers_ui[layer_index]);
+            layers_ui.RemoveAt(layer_index);
         }
 
         private Rectangle top { get { return new Rectangle(0, 0, this.ClientSize.Width, _grip_size); } }
@@ -1326,12 +1424,20 @@ namespace Sketchpop
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Program.canvas_manager.Undo_Operation();
+            if (Program.canvas_manager.operation_manager.undo_stack_empty)
+                undoToolStripMenuItem.Enabled = false;
+            if (!Program.canvas_manager.operation_manager.redo_stack_empty)
+                redoToolStripMenuItem.Enabled = true;
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Program.canvas_manager.Redo_Operation();
+            if (Program.canvas_manager.operation_manager.redo_stack_empty)
+                redoToolStripMenuItem.Enabled = false;
+            if (!Program.canvas_manager.operation_manager.undo_stack_empty)
+                undoToolStripMenuItem.Enabled = true;
         }
 
         public byte[] ConvertToBlackAndWhite(byte[] originalImageBytes)
