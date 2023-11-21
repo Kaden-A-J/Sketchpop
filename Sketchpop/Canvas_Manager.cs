@@ -181,7 +181,7 @@ namespace Sketchpop
             {
                 if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
                     return;
-                fill(adjusted, brush_manager.Get_Current_Brush().Color());
+                fill(adjusted, brush_manager.Get_Last_Selected_Color());
             }
             // if the canvas changed during the undo process and then the users draw somthing on the canvas
             // we need to save the present layer into the stack
