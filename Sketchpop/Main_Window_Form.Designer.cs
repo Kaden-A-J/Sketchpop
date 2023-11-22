@@ -1107,16 +1107,15 @@ namespace Sketchpop
             // 
             // brush_menustrip
             // 
-            this.brush_menustrip.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.brush_menustrip.Dock = System.Windows.Forms.DockStyle.None;
             this.brush_menustrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.brush_menustrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.penToolStripMenuItem,
             this.painBrushStripMenuItem});
             this.brush_menustrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
-            this.brush_menustrip.Location = new System.Drawing.Point(97, 27);
+            this.brush_menustrip.Location = new System.Drawing.Point(77, 27);
             this.brush_menustrip.Name = "brush_menustrip";
-            this.brush_menustrip.Size = new System.Drawing.Size(85, 42);
+            this.brush_menustrip.Size = new System.Drawing.Size(126, 61);
             this.brush_menustrip.TabIndex = 21;
             this.brush_menustrip.Visible = false;
             // 
