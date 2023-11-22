@@ -38,11 +38,11 @@ namespace Sketchpop
             selected_area = new SKRegion();
         }
 
-        public void Begin_Selection(Point click_position, Selection_Tools tool_type)
+        public void Begin_Selection(Point click_position, Selection_Tools tool_type, int maxX, int maxY)
         {
             active_select_tool = tool_type;
             path = new SKPath();
-            path.MoveTo(click_position.ToSKPoint());
+            path.MoveTo(normalize_point(click_position, maxX, maxY).ToSKPoint());
         }
 
         /// <summary>

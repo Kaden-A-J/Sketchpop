@@ -158,13 +158,15 @@ namespace Sketchpop
             {
                 if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
                     return;
-                selection_manager.Begin_Selection(adjusted, Selection_Manager.Selection_Tools.Rectangle);
+                SKImageInfo info = layer_manager.get_image(layer_manager.selected_layer).Info;
+                selection_manager.Begin_Selection(adjusted, Selection_Manager.Selection_Tools.Rectangle, info.Width, info.Height);
             }
             else if (current_tool == SketchPopTool.selector_lasso)
             {
                 if (layer_manager.count == 0 || layer_manager.get_layer_locked(layer_manager.selected_layer))
                     return;
-                selection_manager.Begin_Selection(adjusted, Selection_Manager.Selection_Tools.Lasso);
+                SKImageInfo info = layer_manager.get_image(layer_manager.selected_layer).Info;
+                selection_manager.Begin_Selection(adjusted, Selection_Manager.Selection_Tools.Lasso, info.Width, info.Height);
             }
             else if (current_tool == SketchPopTool.hand)
             {
