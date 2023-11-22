@@ -836,6 +836,7 @@ namespace Sketchpop
         {
             ref_img_menustrip.Location = new Point(canvas_frame.Location.X, canvas_frame.Location.Y);
             ref_img_menustrip.Visible = !ref_img_menustrip.Visible;
+            ref_img_menustrip.BringToFront();
         }
 
         // Image Option Menu Logic
