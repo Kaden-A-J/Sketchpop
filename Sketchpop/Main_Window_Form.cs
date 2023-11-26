@@ -19,7 +19,8 @@ namespace Sketchpop
         public Timer draw_timer = new Timer();
         bool mouse_down = false;
         List<Panel> layers_ui;
-
+        private string currently_selected_tool;
+        private int paint_brush_trackbar_index = 0;
         // reference image variables
         private string _author_link;
         private byte[] _ref_image_data;
@@ -67,6 +68,9 @@ namespace Sketchpop
             drawing_picture_box.Location = new Point(
                 Program.canvas_manager.hand_difference.X + middle_drawing_start.X,
                 Program.canvas_manager.hand_difference.Y + middle_drawing_start.Y);
+
+            // display current brush
+            selected_tool_string.Text = currently_selected_tool;
         }
 
         public void render_layer_previews(object my_object, EventArgs my_event_args)
@@ -86,6 +90,7 @@ namespace Sketchpop
             Program.canvas_manager = new Canvas_Manager();
             Application.AddMessageFilter(new PenPressureMessageFilter(Program.canvas_manager));
             int result = PenPressureMessageFilter.EnableMouseInPointer(true);
+            currently_selected_tool = "Pen";
 
             layers_ui = new List<Panel>();
             _um = new Unsplash_Manager();
@@ -102,7 +107,7 @@ namespace Sketchpop
             Program.canvas_manager.stored_scale = (float)canvas_frame.Width / (float)Program.canvas_manager.canvas_info.Width - 0.2f;
             Program.canvas_manager.Set_Main_Window(this);
 
-            //Console.WriteLine(Program.canvas_manager.stored_scale);
+            //Console.WriteLine(Program.canvas_manager.stored_scale);            
 
             // add BG layer
             layer_add_button_Click(null, null);
@@ -267,6 +272,7 @@ namespace Sketchpop
             Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
             Program.canvas_manager.Change_Brush("eraser", stroke_size_input_box);
             eraser_selected = true;
+            currently_selected_tool = "Eraser";
         }
 
         private void pen_button_Click(object sender, EventArgs e)
@@ -274,9 +280,15 @@ namespace Sketchpop
             Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
 
             if (pen_button.Text.Equals("Paint Brush"))
-                Program.canvas_manager.Change_Brush("paint");
+            {
+                Program.canvas_manager.Change_Brush("paint", stroke_size_input_box);
+                currently_selected_tool = "Paint Brush";
+            }
             else if (pen_button.Text.Equals("Pen"))
-                Program.canvas_manager.Change_Brush("basic");
+            {
+                Program.canvas_manager.Change_Brush("basic", stroke_size_input_box);
+                currently_selected_tool = "Pen";
+            }
 
             eraser_selected = false;
         }
@@ -284,11 +296,13 @@ namespace Sketchpop
         private void select_rect_button_Click(object sender, EventArgs e)
         {
             Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.selector_rect;
+            currently_selected_tool = "Rectangle Selection";
         }
 
         private void select_lasso_button_Click(object sender, EventArgs e)
         {
             Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.selector_lasso;
+            currently_selected_tool = "Lasso Selection";
         }
 
         private void repeatedCirclesPracticeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -608,7 +622,7 @@ namespace Sketchpop
 
 
         /*
-         *  Start of -- Image Selection and Database Related Code
+         *  Event Handler Related Code
          */
 
         /// <summary>
@@ -707,32 +721,38 @@ namespace Sketchpop
         private void penToolStripMenuItem_Click(object sender, EventArgs e)
         {
             pen_button.Text = "Pen";
-            Program.canvas_manager.Change_Brush("basic");
+            Program.canvas_manager.Change_Brush("basic", stroke_size_input_box);
             Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
+            Program.canvas_manager.Update_Color((byte)red_input_box.Value, (byte)green_input_box.Value, (byte)blue_input_box.Value, (byte)255);
             brush_menustrip.Visible = false;
             stroke_track_bar.Visible = true;
             paintbrush_trackbar.Visible = false;
             stroke_size_input_box.Visible = true;
             eraser_selected = false;
+            currently_selected_tool = "Pen";
         }
 
         private void painBrushStripMenuItem_Click(object sender, EventArgs e)
         {
             pen_button.Text = "Paint Brush";
-            Program.canvas_manager.Change_Brush("paint");
+            Program.canvas_manager.Change_Brush("paint");//, stroke_size_input_box);
             Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
+            Program.canvas_manager.Update_Color((byte)red_input_box.Value, (byte)green_input_box.Value, (byte)blue_input_box.Value, (byte)255);
+
             brush_menustrip.Visible = false;
             stroke_track_bar.Visible = false;
             paintbrush_trackbar.Visible = true;
-            stroke_size_input_box.Value = paint_brush_values[0];
+            paintbrush_trackbar.Value = paint_brush_trackbar_index;
+            stroke_size_input_box.Value = paint_brush_values[paint_brush_trackbar_index]; ;
             stroke_size_input_box.Visible = false;
             eraser_selected = false;
+            currently_selected_tool = "Paint Brush";
         }
 
         private void paintbrush_trackbar_ValueChanged(object sender, EventArgs e)
         {
-            int index = paintbrush_trackbar.Value;
-            int selectedValue = paint_brush_values[index];
+            paint_brush_trackbar_index = paintbrush_trackbar.Value;
+            int selectedValue = paint_brush_values[paint_brush_trackbar_index];
 
             stroke_size_input_box.Value = selectedValue;
 
@@ -746,6 +766,18 @@ namespace Sketchpop
                 if (e.KeyCode == Keys.C)
                 {
                     Program.canvas_manager.Handle_Copy();
+
+                    if (_tips_toggled && _curr == null && (currently_selected_tool.Equals("Rectangle Selection") || currently_selected_tool.Equals("Lasso Selection")))
+                    {
+                        if (_curr != null)
+                            _curr.Close();
+
+                        var tmp = new Tip(this, canvas_frame, "Copied to clipboard! Press Ctrl+V to paste, Esc to end.", 2, false);
+                        tmp.closed += Deactivate_Tip;
+                        tmp.new_tip += Activate;
+                        tmp.Show();
+                        _curr = tmp;
+                    }
                 }
                 else if (e.KeyCode == Keys.X)
                 {
@@ -764,14 +796,14 @@ namespace Sketchpop
                             redoToolStripMenuItem_Click(sender, e);
                         }
                     }
-                    else 
+                    else
                     {
                         if (undoToolStripMenuItem.Enabled)
                         {
                             undoToolStripMenuItem_Click(sender, e);
                         }
                     }
-                }    
+                }
             }
             else if (e.KeyCode == Keys.Escape)
             {
@@ -972,6 +1004,32 @@ namespace Sketchpop
         {
             // clear the exercise controls:
             exercise_arrow_buttons.Controls.Clear();
+            exercise_controls.Show();
+            end_exercise_button.Show();
+
+            Button new_img_btn = new Button();
+            new_img_btn.Text = "New Image";
+            exercise_arrow_buttons.Controls.Add(new_img_btn);
+            new_img_btn.Click += (s, ev) =>
+            {
+                var new_img = _um.GetRandomImage();
+
+                // clear canvas, add ref image to layer, add new layer for drawing
+                clear_canvas_button_Click(null, null);
+                Program.canvas_manager.Draw_Image_With_Opacity(new_img.Get_Image_Data(), 1);
+                layer_add_button_Click(null, null);
+
+                Program.canvas_manager.layer_manager.set_layer_opacity(0.5f);
+
+                // select the new layer
+                foreach (Control c in layers_ui[layers_ui.Count - 1].Controls)
+                {
+                    if (c is RadioButton r)
+                    {
+                        layer_visible_button_clicked(r, new EventArgs());
+                    }
+                }
+            };
 
             // get a random image for the line drawing
             UnsplashImage img = _um.GetRandomImage();
@@ -1064,59 +1122,74 @@ namespace Sketchpop
             randomPromptToolStripMenuItem.Text = "Random Prompt  [ACTIVE]";
         }
 
-        private void Get_Random_Prompt()
+        /// <summary>
+        /// User presses this button when they are finished with an exercise.
+        /// After being pressed, the original settings are reset and the exercise
+        /// is cleared from the canvas.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void end_exercise_button_Click(object sender, EventArgs e)
         {
-            string prompt = _prompts[r.Next(_prompts.Count)];
+            if (!color_palette.Visible)
+                color_palette.Show();
 
-            this.prompt.Text = prompt;
-        }
-
-        private void Load_Prompts()
-        {
-            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var filepath = Path.Combine(baseDirectory, "..\\..\\Random_Prompts\\prompts.txt");
-
-            _prompts = File.ReadAllLines(filepath).ToList();
-        }
-
-        private void Load_Exercise_Images()
-        {
-            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var imageFolder = Path.Combine(baseDirectory, $"..\\..\\Exercise_Images\\");
-
-            foreach (string img_file in Directory.GetFiles(imageFolder, "*.*"))
+            // reset exercises logic (if needed)
+            for (int i = 0; i < exercisesToolStripMenuItem.DropDownItems.Count; i++)
             {
-                byte[] bytes = File.ReadAllBytes(img_file);
-                _value_examples.Add(bytes);
+                exercisesToolStripMenuItem.DropDownItems[i].Text = exercise_labels[i];
             }
 
-            randomImageToolStripMenuItem.Click += Get_Random_Monochrome_Image;
-            uploadImageToolStripMenuItem.Click += Get_Random_Monochrome_Image;
-            sketchpopTutorialToolStripMenuItem.Click += Get_Random_Monochrome_Image;
+            clear_canvas_button_Click(sender, e);
+            exercise_controls.Hide();
+            end_exercise_button.Hide();
+
+            red_input_box.Value = color1.BackColor.R;
+            green_input_box.Value = color1.BackColor.G;
+            blue_input_box.Value = color1.BackColor.B;
         }
 
-        /// <summary>
-        /// A new Tip has been created, the current Tip gets set so that no other Tips may
-        /// be created while the current one is visible.
-        /// </summary>
-        /// <param name="sender">a new Tip is created</param>
-        /// <param name="t">the Tip that was created</param>
-        public void Activate(object sender, Tip t)
+        private void fill_tool_button_Click(object sender, EventArgs e)
         {
-            _curr = t;
-            _curr.closed += Deactivate_Tip;
-            _curr.new_tip += Activate;
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.fill;
+            eraser_selected = false;
+            currently_selected_tool = "Fill Tool";
         }
 
-        /// <summary>
-        /// The Tip that is currently being shown has been closed, and the current Tip is 
-        /// set to null, signaling that other Tips may now be shown.
-        /// </summary>
-        /// <param name="sender">a Tip has been closed</param>
-        /// <param name="e">n/a</param>
-        public void Deactivate_Tip(object sender, EventArgs e)
+        private void resize_canvas_button_Click(object sender, EventArgs e)
         {
-            _curr = null;
+            Program.canvas_manager.canvas_info.Width = (int)(resize_canvas_input_x.Value);
+            Program.canvas_manager.canvas_info.Height = (int)(resize_canvas_input_y.Value);
+            clear_canvas_button_Click(sender, e);
+        }
+
+        private void hand_button_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.hand;
+            currently_selected_tool = "Hand Tool";
+        }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Undo_Operation();
+            if (Program.canvas_manager.operation_manager.undo_stack_empty)
+                undoToolStripMenuItem.Enabled = false;
+            if (!Program.canvas_manager.operation_manager.redo_stack_empty)
+                redoToolStripMenuItem.Enabled = true;
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.canvas_manager.Redo_Operation();
+            if (Program.canvas_manager.operation_manager.redo_stack_empty)
+                redoToolStripMenuItem.Enabled = false;
+            if (!Program.canvas_manager.operation_manager.undo_stack_empty)
+                undoToolStripMenuItem.Enabled = true;
+        }
+
+        private void muscleMemoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            repeatedCirclesPracticeToolStripMenuItem_Click(sender, e);
         }
 
         private void saveAsPNGToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1176,14 +1249,91 @@ namespace Sketchpop
             }
         }
 
+        /// <summary>
+        /// returns a random prompt from the set of random prompts
+        /// </summary>
+        private void Get_Random_Prompt()
+        {
+            string prompt = _prompts[r.Next(_prompts.Count)];
+
+            this.prompt.Text = prompt;
+        }
+
+        /// <summary>
+        /// loads the random prompts from the file containing generated random prompts.
+        /// </summary>
+        private void Load_Prompts()
+        {
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var filepath = Path.Combine(baseDirectory, "..\\..\\Random_Prompts\\prompts.txt");
+
+            _prompts = File.ReadAllLines(filepath).ToList();
+        }
+
+        /// <summary>
+        /// Loads the exercise images used in the 'Sketchpop Tutorial', as well as sets
+        /// the event handlers for the values exercise.
+        /// </summary>
+        private void Load_Exercise_Images()
+        {
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var imageFolder = Path.Combine(baseDirectory, $"..\\..\\Exercise_Images\\");
+
+            foreach (string img_file in Directory.GetFiles(imageFolder, "*.*"))
+            {
+                byte[] bytes = File.ReadAllBytes(img_file);
+                _value_examples.Add(bytes);
+            }
+
+            randomImageToolStripMenuItem.Click += Get_Random_Monochrome_Image;
+            uploadImageToolStripMenuItem.Click += Get_Random_Monochrome_Image;
+            sketchpopTutorialToolStripMenuItem.Click += Get_Random_Monochrome_Image;
+        }
+
+        /// <summary>
+        /// A new Tip has been created, the current Tip gets set so that no other Tips may
+        /// be created while the current one is visible.
+        /// </summary>
+        /// <param name="sender">a new Tip is created</param>
+        /// <param name="t">the Tip that was created</param>
+        public void Activate(object sender, Tip t)
+        {
+            _curr = t;
+            _curr.closed += Deactivate_Tip;
+            _curr.new_tip += Activate;
+        }
+
+        /// <summary>
+        /// The Tip that is currently being shown has been closed, and the current Tip is 
+        /// set to null, signaling that other Tips may now be shown.
+        /// </summary>
+        /// <param name="sender">a Tip has been closed</param>
+        /// <param name="e">n/a</param>
+        public void Deactivate_Tip(object sender, EventArgs e)
+        {
+            _curr = null;
+        }
+
+        /// <summary>
+        /// UI elements that need tips are added here. The added elements are then
+        /// iterated, overriding the paint method of the ui element, so that the color
+        /// of the ui element can be changed. Each ui element is then invalidated to reflect
+        /// the changed color.
+        /// </summary>
         private void Add_Tip_Highlights()
         {
-            // add elements with tips
-            _tip_elements.Add(clear_canvas_button);
-            _tip_elements.Add(img_form_button);
-            _tip_elements.Add(layer_add_button);
-            _tip_elements.Add(layer_delete_button);
-            _tip_elements.Add(palette_colors);
+            if (_tip_elements.Count == 0)
+            {
+                // add elements with tips
+                _tip_elements.Add(clear_canvas_button);
+                _tip_elements.Add(img_form_button);
+                _tip_elements.Add(layer_add_button);
+                _tip_elements.Add(layer_delete_button);
+                _tip_elements.Add(palette_colors);
+                _tip_elements.Add(ref_img_options);
+                _tip_elements.Add(pen_pressure_button);
+                _tip_elements.Add(hand_button);
+            }
 
             foreach (Control c in _tip_elements)
             {
@@ -1192,6 +1342,9 @@ namespace Sketchpop
             }
         }
 
+        /// <summary>
+        /// Iterates through the tip elements and 'unhighlights' them.
+        /// </summary>
         private void Remove_Tip_Highlights()
         {
             foreach (Control c in _tip_elements)
@@ -1201,6 +1354,12 @@ namespace Sketchpop
             }
         }
 
+        /// <summary>
+        /// Eventhandler for single-clicking a color swatch. When clicked, the color 
+        /// of the currently selected brush is set to this color.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Color_Palette_Picker(object sender, EventArgs e)
         {
             Panel color = (Panel)sender;
@@ -1216,6 +1375,13 @@ namespace Sketchpop
             blue_input_box.Value = color.BackColor.B;
         }
 
+        /// <summary>
+        /// Eventhandler for double-clicking a color swatch. When double-clicked,
+        /// the user is shown a dialog for choosing colors. The selected color is then
+        /// set as the color swatch's color that was double-clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Color_Palette_Set_Color(object sender, EventArgs e)
         {
             if (_colorDialog.ShowDialog() == DialogResult.OK)
@@ -1229,6 +1395,9 @@ namespace Sketchpop
             }
         }
 
+        /// <summary>
+        /// Adds event handlers to all of the color swatches in the color palettes.
+        /// </summary>
         private void Palette_Setup()
         {
             foreach (Control c in palette_colors.Controls)
@@ -1243,44 +1412,18 @@ namespace Sketchpop
             }
         }
 
-        private void end_exercise_button_Click(object sender, EventArgs e)
-        {
-            if (!color_palette.Visible)
-                color_palette.Show();
-
-            // reset exercises logic (if needed)
-            for (int i = 0; i < exercisesToolStripMenuItem.DropDownItems.Count; i++)
-            {
-                exercisesToolStripMenuItem.DropDownItems[i].Text = exercise_labels[i];
-            }            
-
-            clear_canvas_button_Click(sender, e);
-            exercise_controls.Hide();
-            end_exercise_button.Hide();
-
-            red_input_box.Value = color1.BackColor.R;
-            green_input_box.Value = color1.BackColor.G;
-            blue_input_box.Value = color1.BackColor.B;
-        }
-
-        private void fill_tool_button_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.fill;
-            eraser_selected = false;
-        }
-
-        private void resize_canvas_button_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.canvas_info.Width = (int)(resize_canvas_input_x.Value);
-            Program.canvas_manager.canvas_info.Height = (int)(resize_canvas_input_y.Value);
-            clear_canvas_button_Click(sender, e);
-        }
-
-        private void hand_button_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.hand;
-        }
-
+        /// <summary>
+        /// Returns a monochromatic image depending on the exercise chosen. There are 3 options:
+        /// 
+        /// Random Image: returns a random image using the Unsplash API
+        /// Upload Image: returns an image that was uploaded by the user
+        /// Sketchpop Tutorial: returns a set of predetermined images setup by developers
+        /// 
+        /// The image is converted to grayscale and placed on the canvas with appropriate settings
+        /// enabled. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Get_Random_Monochrome_Image(object sender, EventArgs e)
         {
             valuesToolStripMenuItem.Text = "";
@@ -1310,8 +1453,6 @@ namespace Sketchpop
                     clear_canvas_button_Click(null, null);
                     Program.canvas_manager.Draw_Image_With_Opacity(black_and_white, 1);
                     layer_add_button_Click(null, null);
-                    Program.canvas_manager.layer_manager.set_layer_opacity(0.75f);
-
 
                     // select the new layer
                     foreach (Control c in layers_ui[layers_ui.Count - 1].Controls)
@@ -1339,6 +1480,15 @@ namespace Sketchpop
                         Program.canvas_manager.Draw_Image_With_Opacity(new_black_and_white, 1);
                     };
 
+                    if (_tips_toggled && _curr == null)
+                    {
+                        var tmp = new Tip(this, canvas_frame, "You may only use 5 values to block in the colors of the image.", 1, true, "Values\\Basic");
+                        tmp.closed += Deactivate_Tip;
+                        tmp.new_tip += Activate;
+                        tmp.Show();
+                        _curr = tmp;
+                    }
+
                     break;
                 case "Upload Image":
                     OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -1352,7 +1502,6 @@ namespace Sketchpop
                         clear_canvas_button_Click(null, null);
                         Program.canvas_manager.Draw_Image_With_Opacity(fileBytes, 1);
                         layer_add_button_Click(null, null);
-                        Program.canvas_manager.layer_manager.set_layer_opacity(0.75f);
 
                         // select the new layer
                         foreach (Control c in layers_ui[layers_ui.Count - 1].Controls)
@@ -1363,12 +1512,21 @@ namespace Sketchpop
                             }
                         }
                     }
+
+                    if (_tips_toggled && _curr == null)
+                    {
+                        var tmp = new Tip(this, canvas_frame, "You may only use 5 values to block in the colors of the image.", 1, true, "Values\\Basic");
+                        tmp.closed += Deactivate_Tip;
+                        tmp.new_tip += Activate;
+                        tmp.Show();
+                        _curr = tmp;
+                    }
+
                     break;
                 case "Sketchpop Tutorial":
                     clear_canvas_button_Click(null, null);
                     Program.canvas_manager.Draw_Image_With_Opacity(_value_examples[0], 1);
                     layer_add_button_Click(null, null);
-                    Program.canvas_manager.layer_manager.set_layer_opacity(0.75f);
 
                     // select the new layer
                     foreach (Control c in layers_ui[layers_ui.Count - 1].Controls)
@@ -1379,8 +1537,8 @@ namespace Sketchpop
                         }
                     }
 
+                    // create buttons 
                     Button left, right;
-
                     left = new Button();
                     left.Text = "←";
                     left.Dock = DockStyle.Left;
@@ -1392,6 +1550,37 @@ namespace Sketchpop
                             clear_canvas_button_Click(null, null);
                             Program.canvas_manager.Draw_Image_With_Opacity(_value_examples[examples_idx], 1);
                             layer_add_button_Click(null, null);
+
+                            foreach (Control c in layers_ui[layers_ui.Count - 1].Controls)
+                            {
+                                if (c is RadioButton r)
+                                {
+                                    layer_visible_button_clicked(r, new EventArgs());
+                                }
+                            }
+
+                            string folder = "";
+                            switch (examples_idx)
+                            {
+                                case 0: 
+                                    folder = "Tutorial1";
+                                    break;
+                                case 1:
+                                    folder = "Tutorial2";
+                                    break;
+                                case 2:
+                                    folder = "Tutorial3";
+                                    break;
+                            }
+
+                            if (_tips_toggled && _curr == null)
+                            {
+                                var tmp = new Tip(this, canvas_frame, "You may only use 5 values to block in the colors of the image.", 1, true, $"Values\\Sketchpop_Tutorials\\{folder}");
+                                tmp.closed += Deactivate_Tip;
+                                tmp.new_tip += Activate;
+                                tmp.Show();
+                                _curr = tmp;
+                            }
                         }
                     };
 
@@ -1406,22 +1595,54 @@ namespace Sketchpop
                             clear_canvas_button_Click(null, null);
                             Program.canvas_manager.Draw_Image_With_Opacity(_value_examples[examples_idx], 1);
                             layer_add_button_Click(null, null);
+
+                            foreach (Control c in layers_ui[layers_ui.Count - 1].Controls)
+                            {
+                                if (c is RadioButton r)
+                                {
+                                    layer_visible_button_clicked(r, new EventArgs());
+                                }
+                            }
+
+                            string folder = "";
+                            switch (examples_idx)
+                            {
+                                case 0:
+                                    folder = "Tutorial1";
+                                    break;
+                                case 1:
+                                    folder = "Tutorial2";
+                                    break;
+                                case 2:
+                                    folder = "Tutorial3";
+                                    break;
+                            }
+
+                            if (_tips_toggled && _curr == null)
+                            {
+                                var tmp = new Tip(this, canvas_frame, "You may only use 5 values to block in the colors of the image.", 1, true, $"Values\\Sketchpop_Tutorials\\{folder}");
+                                tmp.closed += Deactivate_Tip;
+                                tmp.new_tip += Activate;
+                                tmp.Show();
+                                _curr = tmp;
+                            }
                         }
                     };
 
                     // add controls
                     exercise_arrow_buttons.Controls.Add(left);
                     exercise_arrow_buttons.Controls.Add(right);
-                    break;
-            }
 
-            if (_tips_toggled && _curr == null)
-            {
-                var tmp = new Tip(this, canvas_frame, "You may only use 5 values to block in the colors of the image.", 1, true, "Values");
-                tmp.closed += Deactivate_Tip;
-                tmp.new_tip += Activate;
-                tmp.Show();
-                _curr = tmp;
+                    if (_tips_toggled && _curr == null)
+                    {
+                        var tmp = new Tip(this, canvas_frame, "You may only use 5 values to block in the colors of the image.", 1, true, "Values\\Sketchpop_Tutorials\\Tutorial1");
+                        tmp.closed += Deactivate_Tip;
+                        tmp.new_tip += Activate;
+                        tmp.Show();
+                        _curr = tmp;
+                    }
+
+                    break;
             }
 
             // show the monochromatic palette
@@ -1445,41 +1666,23 @@ namespace Sketchpop
             }
         }
 
-        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Undo_Operation();
-            if (Program.canvas_manager.operation_manager.undo_stack_empty)
-                undoToolStripMenuItem.Enabled = false;
-            if (!Program.canvas_manager.operation_manager.redo_stack_empty)
-                redoToolStripMenuItem.Enabled = true;
-        }
-
-        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Program.canvas_manager.Redo_Operation();
-            if (Program.canvas_manager.operation_manager.redo_stack_empty)
-                redoToolStripMenuItem.Enabled = false;
-            if (!Program.canvas_manager.operation_manager.undo_stack_empty)
-                undoToolStripMenuItem.Enabled = true;
-        }
-
-        private void muscleMemoryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            repeatedCirclesPracticeToolStripMenuItem_Click(sender, e);
-        }
-
+        /// <summary>
+        /// Converts an images bytes to black and white. Used in the values exercises.
+        /// </summary>
+        /// <param name="originalImageBytes">bytes of the original image</param>
+        /// <returns>returns a byte array containing the black and white bytes</returns>
         public byte[] ConvertToBlackAndWhite(byte[] originalImageBytes)
         {
             using (MemoryStream ms = new MemoryStream(originalImageBytes))
             {
                 using (Image originalImage = Image.FromStream(ms))
                 {
-                    // Create a new bitmap with the same dimensions as the original image
+                    // create a new bitmap with the same dimensions as the original image
                     using (Bitmap grayscaleImage = new Bitmap(originalImage.Width, originalImage.Height))
                     {
                         using (Graphics g = Graphics.FromImage(grayscaleImage))
                         {
-                            // Create a color matrix for grayscale conversion
+                            // create a color matrix for grayscale conversion
                             ColorMatrix colorMatrix = new ColorMatrix(
                                 new float[][] {
                             new float[] {0.299f, 0.299f, 0.299f, 0, 0},
@@ -1490,25 +1693,34 @@ namespace Sketchpop
                                 }
                             );
 
-                            // Create an ImageAttributes object and set the color matrix
+                            // create an ImageAttributes object and set the color matrix
                             using (ImageAttributes attributes = new ImageAttributes())
                             {
                                 attributes.SetColorMatrix(colorMatrix);
 
-                                // Draw the original image on the new bitmap with the color matrix
+                                // draw the original image on the new bitmap with the color matrix
                                 g.DrawImage(originalImage, new Rectangle(0, 0, originalImage.Width, originalImage.Height), 0, 0, originalImage.Width, originalImage.Height, GraphicsUnit.Pixel, attributes);
                             }
                         }
 
-                        // Save the resulting black and white image as a byte array
+                        // save the resulting black and white image as a byte array
                         using (MemoryStream bwImageStream = new MemoryStream())
                         {
-                            grayscaleImage.Save(bwImageStream, ImageFormat.Png); // You can choose a different image format if needed
+                            grayscaleImage.Save(bwImageStream, ImageFormat.Png);
                             return bwImageStream.ToArray();
                         }
                     }
                 }
             }
+        }
+
+        private void buttonToHighlight_Paint(object sender, PaintEventArgs e)
+        {
+            Control control = (Control)sender;
+
+            Graphics g = e.Graphics;
+            Pen pen = new Pen(Color.Purple, 2);
+            g.DrawRectangle(pen, new Rectangle(0, 0, control.Width - 1, control.Height - 1));
         }
 
         /*
@@ -1531,7 +1743,7 @@ namespace Sketchpop
             {
                 _starter_tip_shown = true;
 
-                var tmp = new Tip(this, place_holder1, "Helpful Tips Can Be Toggled Here.", 2, false);
+                var tmp = new Tip(this, place_holder1, "Helpful tips can be toggled here or by pressing Ctrl+T.", 2, false);
                 tmp.closed += Deactivate_Tip;
                 tmp.new_tip += Activate;
                 tmp.Show();
@@ -1599,13 +1811,40 @@ namespace Sketchpop
             }
         }
 
-        private void buttonToHighlight_Paint(object sender, PaintEventArgs e)
+        private void ref_img_options_MouseHover(object sender, EventArgs e)
         {
-            Control control = (Control)sender;
+            if (_tips_toggled && _curr == null)
+            {
+                var tmp = new Tip(this, ref_img_options, "Additional image options can be selected here.", 0, false);
+                tmp.closed += Deactivate_Tip;
+                tmp.new_tip += Activate;
+                tmp.Show();
+                _curr = tmp;
+            }
+        }
 
-            Graphics g = e.Graphics;
-            Pen pen = new Pen(Color.Purple, 2);
-            g.DrawRectangle(pen, new Rectangle(0, 0, control.Width - 1, control.Height - 1));
+        private void pen_pressure_button_MouseHover(object sender, EventArgs e)
+        {
+            if (_tips_toggled && _curr == null)
+            {
+                var tmp = new Tip(this, pen_pressure_button, "Toggle to enable pen pressure sensitivity.", 0, false);
+                tmp.closed += Deactivate_Tip;
+                tmp.new_tip += Activate;
+                tmp.Show();
+                _curr = tmp;
+            }
+        }
+
+        private void hand_button_MouseHover(object sender, EventArgs e)
+        {
+            if (_tips_toggled && _curr == null)
+            {
+                var tmp = new Tip(this, hand_button, "Enables dragging of the canvas, or press middle mouse button.", 0, false);
+                tmp.closed += Deactivate_Tip;
+                tmp.new_tip += Activate;
+                tmp.Show();
+                _curr = tmp;
+            }
         }
 
         /*
@@ -1614,6 +1853,7 @@ namespace Sketchpop
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            // open a new reference image search form
             if (keyData == (Keys.Control | Keys.F))
             {
                 // Handle Ctrl + F logic here
@@ -1624,6 +1864,11 @@ namespace Sketchpop
 
                 _ims.ShowDialog();
                 return true; // indicate that the key has been handled
+            }
+            // toggle tips on/off
+            else if (keyData == (Keys.Control | Keys.T))
+            {
+                TipToolStripMenuItem_Click(null, null);
             }
 
             return base.ProcessCmdKey(ref msg, keyData);

@@ -1,6 +1,0 @@
-1. Study the reference image carefully, paying attention to the distribution of light and shadow.
-2. Use the five grayscale values given to you in the 'Exercise Controls' panel located on the right of the screen.
-3. Start your drawing, blocking off areas of the image using the chosen grayscale values.
-4. Focus on creating a visually compelling composition and make sure your values effectively convey the image's form and depth.
-5. Experiment with different combinations of your five values to create variety and interest in your drawing.
-6. Take your time and aim to capture the essence of the reference image in grayscale.

@@ -189,6 +189,9 @@ namespace Sketchpop
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Tip";
             this.Text = "Tip";
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Tip_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Tip_MouseMove);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Tip_MouseUp);
             this.main_Flow_Layout_Panel.ResumeLayout(false);
             this.main_Flow_Layout_Panel.PerformLayout();
             this.description_Layout_Panel.ResumeLayout(false);

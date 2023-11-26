@@ -53,6 +53,9 @@ namespace Sketchpop
         private Point _prev_location;
         private Label pages;
 
+        private bool isDragging = false;
+        private Point start;
+
         /// <summary>
         /// Constructor. Takes the main_window form, the control that the tip is representing,
         /// the container that holds the control, a string description, an int to represent
@@ -190,7 +193,7 @@ namespace Sketchpop
             this._timer = new Timer();
             this._timer.Tick += Timer_Tick;
             this._timer.Start();
-        }      
+        }
 
         /// <summary>
         /// Draws the Tip form. A triangle is drawn and added to the Form's path so that
@@ -363,6 +366,10 @@ namespace Sketchpop
             this.flowLayoutPanel3.Controls.Add(close_link_label);
             this.flowLayoutPanel3.Height = 20;
             this.flowLayoutPanel3.Visible = true;
+
+            this.pb.MouseDown += Tip_MouseDown;
+            this.pb.MouseMove += Tip_MouseMove;
+            this.pb.MouseUp += Tip_MouseUp;
 
             // draw the new expanded form
             using (GraphicsPath path = new GraphicsPath())
@@ -674,6 +681,34 @@ namespace Sketchpop
                 }
                 pb.Image = s._image;
                 label1.Text = s._description;
+            }
+        }
+
+        private void Tip_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = true;
+                start = new Point(e.X, e.Y);
+            }
+        }
+
+        private void Tip_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                int dX = e.X - start.X;
+                int dY = e.Y - start.Y;
+
+                this.Location = new Point(this.Location.X + dX, this.Location.Y + dY);
+            }
+        }
+
+        private void Tip_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isDragging = false;
             }
         }
     }

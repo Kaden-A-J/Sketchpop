@@ -1,0 +1,3 @@
+Finally, add the highlights in the image. Here, the leftmost part of the vase, and the left-top parts of the sphere are colored in with white as they are shined on by the most light. Then, see how your drawing looks by lowering the opacity of the image layer (layer (1)) and see your final work, great work!
+
+Note that you can save these artworks by clicking on the 'File' tab at the top of the screen.
