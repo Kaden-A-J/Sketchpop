@@ -1,0 +1,1 @@
+In this exercise, you'll be given a black and white image as your reference. Your goal is to create a grayscale drawing using only 5 different grayscale values. This exercise will help you develop your understanding of value control, composition, and the art of simplification.

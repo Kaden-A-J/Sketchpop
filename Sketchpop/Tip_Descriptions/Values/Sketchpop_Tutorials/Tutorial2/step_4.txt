@@ -1,0 +1,1 @@
+This step is very suddle for this image. Slight color is added to the top of the sphere, to transition from the slightly darker color 4, to the whites. Note: the background was only partially included in this tutorial, see if you can add the entire scene!

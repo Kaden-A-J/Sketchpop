@@ -1,0 +1,3 @@
+We will be following the same process that we did in the first tutorial, only now the image contains some a bit more complex shapes. As such, the placement of color will be more loosly applied, and the user has more freedom as to where the colors are applied. 
+
+As mentioned, we again start with color 2 in this first step. As shown in the image above, the lighter shadows are filled in with this color. There is no wrong place to apply the color, so use your best judgement, and compare with the image above as needed.

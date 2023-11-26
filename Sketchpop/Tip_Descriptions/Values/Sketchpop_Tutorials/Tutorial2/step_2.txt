@@ -1,0 +1,5 @@
+In this step, black (color 1) is applied to the darkest shadows of the image. In this case: parts of the vase, and the opening, as well as the background and small specks on the sphere. Compare with the image above as needed.
+
+Note: as mentioned previously, order of colors can differ based on preference and need, and in this case, leaving the blacks for the final step may improve the overall look of the image as the small specks on the sphere would be more noticeable at the end rather than during this step. 
+
+Experiment with the order of the colors and compare your results!

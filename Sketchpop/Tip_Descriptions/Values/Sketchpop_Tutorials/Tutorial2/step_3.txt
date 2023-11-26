@@ -1,0 +1,1 @@
+Now the lighter color is applied, transitioning from the lightest shadows to the lighter parts of the vase. Also, some of the lighter parts of the sphere are shaded at this point as well. Experiment with the fill tool if you haven't already, or use scribbles to fill in the colors to get different effects!

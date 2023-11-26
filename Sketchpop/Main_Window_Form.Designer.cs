@@ -39,6 +39,8 @@ namespace Sketchpop
             this.fullscreen_button = new System.Windows.Forms.Button();
             this.tool_bar = new System.Windows.Forms.Panel();
             this.left_settings_panel = new System.Windows.Forms.Panel();
+            this.selected_tool_string = new System.Windows.Forms.Label();
+            this.selected_tool_label = new System.Windows.Forms.Label();
             this.canvas_height_label = new System.Windows.Forms.Label();
             this.canvas_width_label = new System.Windows.Forms.Label();
             this.resize_canvas_input_y = new System.Windows.Forms.NumericUpDown();
@@ -215,7 +217,7 @@ namespace Sketchpop
             this.title_bar.Enabled = false;
             this.title_bar.Location = new System.Drawing.Point(0, 0);
             this.title_bar.Name = "title_bar";
-            this.title_bar.Size = new System.Drawing.Size(1280, 13);
+            this.title_bar.Size = new System.Drawing.Size(1280, 4);
             this.title_bar.TabIndex = 2;
             // 
             // title_label
@@ -260,6 +262,8 @@ namespace Sketchpop
             this.left_settings_panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.left_settings_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(149)))), ((int)(((byte)(149)))));
+            this.left_settings_panel.Controls.Add(this.selected_tool_string);
+            this.left_settings_panel.Controls.Add(this.selected_tool_label);
             this.left_settings_panel.Controls.Add(this.canvas_height_label);
             this.left_settings_panel.Controls.Add(this.canvas_width_label);
             this.left_settings_panel.Controls.Add(this.resize_canvas_input_y);
@@ -292,6 +296,29 @@ namespace Sketchpop
             this.left_settings_panel.Name = "left_settings_panel";
             this.left_settings_panel.Size = new System.Drawing.Size(172, 690);
             this.left_settings_panel.TabIndex = 4;
+            // 
+            // selected_tool_string
+            // 
+            this.selected_tool_string.AutoSize = true;
+            this.selected_tool_string.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.selected_tool_string.Location = new System.Drawing.Point(113, 663);
+            this.selected_tool_string.MaximumSize = new System.Drawing.Size(60, 0);
+            this.selected_tool_string.Name = "selected_tool_string";
+            this.selected_tool_string.Size = new System.Drawing.Size(55, 12);
+            this.selected_tool_string.TabIndex = 33;
+            this.selected_tool_string.Text = "Hand Tool";
+            this.selected_tool_string.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // selected_tool_label
+            // 
+            this.selected_tool_label.AutoSize = true;
+            this.selected_tool_label.Location = new System.Drawing.Point(8, 661);
+            this.selected_tool_label.MaximumSize = new System.Drawing.Size(120, 0);
+            this.selected_tool_label.Name = "selected_tool_label";
+            this.selected_tool_label.Size = new System.Drawing.Size(96, 26);
+            this.selected_tool_label.TabIndex = 32;
+            this.selected_tool_label.Text = "Currentlyt Selected Tool:";
+            this.selected_tool_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // canvas_height_label
             // 
@@ -688,6 +715,7 @@ namespace Sketchpop
             this.ref_img_options.UseVisualStyleBackColor = true;
             this.ref_img_options.Visible = false;
             this.ref_img_options.Click += new System.EventHandler(this.ref_img_options_Click);
+            this.ref_img_options.MouseHover += new System.EventHandler(this.ref_img_options_MouseHover);
             // 
             // green_input_box
             // 
@@ -1115,7 +1143,7 @@ namespace Sketchpop
             this.brush_menustrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Table;
             this.brush_menustrip.Location = new System.Drawing.Point(77, 27);
             this.brush_menustrip.Name = "brush_menustrip";
-            this.brush_menustrip.Size = new System.Drawing.Size(126, 61);
+            this.brush_menustrip.Size = new System.Drawing.Size(85, 42);
             this.brush_menustrip.TabIndex = 21;
             this.brush_menustrip.Visible = false;
             // 
@@ -1173,6 +1201,7 @@ namespace Sketchpop
             this.hand_button.Text = "Hand";
             this.hand_button.UseVisualStyleBackColor = true;
             this.hand_button.Click += new System.EventHandler(this.hand_button_Click);
+            this.hand_button.MouseHover += new System.EventHandler(this.hand_button_MouseHover);
             // 
             // fill_tool_button
             // 
@@ -1233,6 +1262,7 @@ namespace Sketchpop
             this.pen_pressure_button.Text = "Pen Pressure";
             this.pen_pressure_button.UseVisualStyleBackColor = true;
             this.pen_pressure_button.Click += new System.EventHandler(this.pen_pressure_button_Click);
+            this.pen_pressure_button.MouseHover += new System.EventHandler(this.pen_pressure_button_MouseHover);
             // 
             // zoom_canvas_out_button
             // 
@@ -1434,7 +1464,7 @@ namespace Sketchpop
             // 
             // ex_color1
             // 
-            this.ex_color1.BackColor = System.Drawing.Color.White;
+            this.ex_color1.BackColor = System.Drawing.Color.Black;
             this.ex_color1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ex_color1.Location = new System.Drawing.Point(4, 4);
             this.ex_color1.Name = "ex_color1";
@@ -1443,7 +1473,7 @@ namespace Sketchpop
             // 
             // ex_color2
             // 
-            this.ex_color2.BackColor = System.Drawing.Color.Silver;
+            this.ex_color2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ex_color2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ex_color2.Location = new System.Drawing.Point(38, 4);
             this.ex_color2.Name = "ex_color2";
@@ -1461,7 +1491,7 @@ namespace Sketchpop
             // 
             // ex_color4
             // 
-            this.ex_color4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ex_color4.BackColor = System.Drawing.Color.Silver;
             this.ex_color4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ex_color4.Location = new System.Drawing.Point(106, 4);
             this.ex_color4.Name = "ex_color4";
@@ -1470,7 +1500,7 @@ namespace Sketchpop
             // 
             // ex_color5
             // 
-            this.ex_color5.BackColor = System.Drawing.Color.Black;
+            this.ex_color5.BackColor = System.Drawing.Color.White;
             this.ex_color5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ex_color5.Location = new System.Drawing.Point(140, 4);
             this.ex_color5.Name = "ex_color5";
@@ -1750,6 +1780,8 @@ namespace Sketchpop
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
+        private System.Windows.Forms.Label selected_tool_label;
+        private System.Windows.Forms.Label selected_tool_string;
     }
 }
 
