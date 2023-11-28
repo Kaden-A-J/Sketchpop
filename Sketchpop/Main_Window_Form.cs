@@ -884,7 +884,7 @@ namespace Sketchpop
         private void zoom_canvas_in_button_Click(object sender, EventArgs e)
         {
             Program.canvas_manager.stored_scale += 0.1f;
-            if (Program.canvas_manager.stored_scale >= 1)
+            if (Program.canvas_manager.stored_scale >= 1.5f)
                 Program.canvas_manager.stored_scale -= 0.1f;
             //Console.WriteLine(Program.canvas_manager.stored_scale);
             resize_drawing_picture_box();
