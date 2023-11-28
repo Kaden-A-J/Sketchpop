@@ -953,7 +953,7 @@ namespace Sketchpop
             {
                 clear_canvas_button_Click(null, null);
                 layer_count = new File_Manager().Load_as_EXC(path, Program.canvas_manager.layer_manager);
-                for (int i = 0; i < layer_count; i++)
+                for (int i = 0; i < layer_count-2; i++)
                 {
                     layer_add_button_Click(null, null);
                 }
