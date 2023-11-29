@@ -110,6 +110,7 @@ namespace Sketchpop
                         int difference = Math.Abs(color_to_check.Red - initial_color.Red);
                         difference += Math.Abs(color_to_check.Green - initial_color.Green);
                         difference += Math.Abs(color_to_check.Blue - initial_color.Blue);
+                        difference += Math.Abs(color_to_check.Alpha - initial_color.Alpha);
                         if (difference <= 80 && color_to_check != replacement_color)
                         {
                             color_array[p.X + (p.Y * replacement_image.Info.Width)] = replacement_color;
