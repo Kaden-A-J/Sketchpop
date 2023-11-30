@@ -18,6 +18,8 @@ namespace Sketchpop
         [STAThread]
         static void Main()
         {
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += new UnhandledExceptionEventHandler(MyHandler);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             main_window = new main_window();
@@ -26,6 +28,12 @@ namespace Sketchpop
                 Console.WriteLine("main_window is null");
             }
             Application.Run(main_window);
+        }
+
+        static void MyHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+            Exception e = ((Exception)args.ExceptionObject);
+            MessageBox.Show("Unhandled exception: " + e.GetType() + "\n\nmessage: " + e.Message);
         }
 
     }

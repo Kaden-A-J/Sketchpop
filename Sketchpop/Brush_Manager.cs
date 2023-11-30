@@ -38,9 +38,18 @@ namespace Sketchpop
         private void Load_Textures()
         {
             var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var folderDirectory = Path.Combine(baseDirectory, "..\\..\\Textures");
+            List<string> pngFiles;
+            try
+            {
+                var folderDirectory = Path.Combine(baseDirectory, "..\\..\\Textures");
+                 pngFiles = Directory.GetFiles(folderDirectory, "*.png").ToList();
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                var folderDirectory = Path.Combine(baseDirectory, "Textures");
+                pngFiles = Directory.GetFiles(folderDirectory, "*.png").ToList();
+            }
 
-            List<string> pngFiles = Directory.GetFiles(folderDirectory, "*.png").ToList();
             Dictionary<string, SKBitmap> txtrs = new Dictionary<string, SKBitmap>();
             Dictionary<string, string> flpths = new Dictionary<string, string>();
 

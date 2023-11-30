@@ -1275,7 +1275,15 @@ namespace Sketchpop
             var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
             var filepath = Path.Combine(baseDirectory, "..\\..\\Random_Prompts\\prompts.txt");
 
-            _prompts = File.ReadAllLines(filepath).ToList();
+            try
+            {
+                _prompts = File.ReadAllLines(filepath).ToList();
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                filepath = Path.Combine(baseDirectory, "Random_Prompts\\prompts.txt");
+                _prompts = File.ReadAllLines(filepath).ToList();
+            }
         }
 
         /// <summary>
@@ -1285,12 +1293,25 @@ namespace Sketchpop
         private void Load_Exercise_Images()
         {
             var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            var imageFolder = Path.Combine(baseDirectory, $"..\\..\\Exercise_Images\\");
+            String imageFolder;
 
-            foreach (string img_file in Directory.GetFiles(imageFolder, "*.*"))
+            try
             {
-                byte[] bytes = File.ReadAllBytes(img_file);
-                _value_examples.Add(bytes);
+                imageFolder = Path.Combine(baseDirectory, $"..\\..\\Exercise_Images\\");
+                foreach (string img_file in Directory.GetFiles(imageFolder, "*.*"))
+                {
+                    byte[] bytes = File.ReadAllBytes(img_file);
+                    _value_examples.Add(bytes);
+                }
+            }
+            catch (DirectoryNotFoundException e)
+            {
+                imageFolder = Path.Combine(baseDirectory, $"Exercise_Images\\");
+                foreach (string img_file in Directory.GetFiles(imageFolder, "*.*"))
+                {
+                    byte[] bytes = File.ReadAllBytes(img_file);
+                    _value_examples.Add(bytes);
+                }
             }
 
             randomImageToolStripMenuItem.Click += Get_Random_Monochrome_Image;
