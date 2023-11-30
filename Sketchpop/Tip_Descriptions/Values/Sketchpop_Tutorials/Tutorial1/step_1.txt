@@ -1,1 +1,3 @@
-At the start of the exercise, a new layer is created where you will begin adding color. Within this layer, select color 2, designated for the lightest shadows in the image. Note that the sequence of colors is at the user's discretion; the provided order described in the next steps is merely one approach to coloring these images.
+At the start of the exercise, a new layer is created where you will begin adding color. Within this layer, select color 2, designated for the lightest shadows in the image. 
+
+*Note that the sequence of colors is at the user's discretion; the provided order described in the next steps is merely one approach to coloring these images.

@@ -1,1 +1,3 @@
-Next, proceed to fill in the darker half-tones of the image utilizing color 3. This step facilitates the transition from the lightest shadows to the brighter sections of the image. Note that the lightest part of the image differs from the highlights. The highlights will be solid white (color 5), while the lighter portions of the rock will be filled in with color 4. Refer to the example image above for clarification.
+Next, proceed to fill in the darker half-tones of the image utilizing color 3. This step facilitates the transition from the lightest shadows to the brighter sections of the image. 
+
+*Note that the lightest part of the image differs from the highlights. The highlights will be solid white (color 5), while the lighter portions of the rock will be filled in with color 4. You will use color 3 to create a smoother transition between the colors.
