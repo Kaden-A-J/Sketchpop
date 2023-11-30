@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Tracing;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -782,6 +780,19 @@ namespace Sketchpop
                 else if (e.KeyCode == Keys.X)
                 {
                     Program.canvas_manager.Handle_Cut();
+
+                    if (_tips_toggled && _curr == null && (currently_selected_tool.Equals("Rectangle Selection") || currently_selected_tool.Equals("Lasso Selection")))
+                    {
+                        if (_curr != null)
+                            _curr.Close();
+
+                        var tmp = new Tip(this, canvas_frame, "Copied to clipboard! Press Ctrl+V to paste, Esc to end.", 2, false);
+                        tmp.closed += Deactivate_Tip;
+                        tmp.new_tip += Activate;
+                        tmp.Show();
+                        _curr = tmp;
+                        this.Select();
+                    }
                 }
                 else if (e.KeyCode == Keys.V)
                 {

@@ -1,12 +1,7 @@
 ﻿using SkiaSharp;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media;
 using System.Xml;
 
 namespace Sketchpop
@@ -88,7 +83,7 @@ namespace Sketchpop
                         {
                             case "EXC":
                                 int selectedLayer = int.Parse(reader.GetAttribute("selected_layer"));
-                                layers.selected_layer = selectedLayer;
+                                layers.selected_layer = 0;
                                 break;
 
                             case "layer":
