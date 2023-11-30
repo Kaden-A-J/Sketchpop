@@ -881,5 +881,10 @@ namespace Sketchpop
         {
             operation_manager.delete_layer(index);
         }
+
+        public Selection_Manager Get_Selection_Manager()
+        {
+            return selection_manager;
+        }
     }
 }

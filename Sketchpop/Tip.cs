@@ -105,6 +105,33 @@ namespace Sketchpop
         }
 
         /// <summary>
+        /// Constructor. Same logic as the basic tip, but has a float for time. This time will determine
+        /// how long the tip stays visible before automatically being closed.
+        /// </summary>
+        /// <param name="mw">main_window form</param>
+        /// <param name="c">container that holds the folder_name that the tip is representing</param>
+        /// <param name="e">the folder_name that the tip is representing</param>
+        /// <param name="d">description for the tip</param>
+        /// <param name="t">type of tip</param>
+        /// <param name="expand">determines if this tip will have more information to display</param>
+        /// <param name="time">time before tip automatically closes</param>
+        public Tip(Form mw, Control e, string d, int t, bool expand, int time)
+        {
+            InitializeComponent();
+
+            Setup(mw, e, d, t, expand, ""); // set variables for the tip
+
+            // remove old timer method and add the new one
+            _timer.Tick -= Timer_Tick;
+            _timer.Interval = time;
+            _timer.Tick += Countdown;
+
+            Generate_Tip(); // draws the tip 
+
+            new_tip?.Invoke(this, this); // signal to main that a new tip is now active
+        }
+
+        /// <summary>
         /// Method for closing the tip when the form loses focus.
         /// </summary>
         /// <param name="sender"></param>
@@ -115,6 +142,11 @@ namespace Sketchpop
             {
                 close_link_label_LinkClicked(null, null);
             }
+        }
+
+        private void Countdown(object sender, EventArgs e)
+        {
+            close_link_label_LinkClicked(null, null);
         }
 
         /// <summary>

@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace Sketchpop
 {
-    internal class Selection_Manager
+    public class Selection_Manager
     {
         /// <summary>
         /// whether there's actually a selected area being used or selected right now, and what type of selection it is

@@ -765,12 +765,9 @@ namespace Sketchpop
                 {
                     Program.canvas_manager.Handle_Copy();
 
-                    if (_tips_toggled && _curr == null && (currently_selected_tool.Equals("Rectangle Selection") || currently_selected_tool.Equals("Lasso Selection")))
+                    if (_tips_toggled && _curr == null && Program.canvas_manager.Get_Selection_Manager().active_select_tool != Selection_Manager.Selection_Tools.None)
                     {
-                        if (_curr != null)
-                            _curr.Close();
-
-                        var tmp = new Tip(this, canvas_frame, "Copied to clipboard! Press Ctrl+V to paste, Esc to end.", 2, false);
+                        var tmp = new Tip(this, canvas_frame, "Copied to clipboard! Press Ctrl+V to paste, Esc to end.", 2, false, 2000);
                         tmp.closed += Deactivate_Tip;
                         tmp.new_tip += Activate;
                         tmp.Show();
