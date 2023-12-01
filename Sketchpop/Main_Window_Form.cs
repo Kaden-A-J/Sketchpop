@@ -255,7 +255,7 @@ namespace Sketchpop
             layer_panel.Controls.Clear();
 
             Program.canvas_manager.Reset_Canvas_State();
-
+            Program.canvas_manager.operation_manager = new Operation_Manager();
             // adds base layer
             bg_layer_added = false;
             layer_add_button_Click(null, null);
