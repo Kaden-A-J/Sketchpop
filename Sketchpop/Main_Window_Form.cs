@@ -1395,8 +1395,14 @@ namespace Sketchpop
 
             if (eraser_selected)
             {
-                Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.brush;
-                Program.canvas_manager.Change_Brush("basic");
+                if (paintbrush_trackbar.Visible)
+                {
+                    painBrushStripMenuItem_Click(sender, e);
+                }
+                else
+                {
+                    penToolStripMenuItem_Click(sender, e);
+                }
             }
 
             red_input_box.Value = color.BackColor.R;

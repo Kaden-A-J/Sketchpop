@@ -15,7 +15,15 @@ namespace Sketchpop
     public class Brush_Manager
     {
         private Dictionary<string, Brush> _brushes;
+        private Brush _previous_brush;
         private Brush _current_brush;
+        private Brush current_brush { get { return _current_brush; }
+            set
+            {
+                _previous_brush = _current_brush;
+                _current_brush = value;
+            }
+        }
 
         /// <summary>
         /// Constructor. Adds the basic brush and the eraser brush to the list of 
@@ -24,6 +32,7 @@ namespace Sketchpop
         public Brush_Manager()
         {
             _brushes = new Dictionary<string, Brush>();
+            _previous_brush = new Brush("basic", 3, new SKColor(0, 0, 0, 255));
             _current_brush = new Brush("basic", 3, new SKColor(0, 0, 0, 255));
 
             // add basic brush and eraser
@@ -56,7 +65,7 @@ namespace Sketchpop
             foreach (string png in pngFiles)
             {
                 string textureName = Path.GetFileNameWithoutExtension(png); // extract the file name without extension
-                var texture = Resize_Texture(png,_current_brush.Stroke(), _current_brush.Stroke());
+                var texture = Resize_Texture(png, current_brush.Stroke(), current_brush.Stroke());
                 var t_Bitmap = SKBitmap.FromImage(texture);
 
                 txtrs.Add(textureName, t_Bitmap);
@@ -104,7 +113,7 @@ namespace Sketchpop
         {
             if (_brushes.ContainsKey(brush_name))
             {
-                _current_brush = _brushes[brush_name];
+                current_brush = _brushes[brush_name];
             }
         }
 
@@ -115,7 +124,14 @@ namespace Sketchpop
         /// <returns></returns>
         public SKColor Get_Last_Selected_Color()
         {
-            return _brushes["basic"].Color();
+            if (current_brush.Name() == "eraser")
+            {
+                return _previous_brush.Color();
+            }
+            else
+            {
+                return current_brush.Color();
+            }
         }
 
         /// <summary>
@@ -124,7 +140,7 @@ namespace Sketchpop
         /// <returns>current brush</returns>
         public Brush Get_Current_Brush()
         {
-            return _current_brush;
+            return current_brush;
         }
 
         /// <summary>
