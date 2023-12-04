@@ -317,7 +317,7 @@ namespace Sketchpop
             this.selected_tool_label.Name = "selected_tool_label";
             this.selected_tool_label.Size = new System.Drawing.Size(96, 26);
             this.selected_tool_label.TabIndex = 32;
-            this.selected_tool_label.Text = "Currentlyt Selected Tool:";
+            this.selected_tool_label.Text = "Currently  Selected Tool:";
             this.selected_tool_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // canvas_height_label
