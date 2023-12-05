@@ -282,7 +282,7 @@ namespace Sketchpop
             // check to make sure a valid number of images to search for has been chosen.
             if (num_images_textbox.Text.Equals("0")) { MessageBox.Show("Number of returned images must be greater than 0."); }
             else if (string.IsNullOrEmpty(num_images_textbox.Text)) { MessageBox.Show("Number of returned images cannot be empty."); }
-            else if (int.Parse(num_images_textbox.Text) > 30) { MessageBox.Show("Max number of returned images cannot exceed 30."); }            
+            else if (int.Parse(num_images_textbox.Text) > 30) { MessageBox.Show("Max number of returned images cannot exceed 30."); }
             else
             {
                 // enable/disable unnecessary buttons
@@ -326,7 +326,7 @@ namespace Sketchpop
                 {
                     img_data = selected.Value.Get_Image_Data();
                 }
-                
+
                 string author_name = selected.Value.Get_Author();
                 string author_link = selected.Value.Get_Author_Profile();
 
@@ -459,7 +459,7 @@ namespace Sketchpop
             _uploaded_showing = true;
             _favs_showing = false;
             _search_results_showing = false;
-            view_fav_button.ForeColor= Color.Black;
+            view_fav_button.ForeColor = Color.Black;
 
             Add_Images_To_Panel(_uploaded_images, _cts);
         }
@@ -519,7 +519,14 @@ namespace Sketchpop
 
                 // make a MySQL query call to add the images to the DB
                 if (unique_images.Count > 0)
+                {
                     _dbm.Insert_New_Images(unique_images);
+
+                    if (unique_images.Count == 1)
+                        MessageBox.Show("Image successfully added to favorites.");
+                    else
+                        MessageBox.Show("Images successfully added to favorites.");
+                }
             }
             else
             {
@@ -676,6 +683,6 @@ namespace Sketchpop
             public string Name => _author_name;
             public string Link => _author_link;
 
-        }        
+        }
     }
 }
