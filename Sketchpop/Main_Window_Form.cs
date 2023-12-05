@@ -308,6 +308,7 @@ namespace Sketchpop
             // clear the exercise controls:
             exercise_arrow_buttons.Controls.Clear();
             clear_canvas_button_Click(null, null);
+            end_exercise_button.Show();
 
             var options_form = new Repeated_Circles_Options_Form(this);
             options_form.ShowDialog();
