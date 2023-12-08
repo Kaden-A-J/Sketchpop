@@ -401,6 +401,7 @@ namespace Sketchpop
             t_panel.Size = new Size(this.layer_panel.Width - buffer - 20, 60);
             //t_panel.Location = new Point(4, (t_panel.Height + buffer) * layers_ui.Count);
             t_panel.Location = new Point(4, buffer);
+            t_panel.TabStop = false;
 
 
             RadioButton t_visible_button = new RadioButton();
@@ -410,6 +411,7 @@ namespace Sketchpop
             {
                 t_panel.Controls.Add(t_visible_button);
             }
+            t_visible_button.TabStop = false;
 
             PictureBox t_preview_panel = new PictureBox();
             t_preview_panel.BackColor = Color.FromArgb(255, 167, 167, 167);
@@ -425,6 +427,7 @@ namespace Sketchpop
             t_name_label.Size = new Size(t_panel.Width - t_name_label.Location.X, t_name_label.Height);
             t_panel.Controls.Add(t_name_label);
 
+
             TrackBar t_trackbar = new TrackBar();
             t_trackbar.Location = new Point(t_name_label.Location.X + buffer, t_panel.Height - ((t_panel.Height - buffer * 2) / 2) - buffer - 1);
             t_trackbar.Size = new Size((t_panel.Width - t_trackbar.Location.X - buffer), (t_panel.Height - buffer * 2) / 2);
@@ -433,6 +436,7 @@ namespace Sketchpop
             t_trackbar.Value = 100;
             t_trackbar.TickStyle = TickStyle.Both;
             t_panel.Controls.Add(t_trackbar);
+            t_trackbar.TabStop = false;
 
 
             layers_ui.Add(t_panel);
@@ -813,6 +817,11 @@ namespace Sketchpop
                         }
                     }
                 }
+
+            }
+            else if (e.KeyCode == Keys.Space)
+            {
+                Program.canvas_manager.current_tool = Canvas_Manager.SketchPopTool.hand;
             }
             else if (e.KeyCode == Keys.Escape)
             {
@@ -1771,6 +1780,16 @@ namespace Sketchpop
 
             // Set the mouse position to the center of the specific control
             Cursor.Position = PointToScreen(new Point(centerX, centerY));
+        }
+
+        private void main_window_KeyUp(object sender, KeyEventArgs e)
+        {
+
+            if (e.KeyCode == Keys.Space)
+            {
+                Program.canvas_manager.current_tool = Program.canvas_manager.previous_tool;
+            }
+
         }
 
         private void canvas_frame_MouseHover(object sender, EventArgs e)

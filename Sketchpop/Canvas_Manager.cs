@@ -13,7 +13,7 @@ namespace Sketchpop
     public class Canvas_Manager
     {
         private SketchPopTool _current_tool = SketchPopTool.brush;
-        private SketchPopTool previous_tool { get; set; } = SketchPopTool.brush; // used for getting off of hand tool or move_pasted tool
+        public SketchPopTool previous_tool { get; set; } = SketchPopTool.brush; // used for getting off of hand tool or move_pasted tool
         public SketchPopTool current_tool
         {
             get { return _current_tool; }
