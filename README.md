@@ -1,6 +1,4 @@
-# **Sketchpop**
-
-A practice-oriented drawing program.
+![Image](https://github.com/user-attachments/assets/792d72bf-0167-4ec0-9ff6-ca0441b78bd3)
 
 ## **Introduction**
 
