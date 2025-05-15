@@ -1,56 +1,16 @@
-**Sketchpop**
+# **Sketchpop**
 
 A practice-oriented drawing program.
 
-**Introduction**
+## **Introduction**
 
 Our program aims to help its users practice drawing while minimizing executive dysfunction. Quick sketches and messy drawings can be done in our program with no pressure to create completed artworks. Find reference images quickly using our built-in reference image search capabilities or use our built-in exercises to practice essential drawing skills.
 
-**Technologies**
+## **Installation**
 
-- C# (.NET 4.7.2)
-- AWS + MySql
-- Visual Studio
-- SkiaSharp
-- Windows Forms Application
-- (Windows exclusive)
-- *Unsplash* API
+Release 1.0 contains an installer ```setup.exe```, after installed the program can be initialized by running the ```Sketchpop.application``` in the same folder.
 
-**Installation**
-
-Sketchpop is developed in Microsoft Visual Studio 2022 Community, targeting a 4.7.2 .NET Framework. As such it can be built by opening and building (Sketchpop.sln) in the outermost directory of this project.
-
-The majority of the NuGet packages *should* auto-install; however, we had the issue where some had to be manually installed, notably SkiaSharp.
-
-The following NuGet packages are installed for this solution:
-
-- Google.Protobug
-- K4os.Compression.LZ4
-- K4os.Compression.LZ4.Streams
-- K4os.Hash.xxHash
-- MySql.Data
-- Newtonsoft.Json
-- OpenTK
-- OpenTK.GLControl
-- SkiaSharp
-- SkiaSharp.NativeAssets.macOS
-- SkiaSharp.NativeAssets.Win32
-- SkiaSharp.Views
-- SkiaSharp.Views.Desktop.Common
-- SkiaSharp.Views.Gtk2
-- SkiaSharp.Views.WindowsForms
-- SkiaSharp.Views.WPF
-- System.Buffers
-- System.Drawing.Common
-- System.IO.Pipelines
-- System.Memory
-- System.Numerics.Vectors
-- System.Runtime.CompilerServices.Unsafe
-- System.Threading.Tasks.Extension
-
-After being built in Visual Studio it should also be able to be run through the same methods.
-
-**Usage**
+## **Usage**
 
 The program starts off ready to draw, like most drawing programs. Tips can be toggled for certain features, but here is an explanation of some of our other features:
 
@@ -106,10 +66,20 @@ Right Pane
 - Each layer has an individual opacity slider: you can make layers partially or completely transparent if desired.
 - There is an unselectable bottom layer for displaying the default background.
 
-**Contributors**
+## **Technologies**
+
+- C# (.NET 4.7.2)
+- AWS + MySql
+- Visual Studio
+- SkiaSharp
+- Windows Forms Application
+  - (Windows exclusive)
+- *Unsplash* API
+
+## **Contributors**
 
 Adrian Flores, Kaden Jones, Kang Zhao, Parker Gordon
 
-**License**
+## **License**
 
 University of Utah, Kalhert School of Computing
